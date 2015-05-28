@@ -33,3 +33,20 @@ yo fe-scaffold
 --skip-install      Skip auto install dependencies (npm install & bower install).
 ```
 
+### features
+
+- support test automation with karma-webdriver-launcher
+ - IE7 - WinXP
+ - IE8 - WinXP
+ - IE9 - Win7
+ - IE10 - Win7
+ - IE11 - Win7
+ - Chrome - Win7,
+ - Firefox - Win7,
+ - Mobile Chrome (39) - Android 5.1
+ - Mobile Safari (8.0) - iOS 8.3
+- gulp connect server
+- eslint
+- jsdoc (fedoc template)
+- CI (http://fe.nhnent.com:8080/jenkins) ready
+
