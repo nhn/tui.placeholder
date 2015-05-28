@@ -1,11 +1,16 @@
 {
-  "name": "generator-js-develop",
+  "name": "generator-fe-scaffold",
   "version": "0.0.1",
   "description": "yeoman generator for web component, library, applications made by javascript.",
   "keywords": [
     "yeoman-generator"
   ],
   "author": "NHNEnt FE Development Team",
+  "repository": {
+      "type": "git",
+      "url": "https://github.nhnent.com/fe/generator-fe-scaffold.git"
+  },
+  "private": true,
   "license": "MIT",
   "files": [
     "app",
