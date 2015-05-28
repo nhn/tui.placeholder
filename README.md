@@ -8,19 +8,19 @@
 npm install -g yeoman
 ```
 
-1. clone this repository anywhere in your local machine.
+2. clone this repository anywhere in your local machine.
 
 ```bash
 git clone https://github.nhnent.com/fe/generator-fe-scaffold.git
 ```
 
-1. type below command in repsotiry root directory.
+3. type below command in repsotiry root directory.
 
 ```bash
 npm link
 ```
 
-1. happy hacking~
+4. happy hacking~
 
 ```bash
 yo fe-scaffold
