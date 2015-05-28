@@ -1,0 +1,22 @@
+{
+  "name": "generator-js-develop",
+  "version": "0.0.1",
+  "description": "yeoman generator for web component, library, applications made by javascript.",
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "author": "NHNEnt FE Development Team",
+  "license": "MIT",
+  "files": [
+    "app",
+    "desktop",
+    "desktop-modern",
+    "mobile"
+  ],
+  "dependencies": {
+    "ejs": "^2.3.1",
+    "string": "^3.1.1",
+    "underscore": "^1.8.3",
+    "yeoman-generator": "^0.20.1"
+  }
+}

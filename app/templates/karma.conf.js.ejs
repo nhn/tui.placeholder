@@ -1,0 +1,101 @@
+module.exports = function(config) {
+<% 
+if (useWebDriver) { 
+-%>
+    var webdriverConfig = {
+        hostname: 'fe.nhnent.com',
+        port: 4444,
+        remoteHost: true
+    };
+
+<%
+}
+-%>
+    config.set({
+        basePath: '',
+
+        frameworks: ['jasmine'],
+
+        files: [
+<% 
+        if (!modern) { 
+-%>
+            'bower_components/json2/json2.js',
+            'bower_components/jquery/jquery.js',
+<%
+        } 
+-%>
+            '<%= sourcePath %>',
+            '<%= testSourcePath %>'
+        ],
+
+        exclude: [
+        ],
+
+        preprocessors: {
+            '<%= sourcePath %>': ['coverage']
+        },
+
+        reporters: [
+            'mocha',
+            'coverage',
+            'junit'
+        ],
+
+        coverageReporter: {
+            type: 'html',
+            dir: 'report/'
+        },
+
+        junitReporter: {
+            outputFile: 'report/junit-result.xml',
+            suite: ''
+        },
+
+        port: 9876,
+
+        colors: true,
+
+        logLevel: config.LOG_INFO,
+
+        autoWatch: true,
+
+        browsers: [
+<% browsers.forEach(function(browser, index) { -%>
+            '<%= browser%>'<%= _comma(browsers, index); %>
+<% }); -%>
+        ],
+<% 
+    if (useWebDriver) { 
+-%>
+
+        customLaunchers: {
+<% 
+        launchers.forEach(function(launcher, index) { 
+            var keys = Object.keys(launcher);
+-%>
+            '<%= launcher._launcherName || launcher.browserName %>': {
+<%          
+            keys.forEach(function(key, index) { 
+                if (!/^_/.test(key)) { 
+                    var v = key === 'config' ? 'webdriverConfig' : '\'' + launcher[key] + '\'';
+-%>
+                <%= key %>: <%- v %><%= _comma(keys, index); %> 
+<%
+                }
+            }); 
+-%>
+            }<%= _comma(launchers, index); %>
+<%
+        }); 
+-%>
+        },
+<% 
+    } 
+-%>
+
+        singleRun: false,
+
+        browserNoActivityTimeout: 30000
+    });
+};
