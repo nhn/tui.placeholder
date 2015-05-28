@@ -14,7 +14,7 @@ clone this repository anywhere in your local machine.
 git clone https://github.nhnent.com/fe/generator-fe-scaffold.git
 ```
 
-type below command in repsotiry root directory.
+enter below command in this generator's root directory.
 
 ```bash
 npm link
