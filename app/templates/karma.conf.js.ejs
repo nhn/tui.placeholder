@@ -58,7 +58,7 @@ if (useWebDriver) {
 
         logLevel: config.LOG_INFO,
 
-        autoWatch: true,
+        autoWatch: <%= !useWebDriver %>,
 
         browsers: [
 <% browsers.forEach(function(browser, index) { -%>
@@ -94,7 +94,7 @@ if (useWebDriver) {
     } 
 -%>
 
-        singleRun: false,
+        singleRun: <%= useWebDriver %>,
 
         browserNoActivityTimeout: 30000
     });

@@ -5,7 +5,7 @@
 install yeoman in global.
 
 ```bash
-npm install -g yeoman
+npm install -g yo 
 ```
 
 clone this repository anywhere in your local machine.
