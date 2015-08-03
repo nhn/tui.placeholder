@@ -17,7 +17,7 @@
         "karma-phantomjs-launcher": "latest"
     },
     "scripts": {
-        "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json"
+        "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json - ./node_modules/fedoc-template"
     },
     "author": "NHNEnt FE Development Team <e0242@nhnent.com>"
 }
