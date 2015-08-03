@@ -104,12 +104,6 @@ var inqTestFiles = {
     'default': 'test/**/*.spec.js'
 };
 
-var inqPhantomJS = {
-    type: 'confirm',
-    name: 'includePhantomJS',
-    message: 'do you want include phantomjs test configuration?'
-};
-
 var browserMatcher = {
     'IE7': 'IE7',
     'IE8': 'IE8',
@@ -126,30 +120,35 @@ var webdriverConfig = null;
 
 var launcherMatcher = {
     'IE7': {
+        _launcherName: 'IE7',
         base: 'WebDriver',
         config: webdriverConfig,
         browserName: 'internet explorer',
         version: 7
     },
     'IE8': {
+        _launcherName: 'IE8',
         base: 'WebDriver',
         config: webdriverConfig,
         browserName: 'internet explorer',
         version: 8
     },
     'IE9': {
+        _launcherName: 'IE9',
         base: 'WebDriver',
         config: webdriverConfig,
         browserName: 'internet explorer',
         version: 9
     },
     'IE10': {
+        _launcherName: 'IE10',
         base: 'WebDriver',
         config: webdriverConfig,
         browserName: 'internet explorer',
         version: 10
     },
     'IE11': {
+        _launcherName: 'IE11',
         base: 'WebDriver',
         config: webdriverConfig,
         browserName: 'internet explorer',
@@ -228,8 +227,7 @@ module.exports = yeoman.generators.Base.extend({
             inqDesktopEnv,
             inqMobileEnv,
             inqFiles,
-            inqTestFiles,
-            inqPhantomJS
+            inqTestFiles
         ], (function(answers) {
             answers.projectName = str(answers.projectName).trim().dasherize().s;
 
@@ -282,13 +280,6 @@ module.exports = yeoman.generators.Base.extend({
         this.template('README.md');
         this.template('gulpfile.js');
         this.template('karma.conf.js.ejs', 'karma.conf.js');
-
-        if (this.includePhantomJS) {
-            this.useWebDriver = false;
-            this.usePhantomJS = true;
-            this.browsers = ['PhantomJS'];
-            this.template('karma.conf.js.ejs', 'karma.conf.local.js');
-        }
 
         if (!this.options['skip-install']) {
             this.installDependencies();

@@ -1,7 +1,7 @@
 {
     "name": "<%= projectName %>",
     "version": "0.0.0",
-    "authors": ["NHNEnt FE Development Team <e0242@nhnent.com>"],
+    "authors": ["NHNEnt FE Development Team <dl_javascript@nhnent.com>"],
     "description": "",
     "license": "MIT",
     "ignore": [
