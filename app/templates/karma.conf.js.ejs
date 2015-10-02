@@ -77,8 +77,19 @@ if (useWebDriver) {
             '<%= launcher._launcherName || launcher.browserName %>': {
 <%          
             keys.forEach(function(key, index) { 
+                var v;
                 if (!/^_/.test(key)) { 
-                    var v = key === 'config' ? 'webdriverConfig' : '\'' + launcher[key] + '\'';
+                    switch (key) {
+                        case 'config':
+                            v = 'webdriverConfig';
+                            break;
+                        case 'version':
+                            v = launcher[key];
+                            break;
+                        default:
+                            v = '\'' + launcher[key] + '\'';
+                            break;
+                    }
 -%>
                 <%= key %>: <%- v %><%= _comma(keys, index); %> 
 <%
