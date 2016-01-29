@@ -16,7 +16,7 @@
         "no-shadow": 0,
 
         //Possible Errors
-        "comma-dangle": [2, "neer"],
+        "comma-dangle": [2, "never"],
         "no-cond-assign": [2, "always"],
         "no-console": 1,
         "no-constant-condition": 2,
@@ -29,7 +29,7 @@
         "no-empty": 2,
         "no-ex-assign": 2,
         "no-extra-boolean-cast": 2,
-        "no-extra-parens: [2, "function"],
+        "no-extra-parens": [2, "functions"],
         "no-extra-semi": 2,
         "no-func-assign": 2,
         "no-inner-declarations": [2, "both"],
