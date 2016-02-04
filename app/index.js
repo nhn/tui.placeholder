@@ -55,8 +55,12 @@ var inqDesktopEnv = {
         value: 'IE10',
         checked: true
     }, {
-        name: 'IE11 - Win7',
+        name: 'IE11 - Win10',
         value: 'IE11',
+        checked: true
+    }, {
+        name: 'Edge - Win10',
+        value: 'Edge',
         checked: true
     }, {
         name: 'Chrome - Win7',
@@ -110,6 +114,7 @@ var browserMatcher = {
     'IE9': 'IE9',
     'IE10': 'IE10',
     'IE11': 'IE11',
+    'Edge': 'Edge',
     'Chrome': 'Chrome-WebDriver',
     'Firefox': 'Firefox-WebDriver',
     'Android': 'Android',
@@ -153,6 +158,12 @@ var launcherMatcher = {
         config: webdriverConfig,
         browserName: 'internet explorer',
         version: 11
+    },
+    'Edge': {
+        _launcherName: 'Edge',
+        base: 'WebDriver',
+        config: webdriverConfig,
+        browserName: 'MicrosoftEdge'
     },
     'Chrome': {
         _launcherName: 'Chrome-WebDriver',
