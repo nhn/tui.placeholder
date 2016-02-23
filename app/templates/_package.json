@@ -16,7 +16,7 @@
         "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git"
     },
     "scripts": {
-        "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json - ./node_modules/fedoc-template"
+        "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json -t ./node_modules/fedoc-template"
     },
     "author": "NHNEnt FE Development Team <dl_javascript@nhnent.com>"
 }
