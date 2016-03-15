@@ -1,26 +1,22 @@
 {
-  "name": "generator-fe-scaffold",
-  "version": "0.0.1",
-  "description": "yeoman generator for web component, library, applications made by javascript.",
-  "keywords": [
-    "yeoman-generator"
-  ],
-  "author": "NHNEnt FE Development Team",
-  "repository": {
-      "type": "git",
-      "url": "https://github.nhnent.com/fe/generator-fe-scaffold.git"
-  },
-  "private": true,
-  "license": "MIT",
-  "files": [
-    "app",
-    "desktop",
-    "desktop-modern",
-    "mobile"
-  ],
-  "dependencies": {
-    "string": "^3.1.1",
-    "underscore": "^1.8.3",
-    "yeoman-generator": "^0.20.1"
-  }
+    "name": "component-placeholder",
+    "version": "0.0.0",
+    "description": "",
+    "private": true,
+    "devDependencies": {
+        "fedoc-template": "git+https://github.nhnent.com/fe/share-fedoc-template.git",
+        "gulp": "latest",
+        "gulp-connect": "^2.2.0",
+        "jasmine-core": "^2.3.4",
+        "karma": "0.13.21",
+        "karma-jasmine": "0.3.5",
+        "karma-mocha-reporter": "latest",
+        "karma-junit-reporter": "latest",
+        "karma-coverage": "latest",
+        "karma-webdriver-launcher": "git+https://github.com/everedifice/karma-webdriver-launcher.git"
+    },
+    "scripts": {
+        "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json -t ./node_modules/fedoc-template"
+    },
+    "author": "NHNEnt FE Development Team <dl_javascript@nhnent.com>"
 }
