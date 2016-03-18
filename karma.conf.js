@@ -13,15 +13,15 @@ module.exports = function(config) {
         files: [
             'bower_components/json2/json2.js',
             'bower_components/jquery/jquery.js',
-            'y',
-            'y'
+            'src/js/*.js',
+            'test/*.spec.js'
         ],
 
         exclude: [
         ],
 
         preprocessors: {
-            'y': ['coverage']
+            'src/js/*.js': ['coverage']
         },
 
         reporters: [
@@ -63,65 +63,65 @@ module.exports = function(config) {
 
         customLaunchers: {
             'IE7': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'internet explorer', 
-                version: 7 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'internet explorer',
+                version: 7
             },
             'IE8': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'internet explorer', 
-                version: 8 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'internet explorer',
+                version: 8
             },
             'IE9': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'internet explorer', 
-                version: 9 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'internet explorer',
+                version: 9
             },
             'IE10': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'internet explorer', 
-                version: 10 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'internet explorer',
+                version: 10
             },
             'IE11': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'internet explorer', 
-                version: 11 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'internet explorer',
+                version: 11
             },
             'Edge': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'MicrosoftEdge' 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'MicrosoftEdge'
             },
             'Chrome-WebDriver': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'chrome' 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'chrome'
             },
             'Firefox-WebDriver': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'firefox' 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'firefox'
             },
             'Android': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'Browser', 
-                platformName: 'Android', 
-                platformVersion: '5.1.1', 
-                deviceName: 'emulator-5554' 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'Browser',
+                platformName: 'Android',
+                platformVersion: '5.1.1',
+                deviceName: 'emulator-5554'
             },
             'iOS': {
-                base: 'WebDriver', 
-                config: webdriverConfig, 
-                browserName: 'Safari', 
-                platformName: 'iOS', 
-                platformVersion: '8.3', 
-                deviceName: 'iPhone 4s' 
+                base: 'WebDriver',
+                config: webdriverConfig,
+                browserName: 'Safari',
+                platformName: 'iOS',
+                platformVersion: '8.3',
+                deviceName: 'iPhone 4s'
             }
         },
 
