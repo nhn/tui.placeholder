@@ -3,20 +3,32 @@
 var Placeholder = tui.util.defineClass({
     /**
      * Init setting
-     * @param  {HTMLElement} elements [input tags]
+     * @param  {Object} options - option for setting component
      */
-    init: function(elements) {
+    init: function(options) {
         /**
-         * All 'input' elements in current page
-         * @type  {HTMLElement}
+         * Option value for setting private property
+         * @type {Object}
          */
-        this._inputElems = elements || document.getElementsByTagName('input');
+        options = options || {};
 
         /**
-         * State value for detect to use 'placeholder' property 
+         * Init style for rendering placeholder
+         * @type {Object}
+         */
+        this._initStyle = this._remakeStyleInfo(options.style);
+
+        /**
+         * All 'input' elements in current page
+         * @type  {Array}
+         */
+        this._inputElems = options.elements || document.getElementsByTagName('input');
+
+        /**
+         * State value for detect to use 'placeholder' property
          * @type  {Boolean}
          */
-        this._propState = this._checkAvailableProp();
+        this._propState = this._isSupportPlaceholder();
 
         if (!this._propState) {
             this._generatePlaceholder();
@@ -25,9 +37,9 @@ var Placeholder = tui.util.defineClass({
 
     /**
      * Detect to use 'placeholder' property
-     * @returns {Boolean} [state]
+     * @returns {Boolean}
      */
-    _checkAvailableProp: function() {
+    _isSupportPlaceholder: function() {
         return ('placeholder' in document.createElement('input'));
     },
 
@@ -35,57 +47,76 @@ var Placeholder = tui.util.defineClass({
      * Generator virtual placeholders for browser not supported 'placeholder' property
      */
     _generatePlaceholder: function() {
-        var i = 0,
-            len = this._inputElems.length;
+        var elems = this._inputElems,
+            i = 0,
+            len = elems.length;
 
         for (; i < len; i += 1) {
-            if (this._inputElems[i].placeholder) {
-                this._attachSpanTag(this._inputElems[i]);
+            if (elems[i].placeholder && (elems[i].type === 'text' || elems[i].type === 'password')) {
+                this._attachSpanTag(elems[i]);
             }
         }
     },
 
     /**
+     * Remake style info in init options
+     * @param  {Object} style - style for rendering placeholder
+     * @return {Object}
+     */
+    _remakeStyleInfo: function(style) {
+        var fontSize = style.fontSize;
+
+        style['fontSize'] = parseFloat(fontSize , 10);
+        style['fontType'] = fontSize.split(style.fontSize)[1];
+
+        return style;
+    },
+
+    /**
      * Attach a new 'span' tag after a selected 'input' tag
-     * @param  {HTMLElement} target [input tag]
+     * @param  {HTMLElement} target - input tag
      */
     _attachSpanTag: function(target) {
-        var spanTag = document.createElement('span'),
-            cssText = 'position:absolute;left:' + target.offsetLeft + 'px;width:' + target.offsetWidth + 'px;',
-            self = this;
+        var self = this,
+            fontSize = this._initStyle.fontSize,
+            fontType = this._initStyle.fontType,
+            boxHeight = this._initStyle.height,
+            newTag = document.createElement('span'),
+            styleText;
 
-        spanTag.innerHTML = target.placeholder;
-        spanTag.style.cssText = cssText;
+        styleText = '<span style="position:absolute;padding-left:3px;left:0;top:50%;color:#aaa;z-index:-9999px;';
+        styleText += 'margin-top:' + (-(fontSize / 2) + fontType) + ';';
+        styleText += 'font-size:' + (fontSize + fontType) + '">' + target.placeholder + '</span>';
 
-        target.parentNode.insertBefore(spanTag, target.nextSibling);
+        target.style.cssText = 'font-size: ' + (fontSize + fontType) + '; height: ' + boxHeight + '; line-height: ' + boxHeight + ';z-index:0;';
 
-        this._bindEvent(spanTag, 'click', function() {
-            target.focus();
-        });
+        newTag.innerHTML = styleText;
+        newTag.appendChild(target.cloneNode());
 
-        this._bindEvent(target, 'focus', function() {
-            self._onToggleState(target, spanTag);
-        });
+        target.parentNode.insertBefore(newTag, target.nextSibling);
+        target.parentNode.removeChild(target);
 
-        this._bindEvent(target, 'keyup', function() {
-            self._onToggleState(target, spanTag);
-        });;
+        newTag.style.cssText = 'position:relative;display:inline-block;*display:inline;zoom:1;';
+
+        this._bindEvent(newTag, 'click', tui.util.bind(function() { this.lastChild.focus(); }, newTag));
+        this._bindEvent(newTag, 'keyup', tui.util.bind(this._onToggleState, newTag));
     },
 
     /**
      * Change 'span' tag's display state by 'input' tag's value
-     * @param  {HTMLElement} inputTag [input tag]
-     * @param  {HTMLElement} spanTag [span tag]
      */
-    _onToggleState: function(inputTag, spanTag) {
+    _onToggleState: function() {
+        var inputTag = this.getElementsByTagName('input')[0],
+            spanTag = this.getElementsByTagName('span')[0];
+
         spanTag.style.display = (inputTag.value !== '') ? 'none' : 'inline-block';
     },
 
     /**
      * Bind event to element
-     * @param  {HTMLElement} target    [tag]
-     * @param  {String} eventType [description]
-     * @param  {Function} callback  []
+     * @param  {HTMLElement} target - tag for binding
+     * @param  {String} eventType - event type
+     * @param  {Function} callback - event handler function
      */
     _bindEvent: function(target, eventType, callback) {
         if (target.addEventListener) {
@@ -93,7 +124,7 @@ var Placeholder = tui.util.defineClass({
         } else if (target.attachEvent) {
             target.attachEvent('on' + eventType, callback);
         } else {
-            target['on' + eventType] = null;
+            target['on' + eventType] = callback;
         }
     }
 });
