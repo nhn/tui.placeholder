@@ -69,9 +69,9 @@ describe('placeholder.js', function() {
         expect(spyEvent).toHaveBeenTriggered();
     });
 
-    xit('input 태그에 keyup event가 바인딩된다.', function() {
+    it('input 태그에 keyup event가 바인딩된다.', function() {
         var target = $('input').eq(0),
-            spyEvent = spyOnEvent(target, 'click');
+            spyEvent = spyOnEvent(target, 'keyup');
 
         target.trigger('keyup');
 

@@ -6,7 +6,16 @@ var Placeholder = tui.util.defineClass({
      * @param  {HTMLElement} elements [input tags]
      */
     init: function(elements) {
+        /**
+         * All 'input' elements in current page
+         * @type  {HTMLElement}
+         */
         this._inputElems = elements || document.getElementsByTagName('input');
+
+        /**
+         * State value for detect to use 'placeholder' property 
+         * @type  {Boolean}
+         */
         this._propState = this._checkAvailableProp();
 
         if (!this._propState) {
@@ -16,7 +25,7 @@ var Placeholder = tui.util.defineClass({
 
     /**
      * Detect to use 'placeholder' property
-     * @returns {boolean} [state]
+     * @returns {Boolean} [state]
      */
     _checkAvailableProp: function() {
         return ('placeholder' in document.createElement('input'));
@@ -43,29 +52,49 @@ var Placeholder = tui.util.defineClass({
     _attachSpanTag: function(target) {
         var spanTag = document.createElement('span'),
             cssText = 'position:absolute;left:' + target.offsetLeft + 'px;width:' + target.offsetWidth + 'px;',
-            customEvt = new tui.util.CustomEvents;
+            self = this;
 
         spanTag.innerHTML = target.placeholder;
         spanTag.style.cssText = cssText;
 
         target.parentNode.insertBefore(spanTag, target.nextSibling);
 
-        customEvt.on('click', function() {
-            this.nextSibling.focus();
-        }, spanTag);
+        this._bindEvent(spanTag, 'click', function() {
+            target.focus();
+        });
 
-        customEvt.on({
-            'focus': this._onToggleState,
-            'keyup': this._onToggleState
-        }, target);
+        this._bindEvent(target, 'focus', function() {
+            self._onToggleState(target, spanTag);
+        });
+
+        this._bindEvent(target, 'keyup', function() {
+            self._onToggleState(target, spanTag);
+        });;
     },
 
     /**
-     * Change 'span' tag's display state
-     * @param  {object} e [current event]
+     * Change 'span' tag's display state by 'input' tag's value
+     * @param  {HTMLElement} inputTag [input tag]
+     * @param  {HTMLElement} spanTag [span tag]
      */
-    _onToggleState: function(e) {
-        this.previousSibling.style.display = (this.value !== '') ? 'none' : 'inline-block';
+    _onToggleState: function(inputTag, spanTag) {
+        spanTag.style.display = (inputTag.value !== '') ? 'none' : 'inline-block';
+    },
+
+    /**
+     * Bind event to element
+     * @param  {HTMLElement} target    [tag]
+     * @param  {String} eventType [description]
+     * @param  {Function} callback  []
+     */
+    _bindEvent: function(target, eventType, callback) {
+        if (target.addEventListener) {
+            target.addEventListener(eventType, callback, false);
+        } else if (target.attachEvent) {
+            target.attachEvent('on' + eventType, callback);
+        } else {
+            target['on' + eventType] = null;
+        }
     }
 });
 
