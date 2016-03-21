@@ -79,19 +79,19 @@ describe('placeholder.js', function() {
         expect(spyEvent).toHaveBeenTriggered();
     });
 
-    xit('input 태그가 선택되었을 때 span 태그가 사라지지 않는다.', function() {
+    it('input 태그가 선택되었을 때 span 태그가 사라지지 않는다.', function() {
         var target = $('input').eq(0);
 
         target.trigger('focus');
 
-        expect(target.before().style.display).not.toBeEqual('none');
+        expect(target.before().css('display')).not.toEqual('none');
     });
 
-    xit('input 태그에 내용 입력 시 span 태그가 사라진다.', function() {
+    it('input 태그에 내용 입력 시 span 태그가 사라진다.', function() {
         var target = $('input').eq(0);
 
         target.trigger('keyup');
 
-        expect(target.before().style.display).toBeEqual('none');
+        expect(target.before().css('display')).toEqual('none');
     });
 });
