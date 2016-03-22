@@ -6,19 +6,15 @@ var Placeholder = tui.util.defineClass({
      * @param  {HTMLElement} elements - selected 'input' tags
      */
     init: function(elements) {
+        var isSupportPlaceholder = 'placeholder' in document.createElement('input');
+
         /**
          * All 'input' elements in current page
          * @type  {Array}
          */
-        this._inputElems = elements || document.getElementsByTagName('input');
+        this._inputElems = tui.util.toArray(elements || document.getElementsByTagName('input'));
 
-        /**
-         * State value for detect to use 'placeholder' property
-         * @type  {Boolean}
-         */
-        this._propState = this._isSupportPlaceholder();
-
-        if (!this._propState && this._inputElems.length > 0) {
+        if (!isSupportPlaceholder && this._inputElems.length > 0) {
             this._generatePlaceholder();
         }
     },
@@ -27,6 +23,7 @@ var Placeholder = tui.util.defineClass({
      * Return style info of imported style sheet
      * @param  {HTMLElement} elem - first 'input' tag
      * @returns {Object}
+     * @private
      */
     _getInitStyle: function(elem) {
         var computedObj,
@@ -41,61 +38,48 @@ var Placeholder = tui.util.defineClass({
 
         return {
             fontSize: hasFunc ? computedObj.getPropertyValue('font-size') : computedObj.fontSize,
-            fixedHeight: hasFunc ? computedObj.getPropertyValue('line-height') : computedObj.lineHeight
+            fixedHeight: hasFunc ? computedObj.getPropertyValue('line-height') : computedObj.lineHeight,
+            fixedWidth: hasFunc ? computedObj.getPropertyValue('width') : computedObj.width
         };
     },
 
     /**
-     * Detect to use 'placeholder' property
-     * @returns {Boolean}
-     */
-    _isSupportPlaceholder: function() {
-        return ('placeholder' in document.createElement('input'));
-    },
-
-    /**
      * Generator virtual placeholders for browser not supported 'placeholder' property
+     * @private
      */
     _generatePlaceholder: function() {
-        var elems = this._inputElems,
-            i = 0,
-            len = elems.length,
+        var self = this,
             type;
 
-        for (; i < len; i += 1) {
-            type = elems[i].type;
+        tui.util.forEach(this._inputElems, function(elem) {
+            type = elem.type;
 
             if (type === 'text' || type === 'password' || type === 'email') {
-                this._attachCustomPlaceholderTag(elems[i]);
+                self._attachCustomPlaceholderTag(elem);
             }
-        }
+        });
     },
 
     /**
      * Attach a new custom placehoder tag after a selected 'input' tag and wrap 'input' tag
      * @param  {HTMLElement} target - input tag
+     * @private
      */
     _attachCustomPlaceholderTag: function(target) {
         var initStyle = this._getInitStyle(target),
             fontSize = initStyle.fontSize,
             fixedHeight = initStyle.fixedHeight,
-            wrapTag = document.createElement('span'),
-            wrapTagStyle = 'position:relative;display:inline-block;*display:inline;zoom:1;',
-            placehoderHtml;
+            wrapTag = document.createElement('span');
 
-        placehoderHtml = '<span style="position:absolute;padding-left:2px;left:0;top:50%;color:#aaa;';
-        placehoderHtml += 'display:inline-block;margin-top:' + (-(parseFloat(fontSize, 10) / 2)) + 'px;';
-        placehoderHtml += 'font-size:' + fontSize + '">' + target.placeholder + '</span>';
+        target.style.cssText = this._getInputStyle(fontSize, fixedHeight);
 
-        target.style.cssText = 'font-size:' + fontSize + ';height:' + fixedHeight + ';line-height:' + fixedHeight + ';';
-
-        wrapTag .innerHTML = placehoderHtml;
-        wrapTag .appendChild(target.cloneNode());
+        wrapTag.innerHTML = this._generateSpanTag(fontSize, target.placeholder);
+        wrapTag.appendChild(target.cloneNode());
 
         target.parentNode.insertBefore(wrapTag, target.nextSibling);
         target.parentNode.removeChild(target);
 
-        wrapTag.style.cssText = wrapTagStyle;
+        wrapTag.style.cssText = this._getWrapperStyle(initStyle.fixedWidth);
 
         this._bindEvent(wrapTag, 'click', tui.util.bind(function() {
             this.lastChild.focus();
@@ -105,7 +89,45 @@ var Placeholder = tui.util.defineClass({
     },
 
     /**
+     * Get style of input tag's parent tag
+     * @param  {Number} fixedWidth - input tag's 'width' property value
+     * @returns {String}
+     * @private
+     */
+    _getWrapperStyle: function(fixedWidth) {
+        return 'position:relative;display:inline-block;*display:inline;zoom:1;width:' + fixedWidth + ';';
+    },
+
+    /**
+     * Get style of input tag
+     * @param  {Number} fontSize - input tag's 'font-size' property value
+     * @param  {Number} fixedHeight - input tag's 'line-height' property value
+     * @returns {String}
+     * @private
+     */
+    _getInputStyle: function(fontSize, fixedHeight) {
+        return 'font-size:' + fontSize + ';height:' + fixedHeight + ';line-height:' + fixedHeight + ';';
+    },
+
+    /**
+     * [function description]
+     * @param  {Number} fontSize - current input tag's 'font-size' property value
+     * @param  {String} placehoderText - current input tag's value
+     * @returns {String}
+     * @private
+     */
+    _generateSpanTag: function(fontSize, placehoderText) {
+        var html = '<span style="position:absolute;padding-left:2px;left:0;top:50%;color:#aaa;';
+
+        html += 'display:inline-block;margin-top:' + (-(parseFloat(fontSize, 10) / 2)) + 'px;';
+        html += 'font-size:' + fontSize + '">' + placehoderText + '</span>';
+
+        return html;
+    },
+
+    /**
      * Change 'span' tag's display state by 'input' tag's value
+     * @private
      */
     _onToggleState: function() {
         var inputTag = this.getElementsByTagName('input')[0],
@@ -119,6 +141,7 @@ var Placeholder = tui.util.defineClass({
      * @param  {HTMLElement} target - tag for binding
      * @param  {String} eventType - event type
      * @param  {Function} callback - event handler function
+     * @private
      */
     _bindEvent: function(target, eventType, callback) {
         if (target.addEventListener) {
