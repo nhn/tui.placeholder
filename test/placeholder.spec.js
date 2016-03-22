@@ -11,12 +11,7 @@ describe('placeholder.js', function() {
     beforeEach(function() {
         loadFixtures('test/fixture/placeholder.html');
 
-        comp = new Placeholder({
-            style: {
-                fontSize: '12px',
-                height: '300px'
-            }
-        });
+        comp = new Placeholder();
 
         state = comp._propState;
 
@@ -45,7 +40,7 @@ describe('placeholder.js', function() {
 
         for (; i < len; i += 1) {
             if (elems[i].previousSibling.nodeType === 1) {
-                parentCnt++;
+                parentCnt += 1;
             }
         }
 
@@ -55,8 +50,7 @@ describe('placeholder.js', function() {
     it('생성된 커스텀 placeholder의 폰트 사이즈는 input 태그의 폰트 사이즈와 동일하다.', function() {
         var elems = comp._inputElems,
             i = 0,
-            len = elems.length,
-            parentCnt = 0;
+            len = elems.length;
 
         for (; i < len; i += 1) {
             if (elems[i].previousSibling.nodeType === 1) {
