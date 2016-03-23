@@ -55,7 +55,7 @@ var Placeholder = tui.util.defineClass({
             type = elem.type;
 
             if (type === 'text' || type === 'password' || type === 'email') {
-                self._attachCustomPlaceholderTag(elem);
+                self._attachCustomPlaceholder(elem);
             }
         });
     },
@@ -65,7 +65,7 @@ var Placeholder = tui.util.defineClass({
      * @param  {HTMLElement} target - input tag
      * @private
      */
-    _attachCustomPlaceholderTag: function(target) {
+    _attachCustomPlaceholder: function(target) {
         var initStyle = this._getInitStyle(target),
             fontSize = initStyle.fontSize,
             fixedHeight = initStyle.fixedHeight,
@@ -81,11 +81,32 @@ var Placeholder = tui.util.defineClass({
 
         wrapTag.style.cssText = this._getWrapperStyle(initStyle.fixedWidth);
 
-        this._bindEvent(wrapTag, 'click', tui.util.bind(function() {
-            this.lastChild.focus();
-        }, wrapTag));
+        this._bindEventToCustomPlaceholder(wrapTag);
+    },
 
-        this._bindEvent(wrapTag, 'keyup', tui.util.bind(this._onToggleState, wrapTag));
+    /**
+     * Bind event custom placehoder tag
+     * @param  {HTMLElement} target - input's wrapper tag
+     */
+    _bindEventToCustomPlaceholder: function(target) {
+        var inputTag = target.getElementsByTagName('input')[0],
+            spanTag = target.getElementsByTagName('span')[0],
+            spanStyle = spanTag.style,
+            keyCode;
+
+        this._bindEvent(spanTag, 'click', function() {
+            inputTag.focus();
+        });
+
+        this._bindEvent(inputTag, 'keydown', function(e) {
+            keyCode = e.keyCode;
+
+            if (!(keyCode === 8 || keyCode === 9) && spanStyle.display !== 'none') {
+                spanStyle.display = 'none';
+            } else if (keyCode === 8 && inputTag.value.length < 2 && spanStyle.display === 'none') {
+                spanStyle.display = 'inline-block';
+            }
+        });
     },
 
     /**
@@ -123,17 +144,6 @@ var Placeholder = tui.util.defineClass({
         html += 'font-size:' + fontSize + '">' + placehoderText + '</span>';
 
         return html;
-    },
-
-    /**
-     * Change 'span' tag's display state by 'input' tag's value
-     * @private
-     */
-    _onToggleState: function() {
-        var inputTag = this.getElementsByTagName('input')[0],
-            spanTag = this.getElementsByTagName('span')[0];
-
-        spanTag.style.display = (inputTag.value !== '') ? 'none' : 'inline-block';
     },
 
     /**
