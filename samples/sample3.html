@@ -19,7 +19,8 @@
                 var parent = document.getElementById('add-area'),
                     i = 1,
                     len = 5,
-                    html = '';
+                    html = '',
+                    selectedElems;
 
                 for (; i <= len; i += 1) {
                     html += '<div class="placeholder">';
@@ -29,7 +30,9 @@
 
                 parent.innerHTML = html;
 
-                tui.component.Placeholder.add();
+                selectedElems = parent.getElementsByTagName('input');
+
+                tui.component.Placeholder.add(selectedElems);
             }
 
         </script>
