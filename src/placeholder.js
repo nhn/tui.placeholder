@@ -10,7 +10,7 @@ var util = require('./util.js');
 var browser = tui.util.browser,
     Placeholder;
 
-if (browser.msie && browser.version > 9) {
+if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
     util.addCssRule({
         selector: ':-ms-input-placeholder',
         css: 'color:#fff !important;text-indent:-9999px;'
@@ -26,10 +26,9 @@ if (browser.msie && browser.version > 9) {
  * Create placeholder class
  * @class Placeholder
  * @constructor
- * @param {HTMLElement} elements - All 'input' tags
  */
  Placeholder = tui.util.defineClass({
-     init: function(elements) {
+     init: function() {
          /**
           * Array pushed 'input' tags in current page
           * @type  {Array}
@@ -37,16 +36,21 @@ if (browser.msie && browser.version > 9) {
           */
          this._inputElems = [];
 
-         this.add(elements);
+         this.add();
      },
 
      /**
       * When create dynamic 'input' tag and append on page, generate custom placeholder
       * @param {HTMLElement} elements - All 'input' tags
+      * @returns {Boolean} If a browser support 'placeholder' property and has any condition, returns
       * @api
       */
      add: function(elements) {
          var isSupportPlaceholder = 'placeholder' in document.createElement('input');
+
+         if (isSupportPlaceholder && !(browser.msie && browser.version <= 11)) {
+             return false;
+         }
 
          if (elements) {
              this._inputElems = this._inputElems.concat(tui.util.toArray(elements));
@@ -54,8 +58,7 @@ if (browser.msie && browser.version > 9) {
              this._inputElems = tui.util.toArray(document.getElementsByTagName('input'));
          }
 
-         if ((!isSupportPlaceholder || browser.msie) &&
-             this._inputElems.length > 0) {
+         if (this._inputElems.length > 0) {
              this._generatePlaceholder(this._inputElems);
          }
      },
@@ -89,11 +92,10 @@ if (browser.msie && browser.version > 9) {
       * @private
       */
      _generatePlaceholder: function() {
-         var self = this,
-             type;
+         var self = this;
 
          tui.util.forEach(this._inputElems, function(elem) {
-             type = elem.type;
+             var type = elem.type;
 
              if ((type === 'text' || type === 'password' || type === 'email') &&
                  elem.getAttribute('placeholder')) {
@@ -124,7 +126,7 @@ if (browser.msie && browser.version > 9) {
 
          wrapTag.style.cssText = this._getWrapperStyle(initStyle.fixedWidth);
 
-         util.bindEventToCustomPlaceholder(wrapTag);
+         this._bindEventToCustomPlaceholder(wrapTag);
      },
 
      /**
@@ -137,7 +139,8 @@ if (browser.msie && browser.version > 9) {
              spanTag = target.getElementsByTagName('span')[0],
              spanStyle = spanTag.style;
 
-         util.bindEvent(spanTag, 'click', function() {
+         util.bindEvent(spanTag, 'mousedown', function(e) {
+             e.preventDefault();
              inputTag.focus();
          });
 
@@ -185,9 +188,9 @@ if (browser.msie && browser.version > 9) {
       * @private
       */
      _generateSpanTag: function(fontSize, placehoderText) {
-         var html = '<span style="position:absolute;padding-left:2px;left:0;top:50%;color:#aaa;';
+         var html = '<span style="position:absolute;left:0;top:50%;color:#aaa;';
 
-         html += 'display:inline-block;margin-top:' + (-(parseFloat(fontSize, 10) / 2)) + 'px;';
+         html += 'display:inline-block;margin-top:' + (-(parseFloat(fontSize, 10) / 2 + 1)) + 'px;';
          html += 'font-size:' + fontSize + '">' + placehoderText + '</span>';
 
          return html;
