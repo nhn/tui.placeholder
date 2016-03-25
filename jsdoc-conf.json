@@ -36,6 +36,7 @@
     "opts": {
         "recurse": true,
         "destination": "latest",
-        "tutorials": "samples"
+        "tutorials": "samples",
+        "name": "Placeholder"
     }
 }

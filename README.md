@@ -10,8 +10,8 @@ Generate custom 'placeholder' on browsers not supported native 'placeholder' pro
 * When remove content in the 'input' tag, placeholder's value appear.
 
 ## Documentation
-* **API** : https://nhnent.github.io/tui.component.placeholder/latest
-* **Sample** - https://nhnent.github.io/tui.component.tree/latest/tutorial.html
+* **API** : https://github.nhnent.com/pages/fe/component-placeholder/latest
+* **Sample** : https://github.nhnent.com/pages/fe/component-placeholder/latest/tutorial.html
 
 ## Dependency
 * tui-code-snippet: 1.0.8

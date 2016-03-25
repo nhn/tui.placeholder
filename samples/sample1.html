@@ -1,27 +1,49 @@
 <!DOCTYPE html>
-<html lang="ko">
-    <head>
+<html>
+    <head lang="en">
         <meta charset="UTF-8">
-        <title></title>
+        <title>Placeholder Component</title>
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+        <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+        <!-- Custom style -->
         <link rel="stylesheet" type="text/css" href="css/sample.css">
     </head>
 
     <body>
-        <!-- Default -->
-        <input type="text" placeholder="아이디를 입력하세요." />
-        <input type="password" placeholder="비밀번호를 입력하세요." />
-        <!-- Apply user style -->
-        <div class="placeholder">
-            <input type="text" name="id" placeholder="아이디" />
+        <div class="wrap" style="width:500px;height:230px;">
+            <!-- Default -->
+            <input type="text" placeholder="아이디를 입력하세요." />
+            <input type="password" placeholder="비밀번호를 입력하세요." />
+            <!-- //Default -->
+
+            <!-- Apply user style -->
+            <div class="placeholder">
+                <input type="text" name="id" placeholder="아이디" />
+            </div>
+            <div class="placeholder">
+                <input type="password" name="password" placeholder="비밀번호" />
+                <input type="hidden" value="xxx" />
+            </div>
+            <div class="placeholder">
+                <input type="eamil" id="unique-placeholder" name="email" placeholder="이메일" />
+            </div>
+            <!-- //Apply user style -->
+
+            <!-- Import script file under html -->
+            <script type="text/javascript" src="js/code-snippet.js"></script>
+            <script type="text/javascript" src="js/placeholder.js"></script>
+            <!-- //Import script file under html -->
         </div>
-        <div class="placeholder">
-            <input type="password" name="password" placeholder="비밀번호" />
-            <input type="hidden" value="xxx" />
-        </div>
-        <div class="placeholder">
-            <input type="eamil" id="unique-placeholder" name="email" placeholder="이메일" />
-        </div>
+
+        <div class="codeArea"></div>
+
         <script type="text/javascript" src="js/code-snippet.js"></script>
         <script type="text/javascript" src="js/placeholder.js"></script>
+
+        <script src="../scripts/prettify/prettify.js"></script>
+        <script src="../scripts/prettify/lang-css.js"></script>
+        <script src="../scripts/jquery.js"></script>
+        <script src="../scripts/samplecode.js"></script>
     </body>
 </html>
