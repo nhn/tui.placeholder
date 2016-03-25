@@ -33,7 +33,7 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
  * @class Placeholder
  * @constructor
  */
- Placeholder = tui.util.defineClass(/** @lends Tree.prototype */{
+ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      init: function() {
          /**
           * Array pushed 'input' tags in current page
@@ -49,6 +49,8 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
       * When create dynamic 'input' tag and append on page, generate custom placeholder
       * @param {HTMLElement[]} elements - All 'input' tags
       * @returns {Boolean} If a browser support 'placeholder' property and has any condition, returns
+      * @example
+      * tui.component.Placeholder.add(document.getElementsByTagName('input'));
       * @api
       */
      add: function(elements) {
