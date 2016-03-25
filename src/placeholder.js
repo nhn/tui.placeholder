@@ -7,8 +7,12 @@
 
 var util = require('./util.js');
 
-var browser = tui.util.browser,
-    Placeholder;
+var Placeholder,
+    isSupportPlaceholder,
+    browser = tui.util.browser,
+    hasComputedStyleFunc = window.getComputedStyle ? true : false,
+    KEYCODE_BACK = 8,
+    KEYCODE_TAB = 9;
 
 if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
     util.addCssRule({
@@ -21,6 +25,8 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
         css: '-webkit-box-shadow: 0 0 0 1000px white inset;'
     });
 }
+
+isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(browser.msie && browser.version <= 11);
 
 /**
  * Create placeholder class
@@ -41,14 +47,12 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
 
      /**
       * When create dynamic 'input' tag and append on page, generate custom placeholder
-      * @param {HTMLElement} elements - All 'input' tags
+      * @param {HTMLElement[]} elements - All 'input' tags
       * @returns {Boolean} If a browser support 'placeholder' property and has any condition, returns
       * @api
       */
      add: function(elements) {
-         var isSupportPlaceholder = 'placeholder' in document.createElement('input');
-
-         if (isSupportPlaceholder && !(browser.msie && browser.version <= 11)) {
+         if (isSupportPlaceholder) {
              return false;
          }
 
@@ -58,7 +62,7 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
              this._inputElems = tui.util.toArray(document.getElementsByTagName('input'));
          }
 
-         if (this._inputElems.length > 0) {
+         if (this._inputElems.length) {
              this._generatePlaceholder(this._inputElems);
          }
      },
@@ -71,20 +75,25 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
       */
      _getInitStyle: function(elem) {
          var computedObj,
-             hasFunc = false;
+             styleInfo;
 
-         if (window.getComputedStyle) {
-             hasFunc = true;
+         if (hasComputedStyleFunc) {
              computedObj = window.getComputedStyle(elem, null);
+             styleInfo = {
+                 fontSize: computedObj.getPropertyValue('font-size'),
+                 fixedHeight: computedObj.getPropertyValue('line-height'),
+                 fixedWidth: computedObj.getPropertyValue('width')
+             };
          } else {
              computedObj = elem.currentStyle;
+             styleInfo = {
+                 fontSize: computedObj.fontSize,
+                 fixedHeight: computedObj.lineHeight,
+                 fixedWidth: computedObj.width
+             };
          }
 
-         return {
-             fontSize: hasFunc ? computedObj.getPropertyValue('font-size') : computedObj.fontSize,
-             fixedHeight: hasFunc ? computedObj.getPropertyValue('line-height') : computedObj.lineHeight,
-             fixedWidth: hasFunc ? computedObj.getPropertyValue('width') : computedObj.width
-         };
+         return styleInfo;
      },
 
      /**
@@ -140,15 +149,13 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
              spanStyle = spanTag.style;
 
          util.bindEvent(spanTag, 'mousedown', function(e) {
-             e.preventDefault ? e.preventDefault() : e.returnValue = false;
-
              inputTag.focus();
          });
 
          util.bindEvent(inputTag, 'keydown', function(e) {
              var keyCode = e.which || e.keyCode;
 
-             if (!(keyCode === 8 || keyCode === 9)) {
+             if (!(keyCode === KEYCODE_BACK || keyCode === KEYCODE_TAB)) {
                  spanStyle.display = 'none';
              }
          });
@@ -192,7 +199,7 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
          var html = '<span style="position:absolute;left:0;top:50%;color:#aaa;';
 
          html += 'display:inline-block;margin-top:' + (-(parseFloat(fontSize, 10) / 2 + 1)) + 'px;';
-         html += 'font-size:' + fontSize + '">' + placehoderText + '</span>';
+         html += 'font-size:' + fontSize + '" UNSELECTABLE="on">' + placehoderText + '</span>';
 
          return html;
      }
