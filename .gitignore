@@ -68,4 +68,4 @@ samples/sample5.html
 index.js
 jsdoc-conf.json
 karma.test0.conf.js
-latest/
+#latest/
