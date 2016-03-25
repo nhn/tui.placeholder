@@ -140,12 +140,13 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
              spanStyle = spanTag.style;
 
          util.bindEvent(spanTag, 'mousedown', function(e) {
-             e.preventDefault();
+             e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
              inputTag.focus();
          });
 
          util.bindEvent(inputTag, 'keydown', function(e) {
-             var keyCode = e.keyCode;
+             var keyCode = e.which || e.keyCode;
 
              if (!(keyCode === 8 || keyCode === 9)) {
                  spanStyle.display = 'none';
