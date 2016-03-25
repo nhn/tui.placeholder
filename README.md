@@ -27,11 +27,11 @@ Generate custom 'placeholder' on browsers not supported native 'placeholder' pro
     * iOS 7.x ~ 9.x
     * Android 4.0.x ~ 5.1.x
 
-## Download/Install
-* Bower:
+## Download / Install
+* Bower :
    * latest : `bower install tui-component-placeholder#master`
    * each version : `bower install tui-component-placeholder[#tag]`
-* Download: https://github.com/nhnent/tui.component.placeholder
+* Download : https://github.com/nhnent/tui.component.placeholder
 
 ## History
 | Version | Description | Date | Developer |
