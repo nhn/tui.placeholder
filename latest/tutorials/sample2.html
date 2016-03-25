@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head lang="kr">
+        <meta charset="UTF-8">
+        <title></title>
+        <link rel="stylesheet" type="text/css" href="css/sample.css">
+    </head>
+
+    <body>
+        <!-- Add 'input' tags -->
+        <div id="add-area"></div>
+        <button id="btn-add" onclick="append()">추가</button>
+        <script type="text/javascript" src="js/code-snippet.js"></script>
+        <script type="text/javascript" src="js/placeholder.js"></script>
+        <script type="text/javascript">
+
+            function append() {
+                var parent = document.getElementById('add-area'),
+                    i = 1,
+                    len = 5,
+                    html = '';
+
+                for (; i <= len; i += 1) {
+                    html += '<div class="placeholder">';
+                    html += '<input type="text" placeholder="입력' + i + '" />';
+                    html += '</div>';
+                }
+
+                parent.innerHTML = html;
+
+                tui.component.Placeholder.add();
+            }
+
+        </script>
+    </body>
+</html>
