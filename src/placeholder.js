@@ -33,7 +33,7 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
  * @class Placeholder
  * @constructor
  */
- Placeholder = tui.util.defineClass({
+ Placeholder = tui.util.defineClass(/** @lends Tree.prototype */{
      init: function() {
          /**
           * Array pushed 'input' tags in current page
