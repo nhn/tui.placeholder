@@ -22,7 +22,7 @@ describe('placeholder.js', function() {
             expected;
 
         fakeValue = {
-            chrome: 1,
+            chrome: 0,
             firefox: 0,
             msie: {
                 7: 0,

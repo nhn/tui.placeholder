@@ -19,11 +19,6 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
         selector: ':-ms-input-placeholder',
         css: 'color:#fff !important;text-indent:-9999px;'
     });
-} else if (browser.chrome || browser.safari) {
-    util.addCssRule({
-        selector: 'input:-webkit-autofill',
-        css: '-webkit-box-shadow: 0 0 0 1000px white inset;'
-    });
 }
 
 isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(browser.msie && browser.version <= 11);
