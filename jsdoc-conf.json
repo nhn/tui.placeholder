@@ -1,6 +1,6 @@
 {
     "source": {
-        "include": ["src/js", "README.md"],
+        "include": ["src", "README.md"],
         "exclude": [],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
@@ -35,7 +35,7 @@
     },
     "opts": {
         "recurse": true,
-        "private": true,
-        "destination": "doc"
+        "destination": "latest",
+        "tutorials": "samples"
     }
 }

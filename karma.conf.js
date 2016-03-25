@@ -1,43 +1,62 @@
 module.exports = function(config) {
-    var webdriverConfig = {
-        hostname: 'fe.nhnent.com',
-        port: 4444,
-        remoteHost: true
-    };
-
     config.set({
-        basePath: '',
+        basePath: './',
 
-        frameworks: ['jasmine'],
+        frameworks: ['browserify', 'jasmine'],
+
+        reporters: [
+            'dots',
+            'coverage',
+            'junit'
+        ],
 
         files: [
-            'bower_components/json2/json2.js',
-            'bower_components/jquery/jquery.js',
-            'src/js/*.js',
-            'test/*.spec.js'
+            'bower_components/jquery/jquery.min.js',
+            'node_modules/jasmine-jquery/lib/jasmine-jquery.js',
+            'bower_components/tui-code-snippet/code-snippet.min.js',
+            'test/**/*.js',
+            'src/*.js',
+            {
+                pattern: 'test/fixtures/*.html',
+                included: false
+            }
         ],
 
         exclude: [
         ],
 
         preprocessors: {
-            'src/js/*.js': ['coverage']
+            'src/**/*.js': ['browserify', 'coverage'],
+            'test/**/*.js': ['browserify']
         },
 
-        reporters: [
-            'mocha',
-            'coverage',
-            'junit'
-        ],
-
         coverageReporter: {
-            type: 'html',
-            dir: 'report/coverage'
+            dir : 'report/coverage/',
+            reporters: [
+                {
+                    type: 'html',
+                    subdir: function(browser) {
+                        return 'report-html/' + browser;
+                    }
+                },
+                {
+                    type: 'cobertura',
+                    subdir: function(browser) {
+                        return 'report-cobertura/' + browser;
+                    },
+                    file: 'cobertura.txt'
+                }
+            ]
         },
 
         junitReporter: {
-            outputDir: 'report/junit',
+            outputDir: 'report',
+            outputFile: 'report/junit-result.xml',
             suite: ''
+        },
+
+        browserify: {
+            debug: true
         },
 
         port: 9876,
@@ -46,87 +65,13 @@ module.exports = function(config) {
 
         logLevel: config.LOG_INFO,
 
-        autoWatch: false,
+        autoWatch: true,
 
         browsers: [
-            'IE7',
-            'IE8',
-            'IE9',
-            'IE10',
-            'IE11',
-            'Edge',
-            'Chrome-WebDriver',
-            'Firefox-WebDriver',
-            'Android',
-            'iOS'
+            'Chrome'
+            //'PhantomJS'
         ],
 
-        customLaunchers: {
-            'IE7': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'internet explorer',
-                version: 7
-            },
-            'IE8': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'internet explorer',
-                version: 8
-            },
-            'IE9': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'internet explorer',
-                version: 9
-            },
-            'IE10': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'internet explorer',
-                version: 10
-            },
-            'IE11': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'internet explorer',
-                version: 11
-            },
-            'Edge': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'MicrosoftEdge'
-            },
-            'Chrome-WebDriver': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'chrome'
-            },
-            'Firefox-WebDriver': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'firefox'
-            },
-            'Android': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'Browser',
-                platformName: 'Android',
-                platformVersion: '5.1.1',
-                deviceName: 'emulator-5554'
-            },
-            'iOS': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'Safari',
-                platformName: 'iOS',
-                platformVersion: '8.3',
-                deviceName: 'iPhone 4s'
-            }
-        },
-
-        singleRun: true,
-
-        browserNoActivityTimeout: 30000
+        singleRun: false
     });
 };
