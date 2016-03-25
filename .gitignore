@@ -53,3 +53,14 @@ demo
 report
 dist
 *.vim
+
+#my
+app.js
+gulpfile0.js
+index.js
+karma.test0.conf.js
+package0.json
+sample_test/
+samples/tutorials.json
+tests.webpack.js
+webpack.config.js
