@@ -64,3 +64,4 @@ sample_test/
 samples/tutorials.json
 tests.webpack.js
 webpack.config.js
+karma.conf.wh.js

@@ -19,6 +19,10 @@ module.exports = function(config) {
             {
                 pattern: 'test/fixtures/*.html',
                 included: false
+            },
+            {
+                pattern: 'test/fixtures/*.css',
+                included: false
             }
         ],
 
