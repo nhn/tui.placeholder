@@ -77,17 +77,19 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
 
          if (hasComputedStyleFunc) {
              computedObj = window.getComputedStyle(elem, null);
+
              styleInfo = {
                  fontSize: computedObj.getPropertyValue('font-size'),
-                 fixedHeight: computedObj.getPropertyValue('line-height'),
-                 fixedWidth: computedObj.getPropertyValue('width')
+                 fixedWidth: computedObj.getPropertyValue('width'),
+                 paddingLeft: computedObj.getPropertyValue('padding-left')
              };
          } else {
              computedObj = elem.currentStyle;
+
              styleInfo = {
                  fontSize: computedObj.fontSize,
-                 fixedHeight: computedObj.lineHeight,
-                 fixedWidth: computedObj.width
+                 fixedWidth: computedObj.width,
+                 paddingLeft: computedObj.paddingLeft
              };
          }
 
@@ -119,19 +121,18 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
      _attachCustomPlaceholder: function(target) {
          var initStyle = this._getInitStyle(target),
              fontSize = initStyle.fontSize,
-             fixedHeight = initStyle.fixedHeight,
+             paddingLeft = initStyle.paddingLeft,
              wrapTag = document.createElement('span'),
-             placeholder = target.getAttribute('placeholder');
+             placeholder = target.getAttribute('placeholder'),
+             wrapperStyle = 'position:relative;display:inline-block;width:100%;line-height:1;*display:inline;zoom:1;';
 
-         target.style.cssText = this._getInputStyle(fontSize, fixedHeight);
-
-         wrapTag.innerHTML = this._generateSpanTag(fontSize, placeholder);
+         wrapTag.innerHTML = this._generateSpanTag(paddingLeft, fontSize, placeholder);
          wrapTag.appendChild(target.cloneNode());
 
          target.parentNode.insertBefore(wrapTag, target.nextSibling);
          target.parentNode.removeChild(target);
 
-         wrapTag.style.cssText = this._getWrapperStyle(initStyle.fixedWidth);
+         wrapTag.style.cssText = wrapperStyle;
 
          this._bindEventToCustomPlaceholder(wrapTag);
      },
@@ -146,7 +147,7 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
              spanTag = target.getElementsByTagName('span')[0],
              spanStyle = spanTag.style;
 
-         util.bindEvent(spanTag, 'mousedown', function(e) {
+         util.bindEvent(spanTag, 'click', function(e) {
              inputTag.focus();
          });
 
@@ -166,37 +167,19 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
      },
 
      /**
-      * Get style of 'input' tag's parent tag
-      * @param  {Number} fixedWidth - The 'input' tag's 'width' property value
-      * @returns {String} String of custom placehoder wrapper tag's style
-      * @private
-      */
-     _getWrapperStyle: function(fixedWidth) {
-         return 'position:relative;display:inline-block;*display:inline;zoom:1;width:' + fixedWidth + ';';
-     },
-
-     /**
-      * Get style of 'input' tag
-      * @param  {Number} fontSize - The 'input' tag's 'font-size' property value
-      * @param  {Number} fixedHeight - The 'input' tag's 'line-height' property value
-      * @returns {String} String of 'input' tag's style
-      * @private
-      */
-     _getInputStyle: function(fontSize, fixedHeight) {
-         return 'font-size:' + fontSize + ';height:' + fixedHeight + ';line-height:' + fixedHeight + ';';
-     },
-
-     /**
-      * [function description]
-      * @param  {Number} fontSize - Current ''input' tag's 'font-size' property value
+      * Generate custom placeholder tag
+      * @param  {Number} paddingLeft - Current 'input' tag's left padding size
+      * @param  {Number} fontSize - Current 'input' tag's 'font-size' property value
       * @param  {String} placehoderText - Current 'input' tag's value
       * @returns {String} String of custom placehoder tag
       * @private
       */
-     _generateSpanTag: function(fontSize, placehoderText) {
-         var html = '<span style="position:absolute;left:0;top:50%;color:#aaa;';
+      _generateSpanTag: function(paddingLeft, fontSize, placehoderText) {
+         var html = '<span style="position:absolute;left:0;top:50%;width:90%;';
 
-         html += 'display:inline-block;margin-top:' + (-(parseFloat(fontSize, 10) / 2 + 1)) + 'px;';
+         html += 'padding-left:' + paddingLeft + ';margin-top:' + (-(parseFloat(fontSize, 10) / 2) - 1) + 'px;';
+         html += 'overflow:hidden;white-space:nowrap;text-overflow:ellipsis;display:inilne-block;*display:inline;zoom:1;';
+         html += 'color:#aaa;line-height:1.1;z-index:0;';
          html += 'font-size:' + fontSize + '" UNSELECTABLE="on">' + placehoderText + '</span>';
 
          return html;
