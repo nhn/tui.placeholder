@@ -186,7 +186,7 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
         html += 'padding-left:' + paddingLeft + ';margin-top:' + (-(parseFloat(fontSize, 10) / 2) - 1) + 'px;';
         html += 'overflow:hidden;white-space:nowrap;text-overflow:ellipsis;*display:inline;zoom:1;';
         html += 'display:' + (inputValue !== '' ? 'none' : 'inline-block') + ';';
-        html += 'color:#aaa;line-height:1.1;z-index:0;';
+        html += 'color:#aaa;line-height:1.2;z-index:0;';
         html += 'font-size:' + fontSize + '" UNSELECTABLE="on">' + placehoderText + '</span>';
 
         return html;
