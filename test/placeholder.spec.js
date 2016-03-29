@@ -2,20 +2,19 @@
 
 var instance = require('../src/placeholder.js');
 
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
+
 describe('placeholder.js', function() {
     var browser = tui.util.browser,
         isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(browser.msie && browser.version <= 11),
         expected;
 
-    jasmine.getFixtures().fixturesPath = 'base';
-    jasmine.getStyleFixtures().fixturesPath = 'base';
-
     beforeEach(function() {
-        loadFixtures('test/fixtures/placeholder.html');
-    });
+        jasmine.getFixtures().clearCache();
+        jasmine.getFixtures().cleanUp();
 
-    afterEach(function() {
-        document.innerHTML = '';
+        loadFixtures('placeholder.html');
     });
 
     it('placeholder 컴포넌트를 생성한다.', function() {
@@ -31,30 +30,21 @@ describe('placeholder.js', function() {
         expect(styleTagLen).toEqual(expected);
     });
 
-    it('native 기능을 제공하지 않고 클릭 시 placeholder 내용 사라지는 브라우저는 커스텀 placeholder가 생성된다.', function() {
-        var customPlaceholderLen = $('span > span').length,
+    it('native 기능 제공하지 않으면서 클릭 시 placeholder 내용 사라지는 브라우저는 커스텀 placeholder가 생성된다.', function() {
+        var customPlaceholderLen,
             expected = !isSupportPlaceholder ? 3 : 0; // span (wrapper tag) > span (custom placeholder tag)
+
+        instance.add(document.getElementsByTagName('input'));
+
+        customPlaceholderLen = $('span > span').length;
 
         expect(customPlaceholderLen).toEqual(expected);
     });
 
-    it('생성된 커스텀 placeholder의 input 태그는 inline-style을 가진다.', function() {
-        var expected = !isSupportPlaceholder ? {'font-size': '11px', 'line-height': 'normal'} : '';
-
-        $('span > input').each(function(index) {
-            expect($(this)).toHaveCss(expected);
-        });
-    });
-
-    it('style이 정의된 경우 생성된 커스텀 placeholder의 inline-style은 상속 상태로 생성된다.', function() {
-        var expected = !isSupportPlaceholder ? {'font-size': '24px', 'line-height': '24px'} : '';
-
-        loadStyleFixtures('test/fixtures/placeholder.css');
-
-        expect($('span > input:eq(0)')).toHaveCss(expected);
-    });
-
     it('커스텀 placeholder가 생성되면 keydown 이벤트가 바인딩된다.', function() {
+
+        instance.add(document.getElementsByTagName('input'));
+
         var inputSelector = 'span > input:eq(0)',
             inputSpyEvent = spyOnEvent(inputSelector, 'keydown');
 
