@@ -54,14 +54,10 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
              return false;
          }
 
-         if (elements) {
-             this._inputElems = this._inputElems.concat(tui.util.toArray(elements));
-         } else {
-             this._inputElems = tui.util.toArray(document.getElementsByTagName('input'));
-         }
+         this._inputElems = tui.util.toArray(elements || document.getElementsByTagName('input'));
 
          if (this._inputElems.length) {
-             this._generatePlaceholder(this._inputElems);
+             this._generatePlaceholder();
          }
      },
 
@@ -124,19 +120,18 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
              paddingLeft = initStyle.paddingLeft,
              wrapTag = document.createElement('span'),
              placeholder = target.getAttribute('placeholder'),
-             inputValue = target.value,
-             wrapperStyle = 'position:relative;line-height:1;';
+             inputValue = target.value;
 
          wrapTag.innerHTML = this._generateSpanTag(paddingLeft, fontSize, placeholder, inputValue);
          wrapTag.appendChild(target.cloneNode());
-         
+
          target.parentNode.insertBefore(wrapTag, target.nextSibling);
          target.parentNode.removeChild(target);
 
-         wrapTag.style.cssText = wrapperStyle;
+         wrapTag.style.cssText = 'position:relative;line-height:1;';
 
          this._bindEventToCustomPlaceholder(wrapTag);
-      },
+     },
 
      /**
       * Bind event custom placehoder tag
@@ -183,7 +178,7 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
         html += 'overflow:hidden;white-space:nowrap;text-overflow:ellipsis;*display:inline;zoom:1;';
         html += 'display:' + (inputValue !== '' ? 'none' : 'inline-block') + ';';
         html += 'color:#aaa;line-height:1.2;z-index:0;';
-        html += 'font-size:' + fontSize + '" UNSELECTABLE="on">' + placehoderText + '</span>';
+        html += 'font-size:' + fontSize + ';" UNSELECTABLE="on">' + placehoderText + '</span>';
 
         return html;
      }

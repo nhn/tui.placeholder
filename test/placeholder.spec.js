@@ -3,7 +3,6 @@
 var instance = require('../src/placeholder.js');
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
-jasmine.getStyleFixtures().fixturesPath = 'base/test/fixtures';
 
 describe('placeholder.js', function() {
     var browser = tui.util.browser,
@@ -11,16 +10,19 @@ describe('placeholder.js', function() {
         expected;
 
     beforeEach(function() {
-        jasmine.getFixtures().clearCache();
-        jasmine.getFixtures().cleanUp();
-
         loadFixtures('placeholder.html');
+
+        instance.add(); // 픽스처로 dom 읽은 다음 다시 input 읽는 작업을 처리해야 함
     });
 
-    it('placeholder 컴포넌트를 생성한다.', function() {
-        spyOn(instance, 'init');
-        instance.init();
-        expect(instance.init).toHaveBeenCalled();
+    afterEach(function() {
+        jasmine.getFixtures().clearCache();
+        jasmine.getFixtures().cleanUp();
+    });
+
+    it('싱글톤으로 placeholder 컴포넌트가 생성된다.', function() {
+        expect(instance.init).toBeDefined();
+        expect(instance.constructor).toEqual(jasmine.any(Function));
     });
 
     it('IE9,11 && webkit 브라우저에서 css rule을 추가하기 위해 style 태그가 생성된다.', function() {
@@ -31,46 +33,71 @@ describe('placeholder.js', function() {
     });
 
     it('native 기능 제공하지 않으면서 클릭 시 placeholder 내용 사라지는 브라우저는 커스텀 placeholder가 생성된다.', function() {
-        var customPlaceholderLen,
+        var customPlaceholderLen = $('span > span').length,
             expected = !isSupportPlaceholder ? 3 : 0; // span (wrapper tag) > span (custom placeholder tag)
-
-        instance.add(document.getElementsByTagName('input'));
-
-        customPlaceholderLen = $('span > span').length;
 
         expect(customPlaceholderLen).toEqual(expected);
     });
 
-    it('커스텀 placeholder가 생성되면 keydown 이벤트가 바인딩된다.', function() {
+    it('add() 메서드로 동적 앨리먼트를 추가하면 추가된 input에 커스텀 placeholder가 생성된다.', function() {
+        var $parent = $('#jasmine-fixtures'),
+            i = 0,
+            len = 3,
+            expected = !isSupportPlaceholder ? len : 0;
 
-        instance.add(document.getElementsByTagName('input'));
-
-        var inputSelector = 'span > input:eq(0)',
-            inputSpyEvent = spyOnEvent(inputSelector, 'keydown');
-
-        $(inputSelector).keydown();
-
-        if (!isSupportPlaceholder) {
-            expect('keydown').toHaveBeenTriggeredOn(inputSelector);
-            expect(inputSpyEvent).toHaveBeenTriggered();
-        } else {
-            expect('keydown').not.toHaveBeenTriggeredOn(inputSelector);
-            expect(inputSpyEvent).not.toHaveBeenTriggered();
+        for (; i < len; i += 1) {
+            $parent.append('<input type="text" class="addon" placeholder="test" />');
         }
+
+        instance.add($('.addon'));
+
+        expect($('span > .addon').length).toEqual(expected);
     });
 
-    it('커스텀 placeholder가 생성되면 keyup 이벤트가 바인딩된다.', function() {
-        var inputSelector = 'span > input:eq(0)',
-            inputSpyEvent = spyOnEvent(inputSelector, 'keyup');
+    it('커스텀 placeholder를 생성하면 태그에 inline style이 생성된다.', function() {
+        var customPlaceholderElems = $('span > span');
 
-        $(inputSelector).keyup();
+        customPlaceholderElems.each(function() {
+            expect($(this)).toHaveCss({position: 'absolute'});
+        });
+    });
 
-        if (!isSupportPlaceholder) {
-            expect('keyup').toHaveBeenTriggeredOn(inputSelector);
-            expect(inputSpyEvent).toHaveBeenTriggered();
-        } else {
-            expect('keyup').not.toHaveBeenTriggeredOn(inputSelector);
-            expect(inputSpyEvent).not.toHaveBeenTriggered();
-        }
+    it('커스텀 placeholder가 생성될 때 이미 value 값이 있으면 비활성화된 상태로 생성된다.', function() {
+        var customPlaceholderElems = $('span > span');
+
+        customPlaceholderElems.each(function(idx) {
+            if (idx === 1) {
+                expect($(this).css('display')).toEqual('none');
+            }
+        });
+    });
+
+    it('커스텀 placeholder는 드래그 또는 복사할 수 없다.', function() {
+        var customPlaceholderElems = $('span > span');
+
+        customPlaceholderElems.each(function() {
+            expect($(this).attr('unselectable')).toEqual('on');
+        });
+    });
+
+    it('커스텀 placeholder를 클릭하면 input 태그가 포커싱된다.', function() {
+        var customPlaceholderElems = $('span > span');
+
+        customPlaceholderElems.each(function() {
+            $(this).click();
+            expect($(this).next()).toBeFocused();
+        });
+    });
+
+    it('input에 컨텐츠가 입력되면 커스텀 placeholder가 비활성화 된다.', function() {
+        var inputElem = $('input:eq(1)'),
+            specificValue = browser.firefox ? 'inline' : 'inline-block',
+            expected = !isSupportPlaceholder ? 'none' : specificValue,
+            e = $.Event('keydown');
+
+        e.which = 40;
+        inputElem.keydown(e);
+
+        expect(inputElem.prev().css('display')).toEqual(expected);
     });
 });
