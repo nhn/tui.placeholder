@@ -24,8 +24,8 @@ Generate custom 'placeholder' on browsers not supported native 'placeholder' pro
     * Firefox
     * Safari
 * Mobile
-    * iOS 7.x ~ 9.x
-    * Android 4.0.x ~ 5.1.x
+    * iOS
+    * Android
 
 ## History
 | Version | Description | Date | Developer |
