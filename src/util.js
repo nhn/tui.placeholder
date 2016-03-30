@@ -1,5 +1,4 @@
 'use strict';
-
 var util = {
     /**
      * Generate 'style' tag and add css rule

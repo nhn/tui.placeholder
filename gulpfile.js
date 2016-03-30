@@ -32,12 +32,12 @@ gulp.task('connect', function() {
     connect.server({
         livereload: true
     });
-    gulp.watch(['./src/*.js', './index.js'], ['liveBuild']);
+    gulp.watch(['./src/*.js', './src/index.js'], ['liveBuild']);
 });
 
 gulp.task('liveBuild', function() {
     var b = browserify({
-        entries: 'index.js',
+        entries: './src/index.js',
         debug: true
     });
 
@@ -55,7 +55,7 @@ gulp.task('liveBuild', function() {
 
 gulp.task('bundle', ['karma'], function() {
     var b = browserify({
-        entries: 'index.js',
+        entries: './src/index.js',
         debug: true
     });
 

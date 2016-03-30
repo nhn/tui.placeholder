@@ -23,7 +23,11 @@ module.exports = function(config) {
             'test/**/*.js',
             'src/*.js',
             {
-                pattern: 'test/fixture/*.html',
+                pattern: 'test/fixtures/*.html',
+                included: false
+            },
+            {
+                pattern: 'test/fixtures/*.css',
                 included: false
             }
         ],

@@ -2,15 +2,13 @@
  * @fileoverview Generate custom placehoder on browsers not supported 'placehoder'
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
-
 'use strict';
-
 var util = require('./util.js');
 
-var Placeholder,
-    isSupportPlaceholder,
+var Placeholder;
+
+var isSupportPlaceholder,
     browser = tui.util.browser,
-    hasComputedStyleFunc = window.getComputedStyle ? true : false,
     KEYCODE_BACK = 8,
     KEYCODE_TAB = 9;
 
@@ -28,150 +26,145 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
  * @class Placeholder
  * @constructor
  */
- Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
-     init: function() {
-         /**
-          * Array pushed 'input' tags in current page
-          * @type  {Array}
-          * @private
-          */
-         this._inputElems = [];
+Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
+    init: function() {
+        /**
+         * Array pushed 'input' tags in current page
+         * @type  {Array}
+         * @private
+         */
+        this._inputElems = [];
+    },
 
-         this.add();
-     },
+    /**
+     * When create dynamic 'input' tag and append on page, generate custom placeholder
+     * @param {HTMLElement[]} elements - Selected 'input' tags
+     * @example
+     * tui.component.Placeholder.add();
+     * tui.component.Placeholder.add(document.getElementsByTagName('input'));
+     * @api
+     */
+    add: function(elements) {
+        if (!isSupportPlaceholder) {
+            this._inputElems = tui.util.toArray(elements || document.getElementsByTagName('input'));
 
-     /**
-      * When create dynamic 'input' tag and append on page, generate custom placeholder
-      * @param {HTMLElement[]} elements - Selected 'input' tags
-      * @returns {Boolean} If a browser support 'placeholder' property and has any condition, returns
-      * @example
-      * tui.component.Placeholder.add();
-      * tui.component.Placeholder.add(document.getElementsByTagName('input'));
-      * @api
-      */
-     add: function(elements) {
-         if (isSupportPlaceholder) {
-             return false;
-         }
+            if (this._inputElems.length) {
+                this._generatePlaceholder();
+            }
+        }
+    },
 
-         this._inputElems = tui.util.toArray(elements || document.getElementsByTagName('input'));
+    /**
+     * Return style info of imported style
+     * @param  {HTMLElement} elem - First 'input' tag
+     * @returns {Object} Style info
+     * @private
+     */
+    _getInitStyle: function(elem) {
+        var computedObj,
+            styleInfo;
 
-         if (this._inputElems.length) {
-             this._generatePlaceholder();
-         }
-     },
+        if (window.getComputedStyle) {
+            computedObj = window.getComputedStyle(elem, null);
 
-     /**
-      * Return style info of imported style
-      * @param  {HTMLElement} elem - First 'input' tag
-      * @returns {Object} Style info
-      * @private
-      */
-     _getInitStyle: function(elem) {
-         var computedObj,
-             styleInfo;
+            styleInfo = {
+                fontSize: computedObj.getPropertyValue('font-size'),
+                fixedWidth: computedObj.getPropertyValue('width'),
+                paddingLeft: computedObj.getPropertyValue('padding-left')
+            };
+        } else {
+            computedObj = elem.currentStyle;
 
-         if (hasComputedStyleFunc) {
-             computedObj = window.getComputedStyle(elem, null);
+            styleInfo = {
+                fontSize: computedObj.fontSize,
+                fixedWidth: computedObj.width,
+                paddingLeft: computedObj.paddingLeft
+            };
+        }
 
-             styleInfo = {
-                 fontSize: computedObj.getPropertyValue('font-size'),
-                 fixedWidth: computedObj.getPropertyValue('width'),
-                 paddingLeft: computedObj.getPropertyValue('padding-left')
-             };
-         } else {
-             computedObj = elem.currentStyle;
+        return styleInfo;
+    },
 
-             styleInfo = {
-                 fontSize: computedObj.fontSize,
-                 fixedWidth: computedObj.width,
-                 paddingLeft: computedObj.paddingLeft
-             };
-         }
+    /**
+     * Generator virtual placeholders for browser not supported 'placeholder' property
+     * @private
+     */
+    _generatePlaceholder: function() {
+        var self = this;
 
-         return styleInfo;
-     },
+        tui.util.forEach(this._inputElems, function(elem) {
+            var type = elem.type;
 
-     /**
-      * Generator virtual placeholders for browser not supported 'placeholder' property
-      * @private
-      */
-     _generatePlaceholder: function() {
-         var self = this;
+            if ((type === 'text' || type === 'password' || type === 'email') &&
+                elem.getAttribute('placeholder')) {
+                self._attachCustomPlaceholder(elem);
+            }
+        });
+    },
 
-         tui.util.forEach(this._inputElems, function(elem) {
-             var type = elem.type;
+    /**
+     * Attach a new custom placehoder tag after a selected 'input' tag and wrap 'input' tag
+     * @param  {HTMLElement} target - The 'input' tag
+     * @private
+     */
+    _attachCustomPlaceholder: function(target) {
+        var initStyle = this._getInitStyle(target),
+            fontSize = initStyle.fontSize,
+            paddingLeft = initStyle.paddingLeft,
+            wrapTag = document.createElement('span'),
+            placeholder = target.getAttribute('placeholder'),
+            inputValue = target.value;
 
-             if ((type === 'text' || type === 'password' || type === 'email') &&
-                 elem.getAttribute('placeholder')) {
-                 self._attachCustomPlaceholder(elem);
-             }
-         });
-     },
+        wrapTag.innerHTML = this._generateSpanTag(paddingLeft, fontSize, placeholder, inputValue);
+        wrapTag.appendChild(target.cloneNode());
 
-     /**
-      * Attach a new custom placehoder tag after a selected 'input' tag and wrap 'input' tag
-      * @param  {HTMLElement} target - The 'input' tag
-      * @private
-      */
-     _attachCustomPlaceholder: function(target) {
-         var initStyle = this._getInitStyle(target),
-             fontSize = initStyle.fontSize,
-             paddingLeft = initStyle.paddingLeft,
-             wrapTag = document.createElement('span'),
-             placeholder = target.getAttribute('placeholder'),
-             inputValue = target.value;
+        target.parentNode.insertBefore(wrapTag, target.nextSibling);
+        target.parentNode.removeChild(target);
 
-         wrapTag.innerHTML = this._generateSpanTag(paddingLeft, fontSize, placeholder, inputValue);
-         wrapTag.appendChild(target.cloneNode());
+        wrapTag.style.cssText = 'position:relative;line-height:1;';
 
-         target.parentNode.insertBefore(wrapTag, target.nextSibling);
-         target.parentNode.removeChild(target);
+        this._bindEventToCustomPlaceholder(wrapTag);
+    },
 
-         wrapTag.style.cssText = 'position:relative;line-height:1;';
+    /**
+     * Bind event custom placehoder tag
+     * @param  {HTMLElement} target - The 'input' tag's wrapper tag
+     * @private
+     */
+    _bindEventToCustomPlaceholder: function(target) {
+        var inputTag = target.getElementsByTagName('input')[0],
+            spanTag = target.getElementsByTagName('span')[0],
+            spanStyle = spanTag.style;
 
-         this._bindEventToCustomPlaceholder(wrapTag);
-     },
+        util.bindEvent(spanTag, 'click', function() {
+            inputTag.focus();
+        });
 
-     /**
-      * Bind event custom placehoder tag
-      * @param  {HTMLElement} target - The 'input' tag's wrapper tag
-      * @private
-      */
-     _bindEventToCustomPlaceholder: function(target) {
-         var inputTag = target.getElementsByTagName('input')[0],
-             spanTag = target.getElementsByTagName('span')[0],
-             spanStyle = spanTag.style;
+        util.bindEvent(inputTag, 'keydown', function(e) {
+            var keyCode = e.which || e.keyCode;
 
-         util.bindEvent(spanTag, 'click', function(e) {
-             inputTag.focus();
-         });
+            if (!(keyCode === KEYCODE_BACK || keyCode === KEYCODE_TAB)) {
+                spanStyle.display = 'none';
+            }
+        });
 
-         util.bindEvent(inputTag, 'keydown', function(e) {
-             var keyCode = e.which || e.keyCode;
+        util.bindEvent(inputTag, 'keyup', function() {
+            if (inputTag.value === '') {
+                spanStyle.display = 'inline-block';
+            }
+        });
+    },
 
-             if (!(keyCode === KEYCODE_BACK || keyCode === KEYCODE_TAB)) {
-                 spanStyle.display = 'none';
-             }
-         });
-
-         util.bindEvent(inputTag, 'keyup', function() {
-             if (inputTag.value === '') {
-                 spanStyle.display = 'inline-block';
-             }
-         });
-     },
-
-     /**
-      * Generate custom placeholder tag
-      * @param  {Number} paddingLeft - Current 'input' tag's left padding size
-      * @param  {Number} fontSize - Current 'input' tag's 'font-size' property value
-      * @param  {String} placehoderText - Current 'input' tag's value of placeholder property
-      * @param  {String} inputValue - Current 'input' tag's value
-      * @returns {String} String of custom placehoder tag
-      * @private
-      */
-     _generateSpanTag: function(paddingLeft, fontSize, placehoderText, inputValue) {
+    /**
+     * Generate custom placeholder tag
+     * @param  {Number} paddingLeft - Current 'input' tag's left padding size
+     * @param  {Number} fontSize - Current 'input' tag's 'font-size' property value
+     * @param  {String} placehoderText - Current 'input' tag's value of placeholder property
+     * @param  {String} inputValue - Current 'input' tag's value
+     * @returns {String} String of custom placehoder tag
+     * @private
+     */
+    _generateSpanTag: function(paddingLeft, fontSize, placehoderText, inputValue) {
         var html = '<span style="position:absolute;left:0;top:50%;width:90%;';
 
         html += 'padding-left:' + paddingLeft + ';margin-top:' + (-(parseFloat(fontSize, 10) / 2) - 1) + 'px;';
@@ -181,7 +174,7 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
         html += 'font-size:' + fontSize + ';" UNSELECTABLE="on">' + placehoderText + '</span>';
 
         return html;
-     }
+    }
 });
 
 module.exports = new Placeholder();
