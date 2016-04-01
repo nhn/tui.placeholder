@@ -1,8 +1,87 @@
 'use strict';
 
-// var instance =
-
 require('../src/index.js');
+/**
+ * Event simulator in jasmine
+ * @type {Object}
+ */
+var evtSimulator = {
+    /**
+     * Created event
+     * @type {Object}
+     */
+    _event: null,
+
+    /**
+     * Fire event
+     * @param  {Object} options - Event info for simulating
+     */
+    fire: function(options) {
+        options = options || {};
+
+        /**
+         * Element bound event
+         * @type {HTMLElement}
+         */
+        this._target = options.target;
+
+        /**
+         * Event type of simulating
+         * @type {String}
+         */
+        this._type = options.type;
+
+        if (!this._target) {
+            return;
+        }
+
+        this._createEvent();
+
+        if (this._type.match(/key+/g)) {
+            this._setKeyValue(options.key || 1);
+        }
+
+        this._dispatchEvent();
+    },
+
+    /**
+     * Create an virtual event
+     */
+    _createEvent: function() {
+        if (document.createEvent) {
+            this._event = document.createEvent('HTMLEvents');
+            this._event.initEvent(this._type, true, true);
+        } else {
+            this._event = document.createEventObject();
+            this._event.eventType = this._type;
+        }
+
+        this._event.eventName = this._type;
+    },
+
+    /**
+     * Fire event on current element
+     */
+    _dispatchEvent: function() {
+        if (this._target.dispatchEvent) {
+            this._target.dispatchEvent(this._event);
+        } else {
+            this._target.fireEvent('on' + this._type, this._event);
+        }
+    },
+
+    /**
+     * Set a key value to event object
+     * @param  {Number} key - key value formmated number
+     */
+    _setKeyValue: function(key) {
+        if (this._event.keyCode) {
+            this._event.keyCode = key;
+        } else {
+            this._event.which = key;
+        }
+    }
+};
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 
@@ -12,7 +91,6 @@ describe('placeholder.js', function() {
 
     beforeEach(function() {
         loadFixtures('placeholder.html');
-
         tui.component.placeholder.add();
     });
 
@@ -21,21 +99,21 @@ describe('placeholder.js', function() {
         jasmine.getFixtures().cleanUp();
     });
 
-    it('IE9,11 && webkit 브라우저에서 css rule을 추가하기 위해 style 태그가 생성된다.', function() {
+    it('Create and append the <style> element for adding css rule on IE9 to IE11.', function() {
         var styleTagLen = $('style').length,
             expected = (browser.msie && (browser.version > 9 && browser.version <= 11)) ? 1 : 0;
 
         expect(styleTagLen).toEqual(expected);
     });
 
-    it('native 기능 제공하지 않으면서 클릭 시 placeholder 내용 사라지는 브라우저는 커스텀 placeholder가 생성된다.', function() {
-        var customPlaceholderLen = $('span > span').length,
-            expected = !isSupportPlaceholder ? 3 : 0; // span (wrapper tag) > span (custom placeholder tag)
+    it('The user\'s browser on any condition generate the virtual placeholder.', function() {
+        var $placeholder = $('span > span'),
+            expected = !isSupportPlaceholder ? 3 : 0;
 
-        expect(customPlaceholderLen).toEqual(expected);
+        expect($placeholder.length).toEqual(expected);
     });
 
-    it('add() 메서드로 동적 앨리먼트를 추가하면 추가된 input에 커스텀 placeholder가 생성된다.', function() {
+    it('When call add api with arguments, the virtual placeholder append on dynamically created elements.', function() {
         var $parent = $('#jasmine-fixtures'),
             i = 0,
             len = 3,
@@ -50,51 +128,71 @@ describe('placeholder.js', function() {
         expect($('span > .addon').length).toEqual(expected);
     });
 
-    xit('커스텀 placeholder를 생성하면 태그에 inline style이 생성된다.', function() {
-        var customPlaceholderElems = $('span > span').eq(0),
-            expected = !isSupportPlaceholder ? {position: 'absolute'} : 0;
+    describe('When the virtual placeholder is generated', function() {
+        it('this element has an inline style.', function() {
+            var $placeholder = $('span > span[style]'),
+                expected = !isSupportPlaceholder ? 3 : 0;
 
-        customPlaceholderElems.each(function() {
-            expect($(this)).toHaveCss({position: 'absolute'});
+            expect($placeholder.length).toEqual(expected);
+        });
+
+        it('This element is hidden, if the <input> element has already value.', function() {
+            var $placeholder = $('span > span:hidden'),
+                expected = !isSupportPlaceholder ? 1 : 0;
+
+            expect($placeholder.length).toEqual(expected);
+        });
+
+        it('This element set the special attribute that don\'t copy and drag.', function() {
+            var $placeholder = $('span > span[unselectable="on"]'),
+                expected = !isSupportPlaceholder ? 3 : 0;
+
+            expect($placeholder.length).toEqual(expected);
         });
     });
 
-    it('커스텀 placeholder가 생성될 때 이미 value 값이 있으면 비활성화된 상태로 생성된다.', function() {
-        var customPlaceholderElems = $('span > span');
+    it('When the click event fires on the virtual placeholder, the next <input> element is focused.', function() {
+        var inputElem = document.getElementsByTagName('input')[0],
+            placeholder = inputElem.previousSibling;
 
-        customPlaceholderElems.each(function(idx) {
-            if (idx === 1) {
-                expect($(this).css('display')).toEqual('none');
-            }
-        });
+        if (!isSupportPlaceholder) {
+            spyOn(inputElem, 'focus');
+
+            evtSimulator.fire({
+                target: placeholder,
+                type: 'click'
+            });
+
+            expect(inputElem.focus).toHaveBeenCalled();
+        }
     });
 
-    it('커스텀 placeholder는 드래그 또는 복사할 수 없다.', function() {
-        var customPlaceholderElems = $('span > span');
+    it('When fire keydown event into the <input> element, the virtual placeholder is hidden.', function() {
+        var inputElem = document.getElementsByTagName('input')[0],
+            placeholder = inputElem.previousSibling;
 
-        customPlaceholderElems.each(function() {
-            expect($(this).attr('unselectable')).toEqual('on');
-        });
+        if (!isSupportPlaceholder) {
+            evtSimulator.fire({
+                target: inputElem,
+                type: 'keydown',
+                key: 65
+            });
+
+            expect(placeholder.style.display).toEqual('none');
+        }
     });
 
-    it('커스텀 placeholder를 클릭하면 input 태그가 포커싱된다.', function() {
-        var customPlaceholderElems = $('span > span');
+    it('When fire keyup event and <input> element have empty value, the virtual placeholder is visible.', function() {
+        var inputElem = document.getElementsByTagName('input')[1],
+            placeholder = inputElem.previousSibling;
 
-        customPlaceholderElems.each(function() {
-            $(this).click();
-            expect($(this).next()).toBeFocused();
-        });
-    });
+        if (!isSupportPlaceholder) {
+            evtSimulator.fire({
+                target: inputElem,
+                type: 'keyup'
+            });
 
-    it('input에 컨텐츠가 입력되면 커스텀 placeholder가 비활성화 된다.', function() {
-        var inputElem = $('input:eq(1)'),
-            specificValue = browser.firefox ? 'inline' : 'inline-block',
-            expected = !isSupportPlaceholder ? 'none' : specificValue,
-            e = $.Event('keydown');
-
-        e.which = 40;
-        inputElem.keydown(e);
-
-        expect(inputElem.prev().css('display')).toEqual(expected);
+            expect(placeholder.style.display).not.toEqual('none');
+        }
     });
 });
