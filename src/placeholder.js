@@ -3,10 +3,9 @@
  * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
 'use strict';
+
 var util = require('./util.js');
-
 var Placeholder;
-
 var isSupportPlaceholder,
     browser = tui.util.browser,
     KEYCODE_BACK = 8,
@@ -25,30 +24,22 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
  * Placeholder Class
  * @class Placeholder
  * @constructor
+ * @param {HTMLElement} elements - Selected <input> elements
+ * @example
+ * tui.component.placeholder();
+ * tui.component.placeholder(document.getElementById('input-area').getElementsByTagName('input'));
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
-    init: function() {
-        /**
-         * Array pushed all <input> elements in the current page
-         * @type  {Array}
-         * @private
-         */
-        this._inputElems = [];
-    },
-
-    /**
-     * When create dynamic <input> elements and this elements append on page, generate the virtual placeholder
-     * @param {HTMLElement[]} elements - <input> elements
-     * @example
-     * tui.component.placeholder.add();
-     * tui.component.placeholder.add(document.getElementsByTagName('input'));
-     * @api
-     */
-    add: function(elements) {
+    init: function(elements) {
         if (isSupportPlaceholder) {
             return;
         }
 
+        /**
+         * Array pushed all <input> elements in the current page
+         * @type {Array}
+         * @private
+         */
         this._inputElems = tui.util.toArray(elements || document.getElementsByTagName('input'));
 
         if (this._inputElems.length) {
@@ -57,36 +48,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     },
 
     /**
-     * Returns element's style value defined at css file
-     * @param  {HTMLElement} elem - <input> element
-     * @returns {Object} Style info
-     * @private
-     */
-    _getInitStyle: function(elem) {
-        var computedObj,
-            styleInfo;
-
-        if (window.getComputedStyle) {
-            computedObj = window.getComputedStyle(elem, null);
-
-            styleInfo = {
-                fontSize: computedObj.getPropertyValue('font-size'),
-                paddingLeft: computedObj.getPropertyValue('padding-left')
-            };
-        } else {
-            computedObj = elem.currentStyle;
-
-            styleInfo = {
-                fontSize: computedObj.fontSize,
-                paddingLeft: computedObj.paddingLeft
-            };
-        }
-
-        return styleInfo;
-    },
-
-    /**
-     * Generate virtual placeholders for browser isnt't supported placeholder feature
+     * Generate virtual placeholders for the browser isnt't supported placeholder property
      * @private
      */
     _generatePlaceholder: function() {
@@ -103,19 +65,46 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     },
 
     /**
-     * Attach a new virtual placeholder after a selected <input> element and wrap <input> element
-     * @param  {HTMLElement} target - The 'input' tag
+     * Returns element's style value defined at css file
+     * @param {HTMLElement} target - <input> element
+     * @returns {Object} Style info of <input> element
+     * @private
+     */
+    _getInitStyle: function(target) {
+        var computedObj,
+            styleInfo;
+
+        if (window.getComputedStyle) {
+            computedObj = window.getComputedStyle(target, null);
+
+            styleInfo = {
+                fontSize: computedObj.getPropertyValue('font-size'),
+                paddingLeft: computedObj.getPropertyValue('padding-left')
+            };
+        } else {
+            computedObj = target.currentStyle;
+
+            styleInfo = {
+                fontSize: computedObj.fontSize,
+                paddingLeft: computedObj.paddingLeft
+            };
+        }
+
+        return styleInfo;
+    },
+
+    /**
+     * Attach a new virtual placeholder after a selected <input> element and wrap this element
+     * @param {HTMLElement} target - The <input> element
      * @private
      */
     _attachCustomPlaceholder: function(target) {
         var initStyle = this._getInitStyle(target),
-            fontSize = initStyle.fontSize,
-            paddingLeft = initStyle.paddingLeft,
             wrapTag = document.createElement('span'),
             placeholder = target.getAttribute('placeholder'),
             inputValue = target.value;
 
-        wrapTag.innerHTML = this._generateSpanTag(paddingLeft, fontSize, placeholder, inputValue);
+        wrapTag.innerHTML = this._generateSpanTag(initStyle.paddingLeft, initStyle.fontSize, placeholder, inputValue);
         wrapTag.appendChild(target.cloneNode());
 
         target.parentNode.insertBefore(wrapTag, target.nextSibling);
@@ -123,15 +112,15 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
         wrapTag.style.cssText = 'position:relative;line-height:1;';
 
-        this._bindEventToCustomPlaceholder(wrapTag);
+        this._bindEventToVirtualPlaceholder(wrapTag);
     },
 
     /**
      * Bind events on the element
-     * @param  {HTMLElement} target - The wrapper tag of the <input> element
+     * @param {HTMLElement} target - The wrapper tag of the <input> element
      * @private
      */
-    _bindEventToCustomPlaceholder: function(target) {
+    _bindEventToVirtualPlaceholder: function(target) {
         var inputTag = target.getElementsByTagName('input')[0],
             spanTag = target.getElementsByTagName('span')[0],
             spanStyle = spanTag.style;
@@ -157,10 +146,10 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Generate the virtual placeholder element
-     * @param  {Number} paddingLeft - Current <input> element's left padding size
-     * @param  {Number} fontSize - Current <input> element's 'font-size' property value
-     * @param  {String} placehoderText - Current <input> element value of placeholder property
-     * @param  {String} inputValue - Current <input> element value
+     * @param {Number} paddingLeft - Current <input> element's left padding size
+     * @param {Number} fontSize - Current <input> element's 'font-size' property value
+     * @param {String} placehoderText - Current <input> element value of placeholder property
+     * @param {String} inputValue - Current <input> element value
      * @returns {String} String of virtual placehoder tag
      * @private
      */
@@ -177,4 +166,6 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     }
 });
 
-module.exports = new Placeholder();
+module.exports = function(elements) {
+    return new Placeholder(elements);
+};

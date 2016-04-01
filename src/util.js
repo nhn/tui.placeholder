@@ -1,8 +1,9 @@
 'use strict';
+
 var util = {
     /**
-     * Generate 'style' tag and add css rule
-     * @param  {Object} ruleInfo - selector and css value
+     * Generate <style> tag and add css rule
+     * @param {Object} ruleInfo - Value of selector and css property
      */
     addCssRule: function(ruleInfo) {
         var styleTag = document.createElement('style'),
@@ -27,9 +28,9 @@ var util = {
 
     /**
      * Bind event to element
-     * @param  {HTMLElement} target - Tag for binding
-     * @param  {String} eventType - Event type
-     * @param  {Function} callback - Event handler function
+     * @param {HTMLElement} target - Tag for binding event
+     * @param {String} eventType - Event type
+     * @param {Function} callback - Event handler function
      */
     bindEvent: function(target, eventType, callback) {
         if (target.addEventListener) {
