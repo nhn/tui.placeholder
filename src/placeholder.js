@@ -27,7 +27,7 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
  * @param {HTMLElement} elements - Selected <input> elements
  * @example
  * tui.component.placeholder();
- * tui.component.placeholder(document.getElementById('input-area').getElementsByTagName('input'));
+ * tui.component.placeholder(document.getElementById('add-area').getElementsByTagName('input'));
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     init: function(elements) {

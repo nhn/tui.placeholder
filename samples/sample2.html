@@ -30,15 +30,16 @@
 
         <div class="codeArea"></div>
 
+        <script src="../scripts/prettify/prettify.js"></script>
+        <script src="../scripts/prettify/lang-css.js"></script>
+        <script src="../scripts/jquery.js"></script>
+        <script src="../scripts/samplecode.js"></script>
+
         <!-- Import script file under html -->
         <script type="text/javascript" src="js/code-snippet.js"></script>
         <script type="text/javascript" src="js/placeholder.js"></script>
         <!-- //Import script file under html -->
 
-        <script src="../scripts/prettify/prettify.js"></script>
-        <script src="../scripts/prettify/lang-css.js"></script>
-        <script src="../scripts/jquery.js"></script>
-        <script src="../scripts/samplecode.js"></script>
         <script class="serviceCode">
         function append() {
             var parent = document.getElementById('add-area'),
@@ -57,7 +58,7 @@
 
             addElems = parent.getElementsByTagName('input');
 
-            tui.component.Placeholder.add(addElems); // call api
+            tui.component.placeholder(addElems); // excution
         }
         </script>
     </body>
