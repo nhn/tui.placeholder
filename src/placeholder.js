@@ -24,13 +24,12 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
 isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(browser.msie && browser.version <= 11);
 
 /**
- * Placeholder Class
- * @class Placeholder
- * @constructor
+ * Placeholder Object
  * @param {HTMLElement} elements - Selected <input> elements
  * @example
  * tui.component.placeholder();
  * tui.component.placeholder(document.getElementById('add-area').getElementsByTagName('input'));
+ * @constructor
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     init: function(elements) {
