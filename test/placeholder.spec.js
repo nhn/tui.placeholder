@@ -1,6 +1,7 @@
 'use strict';
 
-require('../src/index.js');
+require('../index.js');
+
 /**
  * Event simulator in jasmine
  * @type {Object}
@@ -91,6 +92,7 @@ describe('placeholder.js', function() {
 
     beforeEach(function() {
         loadFixtures('placeholder.html');
+        tui.component.placeholder();
     });
 
     afterEach(function() {
@@ -98,14 +100,14 @@ describe('placeholder.js', function() {
         jasmine.getFixtures().cleanUp();
     });
 
-    xit('Create and append the <style> element for adding css rule on IE9 to IE11.', function() {
+    it('Create and append the <style> element for adding css rule on IE9 to IE11.', function() {
         var styleTagLen = $('style').length,
             expected = (browser.msie && (browser.version > 9 && browser.version <= 11)) ? 1 : 0;
 
         expect(styleTagLen).toEqual(expected);
     });
 
-    xit('The user\'s browser on any condition generate the virtual placeholder.', function() {
+    it('The user\'s browser on any condition generate the virtual placeholder.', function() {
         var $placeholder = $('span > span'),
             expected = !isSupportPlaceholder ? 3 : 0;
 
@@ -128,21 +130,21 @@ describe('placeholder.js', function() {
     });
 
     describe('When the virtual placeholder is generated', function() {
-        xit('this element has an inline style.', function() {
+        it('this element has an inline style.', function() {
             var $placeholder = $('span > span[style]'),
                 expected = !isSupportPlaceholder ? 3 : 0;
 
             expect($placeholder.length).toEqual(expected);
         });
 
-        xit('This element is hidden, if the <input> element has already value.', function() {
+        it('This element is hidden, if the <input> element has already value.', function() {
             var $placeholder = $('span > span:hidden'),
                 expected = !isSupportPlaceholder ? 1 : 0;
 
             expect($placeholder.length).toEqual(expected);
         });
 
-        xit('This element set the special attribute that don\'t copy and drag.', function() {
+        it('This element set the special attribute that don\'t copy and drag.', function() {
             var $placeholder = $('span > span[unselectable="on"]'),
                 expected = !isSupportPlaceholder ? 3 : 0;
 
@@ -150,7 +152,7 @@ describe('placeholder.js', function() {
         });
     });
 
-    xit('When the click event fires on the virtual placeholder, the next <input> element is focused.', function() {
+    it('When the click event fires on the virtual placeholder, the next <input> element is focused.', function() {
         var inputElem = document.getElementsByTagName('input')[0],
             placeholder = inputElem.previousSibling;
 
@@ -166,7 +168,7 @@ describe('placeholder.js', function() {
         }
     });
 
-    xit('When fire keydown event into the <input> element, the virtual placeholder is hidden.', function() {
+    it('When fire keydown event into the <input> element, the virtual placeholder is hidden.', function() {
         var inputElem = document.getElementsByTagName('input')[0],
             placeholder = inputElem.previousSibling;
 
@@ -181,7 +183,7 @@ describe('placeholder.js', function() {
         }
     });
 
-    xit('When fire keyup event and <input> element have empty value, the virtual placeholder is visible.', function() {
+    it('When fire keyup event and <input> element have empty value, the virtual placeholder is visible.', function() {
         var inputElem = document.getElementsByTagName('input')[1],
             placeholder = inputElem.previousSibling;
 

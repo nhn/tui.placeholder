@@ -5,10 +5,13 @@
 'use strict';
 
 var util = require('./util.js');
+
 var Placeholder;
-var isSupportPlaceholder,
-    browser = tui.util.browser,
-    KEYCODE_BACK = 8,
+
+var browser = tui.util.browser,
+    isSupportPlaceholder;
+
+var KEYCODE_BACK = 8,
     KEYCODE_TAB = 9;
 
 if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
