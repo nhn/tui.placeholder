@@ -11,8 +11,9 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 * When remove content in the 'input' tag, placeholder's value appear.
 
 ## Documentation
-* **API** : https://github.nhnent.com/pages/fe/component-placeholder/latest
-* **Sample** : https://github.nhnent.com/pages/fe/component-placeholder/latest/tutorial.html
+* **API** : https://nhnent.github.io/tui.component.placeholder/latest
+* **Sample** : https://nhnent.github.io/tui.component.placeholder/latest/tutorial.html
+* **Tutorial** : https://github.com/nhnent/tui.component.placeholder/wiki/Placeholder-Tutorial
 
 ## Dependency
 * tui-code-snippet: 1.0.8
