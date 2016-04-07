@@ -8,8 +8,10 @@ var util = require('./util.js');
 
 var Placeholder;
 
-var browser = tui.util.browser,
-    isSupportPlaceholder;
+var isSupportPlaceholder,
+    sharedInstance;
+
+var browser = tui.util.browser;
 
 var KEYCODE_BACK = 8,
     KEYCODE_TAB = 9;
@@ -32,28 +34,31 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
  * @constructor
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
-    init: function(elements) {
-        if (isSupportPlaceholder) {
-            return;
-        }
-
+    init: function() {
         /**
          * Array pushed all <input> elements in the current page
          * @type {Array}
          * @private
          */
-        this._inputElems = tui.util.toArray(elements || document.getElementsByTagName('input'));
+        this._inputElems = [];
+    },
 
-        if (this._inputElems.length) {
-            this._generatePlaceholder();
+    /**
+     * Add elements in array
+     * @param  {HTMLElement} elements - selected <input> elements
+     */
+    add: function(elements) {
+        if (isSupportPlaceholder) {
+            return;
         }
+
+        this._inputElems = tui.util.toArray(elements || document.getElementsByTagName('input'));
     },
 
     /**
      * Generate virtual placeholders for the browser isnt't supported placeholder property
-     * @private
      */
-    _generatePlaceholder: function() {
+    generatePlaceholder: function() {
         var self = this;
 
         tui.util.forEach(this._inputElems, function(elem) {
@@ -168,6 +173,9 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     }
 });
 
+sharedInstance = new Placeholder();
+
 module.exports = function(elements) {
-    return new Placeholder(elements);
+    sharedInstance.add(elements);
+    sharedInstance.generatePlaceholder();
 };
