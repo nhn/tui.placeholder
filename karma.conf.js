@@ -78,7 +78,7 @@ module.exports = function(config) {
         autoWatch: true,
 
         browsers: [
-            'IE7',
+            //'IE7',
             'IE8',
             'IE9',
             'IE10',
