@@ -34,9 +34,6 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
  * tui.component.placeholder(document.getElementById('add-area').getElementsByTagName('input'));
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
-    /**
-     * @api
-     */
     init: function() {
         /**
          * Array pushed all 'input' elements in the current page
