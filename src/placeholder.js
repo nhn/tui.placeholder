@@ -27,16 +27,19 @@ isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(bro
 
 /**
  * Placeholder Object
- * @param {HTMLElement} elements - Selected <input> elements
+ * @constructor
+ * @param {HTMLElement} elements - Selected 'input' elements
  * @example
  * tui.component.placeholder();
  * tui.component.placeholder(document.getElementById('add-area').getElementsByTagName('input'));
- * @constructor
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
+    /**
+     * @api
+     */
     init: function() {
         /**
-         * Array pushed all <input> elements in the current page
+         * Array pushed all 'input' elements in the current page
          * @type {Array}
          * @private
          */
@@ -45,7 +48,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Add elements in array
-     * @param  {HTMLElement} elements - selected <input> elements
+     * @param {HTMLElement} elements - selected 'input' elements
      */
     add: function(elements) {
         if (isSupportPlaceholder) {
@@ -73,8 +76,8 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Returns element's style value defined at css file
-     * @param {HTMLElement} target - <input> element
-     * @returns {Object} Style info of <input> element
+     * @param {HTMLElement} target - 'input' element
+     * @returns {Object} Style info of 'input' element
      * @private
      */
     _getInitStyle: function(target) {
@@ -101,8 +104,8 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     },
 
     /**
-     * Attach a new virtual placeholder after a selected <input> element and wrap this element
-     * @param {HTMLElement} target - The <input> element
+     * Attach a new virtual placeholder after a selected 'input' element and wrap this element
+     * @param {HTMLElement} target - The 'input' element
      * @private
      */
     _attachCustomPlaceholder: function(target) {
@@ -124,7 +127,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Bind events on the element
-     * @param {HTMLElement} target - The wrapper tag of the <input> element
+     * @param {HTMLElement} target - The wrapper tag of the 'input' element
      * @private
      */
     _bindEventToVirtualPlaceholder: function(target) {
@@ -153,10 +156,10 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Generate the virtual placeholder element
-     * @param {Number} paddingLeft - Current <input> element's left padding size
-     * @param {Number} fontSize - Current <input> element's 'font-size' property value
-     * @param {String} placehoderText - Current <input> element value of placeholder property
-     * @param {String} inputValue - Current <input> element value
+     * @param {Number} paddingLeft - Current 'input' element's left padding size
+     * @param {Number} fontSize - Current 'input' element's 'font-size' property value
+     * @param {String} placehoderText - Current 'input' element value of placeholder property
+     * @param {String} inputValue - Current 'input' element value
      * @returns {String} String of virtual placehoder tag
      * @private
      */
