@@ -30,7 +30,7 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 
 ## Download/Install
 * Bower:
-   * latest : `bower install tui-component-placeholderr#master`
+   * latest : `bower install tui-component-placeholder#master`
    * each version : `bower install tui-component-placeholder[#tag]`
 * Download: https://github.com/nhnent/tui.component.placeholder
 
