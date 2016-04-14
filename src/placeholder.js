@@ -13,8 +13,18 @@ var isSupportPlaceholder,
 
 var browser = tui.util.browser;
 
-var KEYCODE_BACK = 8,
-    KEYCODE_TAB = 9;
+var KEYCODE_BACK = 8;
+var KEYCODE_TAB = 9;
+
+var INPUT_TYPES = [
+    'text',
+    'password',
+    'email',
+    'tel',
+    'number',
+    'url',
+    'search'
+];
 
 if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
     util.addCssRule({
@@ -64,7 +74,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
         tui.util.forEach(this._inputElems, function(elem) {
             var type = elem.type;
 
-            if ((type === 'text' || type === 'password' || type === 'email') &&
+            if (tui.util.inArray(type, INPUT_TYPES) > -1 &&
                 elem.getAttribute('placeholder')) {
                 self._attachCustomPlaceholder(elem);
             }
