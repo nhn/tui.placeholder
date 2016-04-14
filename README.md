@@ -37,6 +37,7 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
+| 1.0.1 | Add INPUT type| 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
 | 1.0.0 | Release | 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
 | 0.9.0 | Skaffold added | 2016.03 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
 
