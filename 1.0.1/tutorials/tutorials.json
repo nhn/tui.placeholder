@@ -1,0 +1,8 @@
+{
+    "sample1": {
+        "title": "Default : Auto generate custom placeholder"
+    },
+    "sample2": {
+        "title": "Call API : Dynamically add 'input' tags"
+    }
+}
