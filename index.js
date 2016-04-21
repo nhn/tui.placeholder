@@ -2,4 +2,6 @@
 
 tui.util.defineNamespace('tui.component.placeholder', require('./src/placeholder.js'));
 
-tui.component.placeholder();
+window.onload = function() {
+    tui.component.placeholder();
+};
