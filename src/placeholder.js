@@ -7,15 +7,11 @@
 var util = require('./util.js');
 
 var Placeholder;
-
-var isSupportPlaceholder,
-    sharedInstance;
-
+var isSupportPlaceholder;
 var browser = tui.util.browser;
 
 var KEYCODE_BACK = 8;
 var KEYCODE_TAB = 9;
-
 var INPUT_TYPES = [
     'text',
     'password',
@@ -183,9 +179,4 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     }
 });
 
-sharedInstance = new Placeholder();
-
-module.exports = function(elements) {
-    sharedInstance.add(elements);
-    sharedInstance.generatePlaceholder();
-};
+module.exports = Placeholder;

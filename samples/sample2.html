@@ -41,25 +41,29 @@
         <!-- //Import script file under html -->
 
         <script class="serviceCode">
-        function append() {
-            var parent = document.getElementById('add-area'),
-                i = 1,
-                len = 3,
-                html = '',
-                addElems;
+        
+            function append() {
+                var parent = document.getElementById('add-area'),
+                    i = 1,
+                    len = 3,
+                    html = '',
+                    addElems;
 
-            for (; i <= len; i += 1) {
-                html += '<div class="placeholder">';
-                html += '<input type="text" placeholder="입력' + i + '" />';
-                html += '</div>';
+                for (; i <= len; i += 1) {
+                    html += '<div class="placeholder">';
+                    html += '<input type="text" placeholder="입력' + i + '" />';
+                    html += '</div>';
+                }
+
+                parent.innerHTML = html;
+
+                addElems = parent.getElementsByTagName('input');
+
+                tui.component.placeholder(addElems); // excute
             }
 
-            parent.innerHTML = html;
+            tui.component.placeholder();
 
-            addElems = parent.getElementsByTagName('input');
-
-            tui.component.placeholder(addElems); // excute
-        }
         </script>
     </body>
 </html>

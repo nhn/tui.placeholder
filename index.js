@@ -1,7 +1,10 @@
 'use strict';
 
-tui.util.defineNamespace('tui.component.placeholder', require('./src/placeholder.js'));
+var Placeholder = require('./src/placeholder.js');
+var sharedInstance = new Placeholder();
+var component = tui.util.defineNamespace('tui.component');
 
-window.onload = function() {
-    tui.component.placeholder();
+component.placeholder = function(elements) {
+    sharedInstance.add(elements);
+    sharedInstance.generatePlaceholder();
 };
