@@ -1,6 +1,6 @@
 {
     "name": "component-placeholder",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "authors": [
         "NHNEnt FE Development Team <dl_javascript@nhnent.com>"
     ],
@@ -20,6 +20,6 @@
         "samples"
     ],
     "dependencies": {
-        "tui-code-snippet": "~1.0.8"
+        "tui-code-snippet": "~1.1.1"
     }
 }
