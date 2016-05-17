@@ -67,14 +67,12 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @param {HTMLElements} inputElems - 'input' elements for generating placeholder
      */
     _generatePlaceholder: function(inputElems) {
-        var self = this;
-
         tui.util.forEach(inputElems, function(elem, index) {
             if (tui.util.inArray(elem.type, INPUT_TYPES) > -1 &&
                 elem.getAttribute('placeholder')) {
-                self._attachCustomPlaceholder(elem, index);
+                this._attachCustomPlaceholder(elem, index);
             }
-        });
+        }, this);
     },
 
     /**
