@@ -58,7 +58,15 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     hidePlaceholders: function() {
         tui.util.forEach(this._inputElems, function(elem) {
             var placeholder = elem.parentNode.getElementsByTagName('span')[0];
-            placeholder.style.display = elem.value !== '' ? 'none' : 'inline-block';
+            var style;
+
+            if (elem.value !== '' && elem.type !== INPUT_TYPES[1]) {
+                style = 'none';
+            } else {
+                style = 'inline-block';
+            }
+
+            placeholder.style.display = style;
         });
     },
 

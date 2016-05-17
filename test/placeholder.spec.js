@@ -72,7 +72,7 @@ describe('placeholder.js', function() {
 
 
     it('When "hidden" method is called, placeholder that has input value changes the status to hidden.', function() {
-        $('input:eq(1)').val('history back'); // input tag
+        $('input:eq(2)').val('history back'); // input tag
 
         expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 1 : 0);
 
