@@ -36,29 +36,32 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     },
 
     /**
+     * Get all 'input' elements
+     * @returns {HTMLElements} All 'input' elements
+     */
+    getAllInputElems: function() {
+        return this._inputElems;
+    },
+
+    /**
      * Add elements in array
      * @param {HTMLElements} inputElems - Selected 'input' elements for generating placeholder
      */
     generatePlaceholders: function(inputElems) {
-        if (this._inputElems.length) {
-            this._inputElems.concat(inputElems);
-        } else {
-            this._inputElems = inputElems;
-        }
+        this._inputElems = this._inputElems.concat(inputElems);
 
-        tui.util.forEach(inputElems, function(elem, index) {
-            this._attachPlaceholder(elem, index);
-        }, this);
+        tui.util.forEach(inputElems, this._attachPlaceholder, this);
     },
 
     /**
      * Hide placeholder on 'input' element that has already value
+     * @param {HTMLElements} inputElems - Selected 'input' elements for hiding placeholder
      */
-    hidePlaceholders: function() {
-        tui.util.forEach(this._inputElems, function(elem) {
+    hidePlaceholders: function(inputElems) {
+        tui.util.forEach(inputElems, function(elem) {
             var placeholder = elem.parentNode.getElementsByTagName('span')[0];
 
-            placeholder.style.display = elem.value !== '' ? 'none' : 'inline-block';
+            placeholder.style.display = 'none';
         });
     },
 
@@ -124,27 +127,34 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @private
      */
     _bindEvent: function(target) {
-        var inputTag = target.getElementsByTagName('input')[0];
-        var spanTag = target.getElementsByTagName('span')[0];
-        var spanStyle = spanTag.style;
+        var inputElem = target.getElementsByTagName('input')[0];
+        var spanElem = target.getElementsByTagName('span')[0];
+        var spanStyle = spanElem.style;
 
-        util.bindEvent(spanTag, 'click', function() {
-            inputTag.focus();
+        /**
+         * Event handler
+         */
+        function onKeyup() {
+            if (inputElem.value === '') {
+                spanStyle.display = 'inline-block';
+            }
+        }
+
+        util.bindEvent(spanElem, 'click', function() {
+            inputElem.focus();
         });
 
-        util.bindEvent(inputTag, 'keydown', function(e) {
+        util.bindEvent(inputElem, 'keydown', function(e) {
             var keyCode = e.which || e.keyCode;
 
-            if (!(keyCode === KEYCODE_BACK || keyCode === KEYCODE_TAB)) {
+            if (!(keyCode === KEYCODE_BACK || keyCode === KEYCODE_TAB ||
+                (e.shiftKey && keyCode === KEYCODE_TAB))) {
                 spanStyle.display = 'none';
             }
         });
 
-        util.bindEvent(inputTag, 'keyup', function() {
-            if (inputTag.value === '') {
-                spanStyle.display = 'inline-block';
-            }
-        });
+        util.bindEvent(inputElem, 'keyup', onKeyup);
+        util.bindEvent(inputElem, 'blur', onKeyup);
     },
 
     /**
@@ -185,7 +195,7 @@ module.exports = {
      * Generate virtual placeholders
      * @param {HTMLElements|Undefined} inputElems - created 'input' elements
      * @api
-     * @sample
+     * @example
      * tui.component.placeholder.generate();
      * tui.component.placeholder.generate(document.getElementsByTagName('input'));
      */
@@ -200,23 +210,46 @@ module.exports = {
 
         sharedInstance.generatePlaceholders(tui.util.filter(selectedElems, function(elem) {
             var type = elem.type.toLowerCase();
+            var diableState = elem.disabled;
+            var readonlyState = elem.readOnly;
 
             return (tui.util.inArray(type, INPUT_TYPES) > -1 &&
-                    elem.getAttribute('placeholder'));
+                    elem.getAttribute('placeholder') &&
+                    !(diableState || readonlyState));
         }));
     },
 
     /**
      * When 'input' element already has value, hide the virtual placeholder
      * @api
-     * @sample
-     * tui.component.placeholder.hide();
+     * @example
+     * tui.component.placeholder.hideOnInputHavingValue();
      */
-    hide: function() {
+    hideOnInputHavingValue: function() {
+        var inputElems;
+
         if (isSupportPlaceholder) {
             return;
         }
 
-        sharedInstance.hidePlaceholders();
+        inputElems = sharedInstance.getAllInputElems();
+
+        sharedInstance.hidePlaceholders(tui.util.filter(inputElems, function(elem) {
+            return (elem.value !== '' && elem.type !== INPUT_TYPES[1]);
+        }));
+    },
+
+    /**
+     * Reset 'input' elements array (method for testcase)
+     * @api
+     * @example
+     * tui.component.placeholder.reset();
+     */
+    reset: function() {
+        if (isSupportPlaceholder) {
+            return;
+        }
+
+        sharedInstance.getAllInputElems().length = 0;
     }
 };

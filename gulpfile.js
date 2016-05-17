@@ -22,7 +22,7 @@ gulp.task('eslint', function() {
 
 gulp.task('karma', ['eslint'], function(done) {
     new KarmaServer({
-        configFile: path.join(__dirname, 'karma.conf.js'),
+        configFile: path.join(__dirname, 'karma.conf.private.js'),
         singleRun: true,
         logLevel: 'error'
     }, done).start();

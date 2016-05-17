@@ -13,7 +13,7 @@
     </head>
 
     <body>
-        <div class="wrap" style="width:500px;height:230px;">
+        <div class="wrap" style="width:500px;">
             <!-- Default -->
             <input type="text" placeholder="아이디를 입력하세요. 내용이 긴 경우***********************" />
             <input type="password" placeholder="비밀번호를 입력하세요." />
@@ -35,13 +35,22 @@
             </div>
             <!-- //Apply user style -->
 
-            <!-- test history back -->
+            <!-- Disable option -->
+            <div class="placeholder">
+                <input type="text" value="비활성화" placeholder="disabled option" DISABLED />
+            </div>
+            <div class="placeholder">
+                <input type="text" value="읽기 전용" placeholder="readonly option" READONLY />
+            </div>
+            <!-- //Disable option -->
+
+            <!-- Test history back -->
             <form action="sample2.html" method="get">
                 <input type="text" placeholder="test history back 1" value="has value" />
                 <input type="text" placeholder="test history back 2" />
                 <button type="submit">submit</button>
             </form>
-            <!-- //test history back -->
+            <!-- //Test history back -->
         </div>
 
         <div class="codeArea"></div>
@@ -53,6 +62,7 @@
 
         <!-- Import script file under html -->
         <script type="text/javascript" src="js/code-snippet.js"></script>
+        <script type="text/javascript" src="js/jquery.min.js"></script>
         <script type="text/javascript" src="js/placeholder.js"></script>
         <!-- //Import script file under html -->
 
@@ -61,7 +71,7 @@
             tui.component.placeholder.generate();
 
             $(document).ready(function() {
-                tui.component.placeholder.hide();
+                tui.component.placeholder.hideOnInputHavingValue();
             });
 
         </script>

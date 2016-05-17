@@ -16,6 +16,8 @@ describe('placeholder.js', function() {
     afterEach(function() {
         jasmine.getFixtures().clearCache();
         jasmine.getFixtures().cleanUp();
+
+        placeholder.reset();
     });
 
     it('Create and append the <style> element for adding css rule on IE9 to IE11.', function() {
@@ -71,12 +73,12 @@ describe('placeholder.js', function() {
     });
 
 
-    it('When "hidden" method is called, placeholder that has input value changes the status to hidden.', function() {
+    it('When "hideOnHasValueInput" method is called, placeholder changes the status to hidden.', function() {
         $('input:eq(2)').val('history back'); // input tag
 
         expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 1 : 0);
 
-        placeholder.hide();
+        placeholder.hideOnInputHavingValue();
 
         expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 2 : 0);
     });

@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <div class="wrap" style="width:500px;height:350px;">
+        <div class="wrap" style="width:500px;">
             <!-- Default -->
             <div class="placeholder">
                 <input type="text" placeholder="아이디를 입력하세요." />
@@ -61,6 +61,24 @@
 
                 tui.component.placeholder.generate(addElems);
             }
+
+            var util = {
+                bindEvent: function(target, eventType, callback) {
+                    if (target.addEventListener) {
+                        target.addEventListener(eventType, callback, false);
+                    } else if (target.attachEvent) {
+                        target.attachEvent('on' + eventType, callback);
+                    } else {
+                        target['on' + eventType] = callback;
+                    }
+                }
+            };
+
+            var addBtn = document.getElementById('btn-add');
+
+            util.bindEvent(addBtn, 'click', function() {
+                append();
+            });
 
             tui.component.placeholder.generate();
 

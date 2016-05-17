@@ -15,7 +15,7 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 * **Sample** : https://nhnent.github.io/tui.component.placeholder/latest/tutorial.html
 
 ## Dependency
-* tui-code-snippet: 1.1.1
+* tui-code-snippet: 1.1.3
 
 ## Test environment
 * PC
@@ -37,6 +37,7 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 ## History
 | Version | Description | Date | Developer |
 | ---- | ---- | ---- | ---- |
+| 1.0.3 | Add api | 2016.05 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
 | 1.0.2 | Change a way of call function | 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
 | 1.0.1 | Add INPUT type| 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
 | 1.0.0 | Release | 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
