@@ -34,6 +34,14 @@
                 <input type="tel" id="unique-placeholder" name="email" placeholder="이메일" />
             </div>
             <!-- //Apply user style -->
+
+            <!-- test history back -->
+            <form action="sample2.html" method="get">
+                <input type="text" placeholder="test history back 1" value="has value" />
+                <input type="text" placeholder="test history back 2" />
+                <button type="submit">submit</button>
+            </form>
+            <!-- //test history back -->
         </div>
 
         <div class="codeArea"></div>
@@ -49,7 +57,13 @@
         <!-- //Import script file under html -->
 
         <script type="text/javascript" class="serviceCode">
-            tui.component.placeholder();
+
+            tui.component.placeholder.generate();
+
+            $(document).ready(function() {
+                tui.component.placeholder.hide();
+            });
+
         </script>
     </body>
 </html>

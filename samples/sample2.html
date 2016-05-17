@@ -41,13 +41,13 @@
         <!-- //Import script file under html -->
 
         <script class="serviceCode">
-        
+
             function append() {
-                var parent = document.getElementById('add-area'),
-                    i = 1,
-                    len = 3,
-                    html = '',
-                    addElems;
+                var parent = document.getElementById('add-area');
+                var i = 1;
+                var len = 3;
+                var html = '';
+                var addElems;
 
                 for (; i <= len; i += 1) {
                     html += '<div class="placeholder">';
@@ -59,10 +59,10 @@
 
                 addElems = parent.getElementsByTagName('input');
 
-                tui.component.placeholder(addElems); // excute
+                tui.component.placeholder.generate(addElems);
             }
 
-            tui.component.placeholder();
+            tui.component.placeholder.generate();
 
         </script>
     </body>
