@@ -20,7 +20,7 @@ describe('placeholder.js', function() {
 
     it('Create and append the <style> element for adding css rule on IE9 to IE11.', function() {
         var styleTagLen = $('style').length;
-        var expected = (browser.msie && (browser.version > 9 && browser.version <= 11)) ? 2 : 0;
+        var expected = (browser.msie && (browser.version > 9 && browser.version <= 11)) ? 1 : 0;
 
         expect(styleTagLen).toEqual(expected);
     });

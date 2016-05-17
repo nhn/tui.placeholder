@@ -24,12 +24,11 @@ var INPUT_TYPES = [
 /**
  * Placeholder Object
  * @constructor
- * @param {HTMLElement} elements - Selected 'input' elements
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     init: function() {
         /**
-         * Array pushed all 'input' elements in the current page
+         * Array pushed 'input' elements in the current page
          * @type {Array}
          * @private
          */
@@ -38,18 +37,18 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Add elements in array
-     * @param {HTMLElements|Undefined} inputElems - Selected 'input' elements for generating placeholder
+     * @param {HTMLElements} inputElems - Selected 'input' elements for generating placeholder
      */
-    add: function(inputElems) {
-        var selectedElems = tui.util.toArray(inputElems || document.getElementsByTagName('input'));
-
-        if (inputElems) {
-            this._inputElems.concat(selectedElems);
+    generatePlaceholders: function(inputElems) {
+        if (this._inputElems.length) {
+            this._inputElems.concat(inputElems);
         } else {
-            this._inputElems = selectedElems;
+            this._inputElems = inputElems;
         }
 
-        this._generatePlaceholder(selectedElems);
+        tui.util.forEach(inputElems, function(elem, index) {
+            this._attachPlaceholder(elem, index);
+        }, this);
     },
 
     /**
@@ -58,29 +57,9 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     hidePlaceholders: function() {
         tui.util.forEach(this._inputElems, function(elem) {
             var placeholder = elem.parentNode.getElementsByTagName('span')[0];
-            var style;
 
-            if (elem.value !== '' && elem.type !== INPUT_TYPES[1]) {
-                style = 'none';
-            } else {
-                style = 'inline-block';
-            }
-
-            placeholder.style.display = style;
+            placeholder.style.display = elem.value !== '' ? 'none' : 'inline-block';
         });
-    },
-
-    /**
-     * Generate virtual placeholders for the browser isnt't supported placeholder property
-     * @param {HTMLElements} inputElems - 'input' elements for generating placeholder
-     */
-    _generatePlaceholder: function(inputElems) {
-        tui.util.forEach(inputElems, function(elem, index) {
-            if (tui.util.inArray(elem.type, INPUT_TYPES) > -1 &&
-                elem.getAttribute('placeholder')) {
-                this._attachCustomPlaceholder(elem, index);
-            }
-        }, this);
     },
 
     /**
@@ -118,15 +97,13 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @param {Number} index - Current item index
      * @private
      */
-    _attachCustomPlaceholder: function(target, index) {
+    _attachPlaceholder: function(target, index) {
         var initStyle = this._getInitStyle(target);
         var wrapTag = document.createElement('span');
         var placeholder = target.getAttribute('placeholder');
         var parentNode = target.parentNode;
         var cloneNode = target.cloneNode();
         var hasValue = target.value !== '';
-
-        this._inputElems[index] = cloneNode;
 
         wrapTag.innerHTML = this._generateSpanTag(initStyle.paddingLeft, initStyle.fontSize, placeholder, hasValue);
         wrapTag.appendChild(cloneNode);
@@ -135,6 +112,8 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
         parentNode.removeChild(target);
 
         wrapTag.style.cssText = 'position:relative;line-height:1;';
+
+        this._inputElems[index] = cloneNode;
 
         this._bindEvent(wrapTag);
     },
@@ -211,11 +190,20 @@ module.exports = {
      * tui.component.placeholder.generate(document.getElementsByTagName('input'));
      */
     generate: function(inputElems) {
+        var selectedElems;
+
         if (isSupportPlaceholder) {
             return;
         }
 
-        sharedInstance.add(inputElems);
+        selectedElems = tui.util.toArray(inputElems || document.getElementsByTagName('input'));
+
+        sharedInstance.generatePlaceholders(tui.util.filter(selectedElems, function(elem) {
+            var type = elem.type.toLowerCase();
+
+            return (tui.util.inArray(type, INPUT_TYPES) > -1 &&
+                    elem.getAttribute('placeholder'));
+        }));
     },
 
     /**
