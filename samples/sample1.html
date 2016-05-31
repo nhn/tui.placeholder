@@ -14,43 +14,52 @@
 
     <body>
         <div class="wrap" style="width:500px;">
-            <!-- Default -->
-            <input type="text" placeholder="아이디를 입력하세요. 내용이 긴 경우***********************" />
-            <input type="password" placeholder="비밀번호를 입력하세요." />
-            <!-- //Default -->
+            <div>
+                <!-- Default input -->
+                <input type="text" placeholder="id" />
+                <input type="password" placeholder="password" />
+                <!-- //Default input -->
+            </div>
+
+            <div>
+                <!-- //Default textarea -->
+                <textarea placeholder="input text"></textarea>
+                <textarea placeholder="input text">already has value</textarea>
+                <!-- //Default textarea -->
+            </div>
+
+            <!-- Test history back -->
+            <form action="sample2.html" method="get">
+                <input type="text" placeholder="test history back" />
+                <input type="text" placeholder="test history back" value="already has value" />
+                <button type="submit">submit</button>
+            </form>
+            <!-- //Test history back -->
 
             <!-- Apply user style -->
             <div class="placeholder">
-                <input type="text" name="id" placeholder="아이디를 입력하세요." />
+                <input type="text" name="id" placeholder="id" />
             </div>
             <div class="placeholder">
-                <input type="password" value="dd" name="password" placeholder="비밀번호를 입력하세요." />
+                <input type="password" name="password" placeholder="password" value="already has value" />
                 <input type="hidden" />
             </div>
             <div class="placeholder">
-                <input type="eamil" name="email" placeholder="이메일" autocomplete="off" />
+                <input type="eamil" name="email" placeholder="email" autocomplete="off" />
             </div>
             <div class="placeholder">
-                <input type="tel" id="unique-placeholder" name="email" placeholder="이메일" />
+                <input type="tel" id="unique-placeholder" name="phone" placeholder="phone" />
             </div>
             <!-- //Apply user style -->
 
             <!-- Disable option -->
             <div class="placeholder">
-                <input type="text" value="비활성화" placeholder="disabled option" DISABLED />
+                <input type="text" value="disabled" placeholder="disabled option" disabled />
             </div>
             <div class="placeholder">
-                <input type="text" value="읽기 전용" placeholder="readonly option" READONLY />
+                <input type="text" value="readonly" placeholder="readonly option" readonly />
             </div>
             <!-- //Disable option -->
-
-            <!-- Test history back -->
-            <form action="sample2.html" method="get">
-                <input type="text" placeholder="test history back 1" value="has value" />
-                <input type="text" placeholder="test history back 2" />
-                <button type="submit">submit</button>
-            </form>
-            <!-- //Test history back -->
         </div>
 
         <div class="codeArea"></div>
