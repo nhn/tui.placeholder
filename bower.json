@@ -17,7 +17,13 @@
         "karma.conf.js",
         "package.json",
         ".gitignore",
-        "samples"
+        "samples",
+        ".eslintrc.json",
+        "index.js",
+        "jsdoc-conf.json",
+        "karma.conf.js",
+        "package.json",
+        "bower.json"
     ],
     "dependencies": {
         "tui-code-snippet": "^1.0.4"
