@@ -1,2 +1,21 @@
-.placeholder input{margin-top:5px;padding:10px;width:200px;border:3px solid #ddd;}
-#unique-placeholder{background-color:#eee;}
+.placeholder {
+    margin: 5px 0;
+}
+
+.placeholder input {
+    padding: 10px;
+    width:200px;
+    border:3px solid #ddd;
+}
+
+.placeholder textarea{
+    padding: 20px;
+    width: 300px;
+    border: 3px solid #ddd;
+    overflow: hidden;
+    resize: none;
+}
+
+#unique-placeholder {
+    background-color: #eee;
+}

@@ -5,43 +5,35 @@ Placeholder Component<br>
 Generate virtual placeholders on the browser don't support native 'placeholder' property.
 
 ## Feature
-* All 'input' tags have 'placeholder' property display placeholder's value.
-* When select the 'input' tag, placeholder's value don't disappear.
-* When insert content in the 'input' tag, placeholder's value disappear.
-* When remove content in the 'input' tag, placeholder's value appear.
+* All 'input' and 'textarea' tags have 'placeholder' property display placeholder's value.
+* When select the 'input' or 'textarea' tag, placeholder's value don't disappear.
+* When insert content in the 'input' or 'textarea' tag, placeholder's value disappear.
+* When remove content in the 'input' or 'textarea' tag, placeholder's value appear.
 
 ## Documentation
+* **API** : https://nhnent.github.io/tui.component.placeholder/latest
 * **Tutorial** : https://github.com/nhnent/tui.component.placeholder/wiki/Placeholder-Tutorial
 * **Sample** : https://nhnent.github.io/tui.component.placeholder/latest/tutorial.html
 
 ## Dependency
-* tui-code-snippet: 1.1.3
+* tui-code-snippet : 1.1.3
 
 ## Test environment
-* PC
-    * IE7~11
+* browser
+    * IE7+
     * Edge
     * Chrome
     * Firefox
-    * Safari
-* Mobile
-    * iOS
-    * Android
 
 ## Download/Install
-* Bower:
-   * latest : `bower install tui-component-placeholder#master`
-   * each version : `bower install tui-component-placeholder[#tag]`
-* Download: https://github.com/nhnent/tui.component.placeholder
-
-## History
-| Version | Description | Date | Developer |
-| ---- | ---- | ---- | ---- |
-| 1.0.3 | Add api | 2016.05 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
-| 1.0.2 | Change a way of call function | 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
-| 1.0.1 | Add INPUT type| 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
-| 1.0.0 | Release | 2016.04 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
-| 0.9.0 | Skaffold added | 2016.03 | NHN Ent. FE dev team. <dl_javascript@nhnent.com> |
+* Bower :
+   * Latest : `bower install tui-component-placeholder#master`
+   * Each Version : `bower install tui-component-placeholder[#tag]`
+* Download : https://github.com/nhnent/tui.component.placeholder
 
 ## LICENSE
 [MIT LICENSE](LICENSE)
+
+## Sponsor
+* <img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
+ [BrowserStack](https://www.browserstack.com/) is a cloud based cross browser testing tool

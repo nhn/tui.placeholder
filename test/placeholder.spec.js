@@ -2,7 +2,8 @@
 
 var placeholder = require('../src/placeholder.js');
 var browser = tui.util.browser;
-var isSupportPlaceholder = 'placeholder' in document.createElement('input') && !(browser.msie && browser.version <= 11);
+var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
+                            !(browser.msie && browser.version <= 11);
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 
@@ -11,13 +12,6 @@ describe('placeholder.js', function() {
         loadFixtures('placeholder.html');
 
         placeholder.generate();
-    });
-
-    afterEach(function() {
-        jasmine.getFixtures().clearCache();
-        jasmine.getFixtures().cleanUp();
-
-        placeholder.reset();
     });
 
     it('Create and append the <style> element for adding css rule on IE9 to IE11.', function() {
@@ -29,31 +23,27 @@ describe('placeholder.js', function() {
 
     it('When placeholder property is not supported on the browser, generating the virtual placeholder.', function() {
         var $placeholder = $('span > span');
-        var expected = !isSupportPlaceholder ? 3 : 0;
 
-        expect($placeholder.length).toEqual(expected);
+        expect($placeholder.length).toEqual(!isSupportPlaceholder ? 5 : 0);
     });
 
     describe('When the virtual placeholder is generated,', function() {
-        it('this element has an inline style.', function() {
+        it('elements have an inline style.', function() {
             var $placeholder = $('span > span[style]');
-            var expected = !isSupportPlaceholder ? 3 : 0;
 
-            expect($placeholder.length).toEqual(expected);
+            expect($placeholder.length).toEqual(!isSupportPlaceholder ? 5 : 0);
         });
 
-        it('This element is hidden, if the <input> element has already value.', function() {
+        it('elements that have already value are hidden.', function() {
             var $placeholder = $('span > span:hidden');
-            var expected = !isSupportPlaceholder ? 1 : 0;
 
-            expect($placeholder.length).toEqual(expected);
+            expect($placeholder.length).toEqual(!isSupportPlaceholder ? 2 : 0);
         });
 
-        it('This element set the special attribute that don\'t copy and drag.', function() {
+        it('elements set the special attribute that don\'t copy and drag.', function() {
             var $placeholder = $('span > span[unselectable="on"]');
-            var expected = !isSupportPlaceholder ? 3 : 0;
 
-            expect($placeholder.length).toEqual(expected);
+            expect($placeholder.length).toEqual(!isSupportPlaceholder ? 5 : 0);
         });
     });
 
@@ -72,14 +62,13 @@ describe('placeholder.js', function() {
         expect($('span > .addon').length).toEqual(expected);
     });
 
-
     it('When "hideOnHasValueInput" method is called, placeholder changes the status to hidden.', function() {
         $('input:eq(2)').val('history back'); // input tag
 
-        expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 1 : 0);
+        expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 2 : 0);
 
         placeholder.hideOnInputHavingValue();
 
-        expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 2 : 0);
+        expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 3 : 0);
     });
 });

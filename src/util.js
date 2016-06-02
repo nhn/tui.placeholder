@@ -45,30 +45,27 @@ var util = {
     },
 
     /**
-     * Make string of style
-     * @param {Object} styleObj - styleObj
+     * Make CSSText
+     * @param {Object} styleObj - Style info object
      * @returns {string} Connected string of style
      */
     makeStyleText: function(styleObj) {
         var styleStr = '';
-        var prop;
 
-        for (prop in styleObj) {
-            if (styleObj.hasOwnProperty(prop)) {
-                styleStr += prop + ':' + styleObj[prop] + ';';
-            }
-        }
+        tui.util.forEach(styleObj, function(value, prop) {
+            styleStr += prop + ':' + value + ';';
+        });
 
         return styleStr;
     },
 
     /**
-     * Replace mached property with template
+     * Replace matched property with template
      * @param {string} template - String of template
      * @param {Object} propObj - Properties
      * @returns {string} Replaced template string
      */
-    replaceTemplate: function(template, propObj) {
+    applyTemplate: function(template, propObj) {
         var newTemplate = template.replace(/\{\{(\w*)\}\}/g, function(value, prop) {
             return propObj.hasOwnProperty(prop) ? propObj[prop] : '';
         });

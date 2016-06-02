@@ -1,6 +1,6 @@
 {
     "source": {
-        "include": ["src", "README.md"],
+        "include": ["index.js", "src", "README.md"],
         "exclude": [],
         "includePattern": ".+\\.js(doc)?$",
         "excludePattern": "(^|\\/|\\\\)_"
@@ -35,7 +35,7 @@
     },
     "opts": {
         "recurse": true,
-        "destination": "latest",
+        "destination": "doc",
         "tutorials": "samples",
         "name": "Placeholder"
     }

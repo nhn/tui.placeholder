@@ -74,7 +74,6 @@ module.exports = function(config) {
         autoWatch: true,
 
         browsers: [
-            'IE7',
             'IE8',
             'IE9',
             'IE10',
@@ -85,12 +84,6 @@ module.exports = function(config) {
         ],
 
         customLaunchers: {
-            'IE7': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'internet explorer',
-                version: 7
-            },
             'IE8': {
                 base: 'WebDriver',
                 config: webdriverConfig,

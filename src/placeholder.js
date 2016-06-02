@@ -13,7 +13,7 @@ var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
 
 var KEYCODE_BACK = 8;
 var KEYCODE_TAB = 9;
-var ENABLE_TAGS = [
+var TARGET_TAGS = [
     'input',
     'textarea'
 ];
@@ -28,19 +28,13 @@ var INPUT_TYPES = [
 ];
 var WRAPPER_STYLE = util.makeStyleText({
     'position': 'relative',
-    'line-height': 'inherit'
+    'display': 'inline-block',
+    'overflow': 'hidden'
 });
 var DEFAULT_STYLE = util.makeStyleText({
     'position': 'absolute',
-    'left': '0',
-    'width': '90%',
     'overflow': 'hidden',
-    'white-space': 'nowrap',
-    'text-overflow': 'ellipsis',
-    '*display': 'inline',
-    'zoom': '1',
-    'color': '#aaa',
-    'line-height': '1.2',
+    'color': '#999',
     'z-index': '0'
 });
 var TEMPLATE = '<span style="{{style}}" UNSELECTABLE="on">{{placeholderText}}</span>';
@@ -94,10 +88,11 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
         var wrapper = document.createElement('span');
         var parentNode = target.parentNode;
 
-        parentNode.insertBefore(wrapper, target);
-
         wrapper.innerHTML = placeholder;
         wrapper.style.cssText = WRAPPER_STYLE;
+
+        parentNode.insertBefore(wrapper, target);
+
         wrapper.appendChild(target);
     },
 
@@ -149,17 +144,18 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
         var isInput = target.nodeName.toLowerCase() === 'input';
         var styleObj = {
             'display': hasValue ? 'none' : 'inline-block',
-            'margin-top': (isInput ? -(parseFloat(initStyle.fontSize, 10) / 2) - 1 : 0) + 'px',
-            'padding-left': initStyle.paddingLeft,
+            'top': parseInt(initStyle.paddingTop, 10) +
+                    parseInt(initStyle.borderTopWidth, 10) + 'px',
+            'left': parseInt(initStyle.paddingLeft, 10) +
+                    parseInt(initStyle.borderLeftWidth, 10) + 'px',
             'font-size': initStyle.fontSize,
             'font-family': initStyle.fontFamily
         };
+        var addStyle = !isInput ? {'width': '90%'} : {'white-space': 'nowrap'};
 
-        if (isInput) {
-            styleObj.top = '50%';
-        }
+        tui.util.extend(styleObj, addStyle);
 
-        return util.replaceTemplate(TEMPLATE, {
+        return util.applyTemplate(TEMPLATE, {
             style: DEFAULT_STYLE + util.makeStyleText(styleObj),
             placeholderText: placeholderText
         });
@@ -211,7 +207,7 @@ module.exports = {
             var inputType = target.type.toLowerCase();
             var disableState = target.disabled || target.readOnly;
             var hasProp = !tui.util.isNull(target.getAttribute('placeholder'));
-            var enableElem = tui.util.inArray(tagName, ENABLE_TAGS) > -1;
+            var enableElem = tui.util.inArray(tagName, TARGET_TAGS) > -1;
 
             if (tagName === 'input') {
                 enableElem = tui.util.inArray(inputType, INPUT_TYPES) > -1;
