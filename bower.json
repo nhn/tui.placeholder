@@ -14,7 +14,6 @@
         "test",
         "tests",
         "gulpfile.js",
-        "karma.conf.js",
         "package.json",
         ".gitignore",
         "samples",
@@ -22,6 +21,7 @@
         "index.js",
         "jsdoc-conf.json",
         "karma.conf.js",
+        "karma.conf.*.js",
         "package.json",
         "bower.json"
     ],
