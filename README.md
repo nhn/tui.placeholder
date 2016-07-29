@@ -16,7 +16,7 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 * **Sample** : https://nhnent.github.io/tui.component.placeholder/latest/tutorial.html
 
 ## Dependency
-* tui-code-snippet : 1.1.3
+* tui-code-snippet : ~1.2.0
 
 ## Test environment
 * browser
@@ -27,7 +27,7 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 
 ## Download/Install
 * Bower :
-   * Latest : `bower install tui-component-placeholder#master`
+   * Latest : `bower install tui-component-placeholder`
    * Each Version : `bower install tui-component-placeholder[#tag]`
 * Download : https://github.com/nhnent/tui.component.placeholder
 
