@@ -1,5 +1,9 @@
 'use strict';
 
+var callbackPropName = function(eventType) {
+    return '__cb_tui_placeholder_' + eventType + '__';
+};
+
 var hasComputedStyle = (window.getComputedStyle);
 
 var util = {
@@ -30,18 +34,58 @@ var util = {
 
     /**
      * Bind event to element
-     * @param {HTMLElement} target - Tag for binding event
+     * @param {HTMLElement} target - DOM element to attach the event handler on
      * @param {string} eventType - Event type
      * @param {requestCallback} callback - Event handler function
      */
     bindEvent: function(target, eventType, callback) {
+        var success = true;
+
         if (target.addEventListener) {
             target.addEventListener(eventType, callback, false);
         } else if (target.attachEvent) {
             target.attachEvent('on' + eventType, callback);
         } else {
-            target['on' + eventType] = callback;
+            success = false;
         }
+
+        if (success) {
+            target[callbackPropName(eventType)] = callback;
+        }
+    },
+
+    /**
+     * Unbind event from element
+     * @param {HTMLElement} target - DOM element to detach the event handler from
+     * @param {[type]} eventType - Event type
+     */
+    unbindEvent: function(target, eventType) {
+        var callback = target[callbackPropName(eventType)];
+        var success = true;
+
+        if (target.removeEventListener) {
+            target.removeEventListener(eventType, callback);
+        } else if (target.detachEvent) {
+            target.detachEvent('on' + eventType, callback);
+        } else {
+            success = false;
+        }
+
+        if (success) {
+            delete target[callbackPropName(eventType)];
+        }
+    },
+
+    /**
+     * Remove target items from source array and returns a new removed array.
+     * @param {array} sourceItems - source array
+     * @param {array} targetItems - target items
+     * @returns {array} new removed array
+     */
+    removeArrayItems: function(sourceItems, targetItems) {
+        return tui.util.filter(sourceItems, function(item) {
+            return targetItems.indexOf(item) === -1;
+        });
     },
 
     /**

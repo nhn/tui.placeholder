@@ -55,17 +55,38 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Generate placeholders
-     * @param {HTMLElements} selectedTargets - Selected elements for generating placeholder
+     * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     * @param {object} [options] - options
+     *   @param {string} [options.wrapperClassName] - wrapper class name
      */
-    generateOnTargets: function(selectedTargets) {
+    generateOnTargets: function(selectedTargets, options) {
         this.targets = this.targets.concat(selectedTargets);
 
         tui.util.forEach(this.targets, function(target) {
             var placeholder = this._getPlaceholderHtml(target);
 
-            this._attachPlaceholder(target, placeholder);
+            this._attachPlaceholder(target, placeholder, options);
             this._bindEvent(target, target.previousSibling);
         }, this);
+    },
+
+    /**
+     * Remove placeholders
+     * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     */
+    remove: function(selectedTargets) {
+        var targets = selectedTargets || this.targets;
+
+        tui.util.forEach(targets, function(target) {
+            this._unbindEvent(target, target.previousSibling);
+            this._detachPlaceholder(target);
+        }, this);
+
+        if (!selectedTargets) {
+            this.targets = [];
+        } else {
+            this.targets = util.omit(this.targets, selectedTargets);
+        }
     },
 
     /**
@@ -82,18 +103,37 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * Attach a new virtual placeholder after a selected 'input' element and wrap this element
      * @param {HTMLElement} target - The 'input' or 'textarea' element
      * @param {string} placeholder - HTML string of the virtual placeholder
+     * @param {object} [options] - options
+     *   @param {string} [options.wrapperClassName] - wrapper class name
      * @private
      */
-    _attachPlaceholder: function(target, placeholder) {
+    _attachPlaceholder: function(target, placeholder, options) {
         var wrapper = document.createElement('span');
         var parentNode = target.parentNode;
 
+        if (options && options.wrapperClassName) {
+            wrapper.className = options.wrapperClassName;
+        }
         wrapper.innerHTML = placeholder;
         wrapper.style.cssText = WRAPPER_STYLE;
 
         parentNode.insertBefore(wrapper, target);
 
         wrapper.appendChild(target);
+    },
+
+    /**
+     * Detach generated placeholder and restore the target to original state.
+     * @param {HTMLElement} target - The 'input' or 'textarea' element
+     */
+    _detachPlaceholder: function(target) {
+        var wrapper = target.parentNode;
+        var parentNode = wrapper.parentNode;
+        var placeholder = target.previousSibling;
+
+        wrapper.removeChild(placeholder);
+        parentNode.insertBefore(target, wrapper);
+        parentNode.removeChild(wrapper);
     },
 
     /**
@@ -129,6 +169,19 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
         util.bindEvent(target, 'keyup', onKeyup);
         util.bindEvent(target, 'blur', onKeyup);
+    },
+
+    /**
+     * Unbind events from the element
+     * @param {HTMLElement} target - The 'input' or 'textarea' element
+     * @param {HTMLElement} placeholder - The virtual placeholder element
+     * @private
+     */
+    _unbindEvent: function(target, placeholder) {
+        util.unbindEvent(target, 'keydown');
+        util.unbindEvent(target, 'keyup');
+        util.unbindEvent(target, 'blur');
+        util.unbindEvent(placeholder, 'click');
     },
 
     /**
@@ -184,16 +237,21 @@ sharedInstance = new Placeholder();
 
 module.exports = {
     /**
-     * Generate virtual placeholders
-     * @param {HTMLElements} [selectedTargets] - created elements
+     * Generate virtual placeholders.
+     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     * @param {object} [options] - options
+     *   @param {string} [options.wrapperClassName] - wrapper class name
      * @memberof tui.component.placeholder
      * @function
      * @api
      * @example
      * tui.component.placeholder.generate();
      * tui.component.placeholder.generate(document.getElementsByTagName('input'));
+     * tui.component.placeholder.generate(document.getElementsByTagName('input'), {
+     *     wrapperClassName: 'my-class-name'
+     * });
      */
-    generate: function(selectedTargets) {
+    generate: function(selectedTargets, options) {
         var targets;
 
         if (isSupportPlaceholder) {
@@ -214,7 +272,22 @@ module.exports = {
             }
 
             return hasProp && enableElem && !disableState;
-        }));
+        }), options);
+    },
+
+    /**
+     * Clear generated placeholders.
+     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     */
+    remove: function(selectedTargets) {
+        var targets;
+
+        if (isSupportPlaceholder) {
+            return;
+        }
+
+        targets = (selectedTargets) ? tui.util.toArray(selectedTargets) : null;
+        sharedInstance.remove(targets);
     },
 
     /**
