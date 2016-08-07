@@ -62,38 +62,17 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Generate placeholders
-     * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
-     * @param {object} [options] - options
-     *   @param {string} [options.wrapperClassName] - wrapper class name
+     * @param {HTMLElements} selectedTargets - Selected elements for generating placeholder
      */
-    generateOnTargets: function(selectedTargets, options) {
+    generateOnTargets: function(selectedTargets) {
         this.targets = this.targets.concat(selectedTargets);
 
         tui.util.forEach(this.targets, function(target) {
             var placeholder = this._getPlaceholderHtml(target);
 
-            this._attachPlaceholder(target, placeholder, options);
+            this._attachPlaceholder(target, placeholder);
             this._bindEvent(target, target.previousSibling);
         }, this);
-    },
-
-    /**
-     * Remove placeholders
-     * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
-     */
-    remove: function(selectedTargets) {
-        var targets = selectedTargets || this.targets;
-
-        tui.util.forEach(targets, function(target) {
-            this._unbindEvent(target, target.previousSibling);
-            this._detachPlaceholder(target);
-        }, this);
-
-        if (!selectedTargets) {
-            this.targets = [];
-        } else {
-            this.targets = util.omit(this.targets, selectedTargets);
-        }
     },
 
     /**
@@ -110,37 +89,18 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * Attach a new virtual placeholder after a selected 'input' element and wrap this element
      * @param {HTMLElement} target - The 'input' or 'textarea' element
      * @param {string} placeholder - HTML string of the virtual placeholder
-     * @param {object} [options] - options
-     *   @param {string} [options.wrapperClassName] - wrapper class name
      * @private
      */
-    _attachPlaceholder: function(target, placeholder, options) {
+    _attachPlaceholder: function(target, placeholder) {
         var wrapper = document.createElement('span');
         var parentNode = target.parentNode;
 
-        if (options && options.wrapperClassName) {
-            wrapper.className = options.wrapperClassName;
-        }
         wrapper.innerHTML = placeholder;
         wrapper.style.cssText = WRAPPER_STYLE;
 
         parentNode.insertBefore(wrapper, target);
 
         wrapper.appendChild(target);
-    },
-
-    /**
-     * Detach generated placeholder and restore the target to original state.
-     * @param {HTMLElement} target - The 'input' or 'textarea' element
-     */
-    _detachPlaceholder: function(target) {
-        var wrapper = target.parentNode;
-        var parentNode = wrapper.parentNode;
-        var placeholder = target.previousSibling;
-
-        wrapper.removeChild(placeholder);
-        parentNode.insertBefore(target, wrapper);
-        parentNode.removeChild(wrapper);
     },
 
     /**
@@ -176,19 +136,6 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
         util.bindEvent(target, 'keyup', onKeyup);
         util.bindEvent(target, 'blur', onKeyup);
-    },
-
-    /**
-     * Unbind events from the element
-     * @param {HTMLElement} target - The 'input' or 'textarea' element
-     * @param {HTMLElement} placeholder - The virtual placeholder element
-     * @private
-     */
-    _unbindEvent: function(target, placeholder) {
-        util.unbindEvent(target, 'keydown');
-        util.unbindEvent(target, 'keyup');
-        util.unbindEvent(target, 'blur');
-        util.unbindEvent(placeholder, 'click');
     },
 
     /**
@@ -244,21 +191,16 @@ sharedInstance = new Placeholder();
 
 module.exports = {
     /**
-     * Generate virtual placeholders.
-     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
-     * @param {object} [options] - options
-     *   @param {string} [options.wrapperClassName] - wrapper class name
+     * Generate virtual placeholders
+     * @param {HTMLElements} [selectedTargets] - created elements
      * @memberof tui.component.placeholder
      * @function
      * @api
      * @example
      * tui.component.placeholder.generate();
      * tui.component.placeholder.generate(document.getElementsByTagName('input'));
-     * tui.component.placeholder.generate(document.getElementsByTagName('input'), {
-     *     wrapperClassName: 'my-class-name'
-     * });
      */
-    generate: function(selectedTargets, options) {
+    generate: function(selectedTargets) {
         var targets;
 
         if (isSupportPlaceholder) {
@@ -279,22 +221,7 @@ module.exports = {
             }
 
             return hasProp && enableElem && !disableState;
-        }), options);
-    },
-
-    /**
-     * Clear generated placeholders.
-     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
-     */
-    remove: function(selectedTargets) {
-        var targets;
-
-        if (isSupportPlaceholder) {
-            return;
-        }
-
-        targets = (selectedTargets) ? tui.util.toArray(selectedTargets) : null;
-        sharedInstance.remove(targets);
+        }));
     },
 
     /**
@@ -318,10 +245,6 @@ module.exports = {
 
 },{"./util.js":3}],3:[function(require,module,exports){
 'use strict';
-
-var callbackPropName = function(eventType) {
-    return '__cb_tui_placeholder_' + eventType + '__';
-};
 
 var hasComputedStyle = (window.getComputedStyle);
 
@@ -353,58 +276,18 @@ var util = {
 
     /**
      * Bind event to element
-     * @param {HTMLElement} target - DOM element to attach the event handler on
+     * @param {HTMLElement} target - Tag for binding event
      * @param {string} eventType - Event type
      * @param {requestCallback} callback - Event handler function
      */
     bindEvent: function(target, eventType, callback) {
-        var success = true;
-
         if (target.addEventListener) {
             target.addEventListener(eventType, callback, false);
         } else if (target.attachEvent) {
             target.attachEvent('on' + eventType, callback);
         } else {
-            success = false;
+            target['on' + eventType] = callback;
         }
-
-        if (success) {
-            target[callbackPropName(eventType)] = callback;
-        }
-    },
-
-    /**
-     * Unbind event from element
-     * @param {HTMLElement} target - DOM element to detach the event handler from
-     * @param {[type]} eventType - Event type
-     */
-    unbindEvent: function(target, eventType) {
-        var callback = target[callbackPropName(eventType)];
-        var success = true;
-
-        if (target.removeEventListener) {
-            target.removeEventListener(eventType, callback);
-        } else if (target.detachEvent) {
-            target.detachEvent('on' + eventType, callback);
-        } else {
-            success = false;
-        }
-
-        if (success) {
-            delete target[callbackPropName(eventType)];
-        }
-    },
-
-    /**
-     * Remove target items from source array and returns a new removed array.
-     * @param {array} sourceItems - source array
-     * @param {array} targetItems - target items
-     * @returns {array} new removed array
-     */
-    removeArrayItems: function(sourceItems, targetItems) {
-        return tui.util.filter(sourceItems, function(item) {
-            return targetItems.indexOf(item) === -1;
-        });
     },
 
     /**
