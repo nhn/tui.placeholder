@@ -206,7 +206,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             'left': parseInt(initStyle.paddingLeft, 10) +
                     parseInt(initStyle.borderLeftWidth, 10) + 'px',
             'font-size': initStyle.fontSize,
-            'font-family': initStyle.fontFamily
+            'font-family': initStyle.fontFamily.replace(/\"/g, '\'')
         };
         var addStyle = !isInput ? {'width': '90%'} : {'white-space': 'nowrap'};
 
