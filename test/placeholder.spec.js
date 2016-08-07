@@ -86,3 +86,16 @@ describe('placeholder.js', function() {
         });
     });
 });
+
+describe('placeholder - generate()', function() {
+    it('If called with wrapperClassName option, add given className to the wrapper', function() {
+        var $input = $('<input placeholder="Default Value" />');
+        jasmine.getFixtures().set($input);
+
+        placeholder.generate($input.toArray(), {
+            wrapperClassName: 'my-custom-class'
+        });
+
+        expect($input.parent().hasClass('my-custom-class')).toBe(!isSupportPlaceholder);
+    });
+});
