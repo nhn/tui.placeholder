@@ -75,18 +75,22 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      */
     remove: function(selectedTargets) {
-        var targets = selectedTargets || this.targets;
+        var removeTargets;
 
-        tui.util.forEach(targets, function(target) {
+        if (selectedTargets) {
+            removeTargets = tui.util.filter(selectedTargets, function(target) {
+                return this.targets.indexOf(target) >= 0;
+            }, this);
+            this.targets = util.removeArrayItems(this.targets, removeTargets);
+        } else {
+            removeTargets = this.targets;
+            this.targets = [];
+        }
+
+        tui.util.forEach(removeTargets, function(target) {
             this._unbindEvent(target, target.previousSibling);
             this._detachPlaceholder(target);
         }, this);
-
-        if (!selectedTargets) {
-            this.targets = [];
-        } else {
-            this.targets = util.omit(this.targets, selectedTargets);
-        }
     },
 
     /**

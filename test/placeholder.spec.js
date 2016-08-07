@@ -71,4 +71,18 @@ describe('placeholder.js', function() {
 
         expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 3 : 0);
     });
+
+    describe('remove(): ', function() {
+        it('If called without arguments, removes all generated virtual elements', function() {
+            placeholder.remove();
+            expect($('span > span').length).toEqual(0);
+        });
+
+        it('If called with arguments, removes virtual elements related to given elements', function() {
+            var $targets = $('input').slice(0, 2); // first two input elements
+
+            placeholder.remove($targets.toArray());
+            expect($('span > span').length).toEqual(!isSupportPlaceholder ? 3 : 0);
+        });
+    });
 });
