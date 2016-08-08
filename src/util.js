@@ -132,7 +132,10 @@ var util = {
         }
 
         return computedObj;
-    }
+    },
+
+    // export to be used by unit-test
+    _callbackPropName: callbackPropName
 };
 
 module.exports = util;

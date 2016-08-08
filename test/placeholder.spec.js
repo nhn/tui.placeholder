@@ -1,11 +1,20 @@
 'use strict';
 
-var placeholder = require('../src/placeholder.js');
+// simulant library needs polyfills for IE8
+require('./util/polyfill');
+
+/* eslint-disable vars-on-top */
+var simulant = require('simulant');
+var placeholder = require('../src/placeholder');
+var util = require('../src/util');
+
 var browser = tui.util.browser;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
                             !(browser.msie && browser.version <= 11);
+/* eslint-enable vars-on-top */
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+
 
 describe('placeholder.js', function() {
     beforeEach(function() {
@@ -87,15 +96,147 @@ describe('placeholder.js', function() {
     });
 });
 
-describe('placeholder - generate()', function() {
-    it('If called with wrapperClassName option, add given className to the wrapper', function() {
-        var $input = $('<input placeholder="Default Value" />');
-        jasmine.getFixtures().set($input);
+if (!isSupportPlaceholder) {
+    /* eslint-disable max-nested-callbacks */
+    describe('placeholder.js', function() {
+        describe('generate(): ', function() {
+            var DEF_VALUE = 'Holding Value';
+            var $input;
 
-        placeholder.generate($input.toArray(), {
-            wrapperClassName: 'my-custom-class'
+            beforeEach(function() {
+                $input = $('<input placeholder="' + DEF_VALUE + '" />');
+                jasmine.getFixtures().set($input);
+            });
+
+            it('If called with wrapperClassName option, add given className to the wrapper', function() {
+                placeholder.generate(null, {
+                    wrapperClassName: 'my-custom-class'
+                });
+                expect($input.parent()).toHaveClass('my-custom-class');
+            });
+
+            it('holder element has a placeholder value', function() {
+                placeholder.generate();
+                expect($input.prev().text()).toBe(DEF_VALUE);
+            });
+
+            describe('holder element should be visible if input does not have a value ', function() {
+                var $holder;
+
+                beforeEach(function() {
+                    placeholder.generate();
+                    $holder = $input.prev();
+                });
+
+                it('initially', function() {
+                    expect($holder).toBeVisible();
+                });
+
+                it('and blur event occurs on the input element', function() {
+                    $holder.hide();
+                    simulant.fire($input[0], 'blur');
+                    expect($holder).toBeVisible();
+                });
+
+                it('and keyup event occurs on the input element', function() {
+                    $holder.hide();
+                    simulant.fire($input[0], 'keyup');
+                    expect($holder).toBeVisible();
+                });
+            });
+
+            describe('holder element should not be visible if input has a value ', function() {
+                var $holder;
+
+                beforeEach(function() {
+                    $input.val('Some value');
+                    placeholder.generate();
+                    $holder = $input.prev();
+                });
+
+                it('initially', function() {
+                    expect($holder).not.toBeVisible();
+                });
+
+                it('and blur event occurs on the input element', function() {
+                    simulant.fire($input[0], 'blur');
+                    expect($holder).not.toBeVisible();
+                });
+
+                it('and keyup event occurs on the input element', function() {
+                    simulant.fire($input[0], 'keyup');
+                    expect($holder).not.toBeVisible();
+                });
+            });
+
+            it('should focus to input element when click holder element', function() {
+                placeholder.generate();
+                simulant.fire($input.prev()[0], 'click');
+                expect($input[0]).toBe(document.activeElement);
+            });
+
+            it('holder should be hidden when keydown event occurs on the input element', function() {
+                placeholder.generate();
+                simulant.fire($input[0], 'keydown', {
+                    which: 65,
+                    keyCode: 65
+                });
+                expect($input.prev()).not.toBeVisible();
+            });
         });
 
-        expect($input.parent().hasClass('my-custom-class')).toBe(!isSupportPlaceholder);
+        describe('remove(): ', function() {
+            it('should restore original state', function() {
+                var $input = $('<input placeholder="Holding Value" />');
+                var $prevEl = $('<span>');
+                var $nextEl = $('<span>');
+                var $parentEl = $('<div>');
+
+                $parentEl.append([$prevEl, $input, $nextEl]);
+                jasmine.getFixtures().set($parentEl);
+
+                placeholder.generate();
+                placeholder.remove();
+
+                expect($input.prev()[0]).toBe($prevEl[0]);
+                expect($input.next()[0]).toBe($nextEl[0]);
+                expect($input.parent()[0]).toBe($parentEl[0]);
+            });
+
+            // It's impossible to test if handlers are actually unbound, so test this spec just by
+            // confirming util.bindEvent and util.unbindEvent is called with specific events
+            it('should unbind events', function() {
+                var $input = $('<input placeholder="Holding Value" />');
+                var events = ['keydown', 'keyup', 'blur'];
+                var callArgs;
+
+                spyOn(util, 'bindEvent');
+                spyOn(util, 'unbindEvent');
+                jasmine.getFixtures().set($input);
+
+                placeholder.generate();
+
+                // test if bindEvent is called with [keydown, keyup, blur] event
+                callArgs = util.bindEvent.calls.allArgs();
+                callArgs = tui.util.filter(callArgs, function(args) {
+                    return args[0] === $input[0];
+                });
+                tui.util.forEach(callArgs, function(args) {
+                    expect(events).toContain(args[1]);
+                });
+
+                placeholder.remove();
+
+                // test if unbindEvent is called with [keydown, keyup, blur] event
+                callArgs = util.unbindEvent.calls.allArgs();
+                callArgs = tui.util.filter(callArgs, function(args) {
+                    return args[0] === $input[0];
+                });
+                tui.util.forEach(callArgs, function(args) {
+                    expect(events).toContain(args[1]);
+                });
+            });
+        });
     });
-});
+    /* eslint-enable max-nested-callbacks */
+}
