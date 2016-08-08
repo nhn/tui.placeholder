@@ -79,7 +79,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
         if (selectedTargets) {
             removeTargets = tui.util.filter(selectedTargets, function(target) {
-                return this.targets.indexOf(target) >= 0;
+                return tui.util.inArray(target, this.targets) >= 0;
             }, this);
             this.targets = util.removeArrayItems(this.targets, removeTargets);
         } else {

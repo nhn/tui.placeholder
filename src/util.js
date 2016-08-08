@@ -84,7 +84,7 @@ var util = {
      */
     removeArrayItems: function(sourceItems, targetItems) {
         return tui.util.filter(sourceItems, function(item) {
-            return targetItems.indexOf(item) === -1;
+            return tui.util.inArray(item, targetItems) === -1;
         });
     },
 
