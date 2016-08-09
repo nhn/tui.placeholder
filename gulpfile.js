@@ -115,7 +115,7 @@ gulp.task('bundle', ['karma'], function() {
 });
 
 gulp.task('compress', ['bundle'], function() {
-    gulp.src(filename + '.js')
+    return gulp.src(filename + '.js')
         .pipe(uglify())
         .pipe(concat(filename + '.min.js'))
         .pipe(gulp.dest('./'));
