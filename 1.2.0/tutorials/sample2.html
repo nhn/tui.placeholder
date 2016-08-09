@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Placeholder Component</title>
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+        <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+        <!-- Custom style -->
+        <link rel="stylesheet" type="text/css" href="css/sample.css">
+    </head>
+
+    <body>
+        <div class="wrap" style="width:500px;">
+            <!-- Default -->
+            <div class="placeholder">
+                <input type="text" placeholder="id" />
+            </div>
+            <div class="placeholder">
+                <input type="password" placeholder="password" />
+            </div>
+            <!-- //Default -->
+
+            <button id="btn-add">add</button>
+
+            <!-- Specific area added 'input' tags -->
+            <div id="add-area"></div>
+            <!-- //Specific area added 'input' tags -->
+        </div>
+
+        <div class="codeArea"></div>
+
+        <script src="../scripts/prettify/prettify.js"></script>
+        <script src="../scripts/prettify/lang-css.js"></script>
+        <script src="../scripts/jquery.js"></script>
+        <script src="../scripts/samplecode.js"></script>
+
+        <!-- Import script file under html -->
+        <script type="text/javascript" src="js/code-snippet.js"></script>
+        <script type="text/javascript" src="js/placeholder.js"></script>
+        <!-- //Import script file under html -->
+
+        <script class="serviceCode">
+
+            function append() {
+                var parent = document.getElementById('add-area');
+                var i = 1;
+                var len = 3;
+                var html = '';
+                var addElems;
+
+                for (; i <= len; i += 1) {
+                    html += '<div class="placeholder">';
+                    html += '<input type="text" placeholder="입력' + i + '" />';
+                    html += '</div>';
+                }
+
+                parent.innerHTML = html;
+
+                addElems = parent.getElementsByTagName('input');
+
+                tui.component.placeholder.generate(addElems);
+            }
+
+            $('#btn-add').on('click', function() {
+                append();
+            })
+
+            tui.component.placeholder.generate();
+
+        </script>
+    </body>
+</html>

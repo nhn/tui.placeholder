@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Placeholder Component</title>
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-jsdoc.css" />
+        <link type="text/css" rel="stylesheet" href="../styles/prettify-tomorrow.css">
+        <link type="text/css" rel="stylesheet" href="../styles/tui.css">
+        <style type="text/css">
+            form button{vertical-align:top;}
+        </style>
+        <!-- Custom style -->
+        <link rel="stylesheet" type="text/css" href="css/sample.css">
+    </head>
+
+    <body>
+        <div class="wrap" style="width:500px;">
+            <div>
+                <!-- Default input -->
+                <input type="text" placeholder="id" />
+                <input type="password" placeholder="password" />
+                <!-- //Default input -->
+            </div>
+
+            <div>
+                <!-- //Default textarea -->
+                <textarea placeholder="input text"></textarea>
+                <textarea placeholder="input text">already has value</textarea>
+                <!-- //Default textarea -->
+            </div>
+
+            <!-- Test history back -->
+            <form action="sample2.html" method="get">
+                <input type="text" placeholder="test history back" />
+                <input type="text" placeholder="test history back" value="already has value" />
+                <button type="submit">submit</button>
+            </form>
+            <!-- //Test history back -->
+
+            <!-- Apply user style -->
+            <div class="placeholder">
+                <input type="text" name="id" placeholder="id" />
+            </div>
+            <div class="placeholder">
+                <input type="password" name="password" placeholder="password" value="already has value" />
+                <input type="hidden" />
+            </div>
+            <div class="placeholder">
+                <input type="eamil" name="email" placeholder="email" autocomplete="off" />
+            </div>
+            <div class="placeholder">
+                <input type="tel" id="unique-placeholder" name="phone" placeholder="phone" />
+            </div>
+            <!-- //Apply user style -->
+
+            <!-- Disable option -->
+            <div class="placeholder">
+                <input type="text" value="disabled" placeholder="disabled option" disabled />
+            </div>
+            <div class="placeholder">
+                <input type="text" value="readonly" placeholder="readonly option" readonly />
+            </div>
+            <!-- //Disable option -->
+
+            <div class="placeholder">
+                <textarea placeholder="input text"></textarea>
+            </div>
+        </div>
+
+        <div class="codeArea"></div>
+
+        <script src="../scripts/prettify/prettify.js"></script>
+        <script src="../scripts/prettify/lang-css.js"></script>
+        <script src="../scripts/jquery.js"></script>
+        <script src="../scripts/samplecode.js"></script>
+
+        <!-- Import script file under html -->
+        <script type="text/javascript" src="js/code-snippet.js"></script>
+        <script type="text/javascript" src="js/placeholder.js"></script>
+        <!-- //Import script file under html -->
+
+        <script type="text/javascript" class="serviceCode">
+
+            tui.component.placeholder.generate();
+
+            $(document).ready(function() {
+                tui.component.placeholder.hideOnInputHavingValue();
+            });
+
+        </script>
+    </body>
+</html>
