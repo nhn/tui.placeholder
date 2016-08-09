@@ -57,7 +57,7 @@ var util = {
     /**
      * Unbind event from element
      * @param {HTMLElement} target - DOM element to detach the event handler from
-     * @param {[type]} eventType - Event type
+     * @param {string} eventType - Event type
      */
     unbindEvent: function(target, eventType) {
         var callback = target[callbackPropName(eventType)];
