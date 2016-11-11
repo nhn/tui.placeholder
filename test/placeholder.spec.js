@@ -11,6 +11,7 @@ var util = require('../src/util');
 var browser = tui.util.browser;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
                             !(browser.msie && browser.version <= 11);
+var isSupportPropertychange = (browser.msie && browser.version < 11);
 /* eslint-enable vars-on-top */
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
@@ -69,16 +70,6 @@ describe('placeholder.js', function() {
         placeholder.generate($('.addon'));
 
         expect($('span > .addon').length).toEqual(expected);
-    });
-
-    it('When "hideOnHasValueInput" method is called, placeholder changes the status to hidden.', function() {
-        $('input:eq(2)').val('history back'); // input tag
-
-        expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 2 : 0);
-
-        placeholder.hideOnInputHavingValue();
-
-        expect($('span > span:hidden').length).toEqual(!isSupportPlaceholder ? 3 : 0);
     });
 
     describe('remove(): ', function() {
@@ -207,7 +198,8 @@ if (!isSupportPlaceholder) {
             // confirming util.bindEvent and util.unbindEvent is called with specific events
             it('should unbind events', function() {
                 var $input = $('<input placeholder="Holding Value" />');
-                var events = ['keydown', 'keyup', 'blur'];
+                var events = (isSupportPropertychange) ?
+                            ['keydown', 'keyup', 'blur', 'propertychange'] : ['keydown', 'keyup', 'blur', 'change'];
                 var callArgs;
 
                 spyOn(util, 'bindEvent');

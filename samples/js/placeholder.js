@@ -17,6 +17,7 @@ var Placeholder, sharedInstance;
 var browser = tui.util.browser;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
                         !(browser.msie && browser.version <= 11);
+var isSupportPropertychange = (browser.msie && browser.version < 11);
 
 var KEYCODE_BACK = 8;
 var KEYCODE_TAB = 9;
@@ -62,16 +63,41 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
     /**
      * Generate placeholders
-     * @param {HTMLElements} selectedTargets - Selected elements for generating placeholder
+     * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     * @param {object} [options] - options
+     *   @param {string} [options.wrapperClassName] - wrapper class name
      */
-    generateOnTargets: function(selectedTargets) {
+    generateOnTargets: function(selectedTargets, options) {
         this.targets = this.targets.concat(selectedTargets);
 
         tui.util.forEach(this.targets, function(target) {
             var placeholder = this._getPlaceholderHtml(target);
 
-            this._attachPlaceholder(target, placeholder);
+            this._attachPlaceholder(target, placeholder, options);
             this._bindEvent(target, target.previousSibling);
+        }, this);
+    },
+
+    /**
+     * Remove placeholders
+     * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     */
+    remove: function(selectedTargets) {
+        var removeTargets;
+
+        if (selectedTargets) {
+            removeTargets = tui.util.filter(selectedTargets, function(target) {
+                return tui.util.inArray(target, this.targets) >= 0;
+            }, this);
+            this.targets = util.removeArrayItems(this.targets, removeTargets);
+        } else {
+            removeTargets = this.targets;
+            this.targets = [];
+        }
+
+        tui.util.forEach(removeTargets, function(target) {
+            this._unbindEvent(target, target.previousSibling);
+            this._detachPlaceholder(target);
         }, this);
     },
 
@@ -89,18 +115,37 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * Attach a new virtual placeholder after a selected 'input' element and wrap this element
      * @param {HTMLElement} target - The 'input' or 'textarea' element
      * @param {string} placeholder - HTML string of the virtual placeholder
+     * @param {object} [options] - options
+     *   @param {string} [options.wrapperClassName] - wrapper class name
      * @private
      */
-    _attachPlaceholder: function(target, placeholder) {
+    _attachPlaceholder: function(target, placeholder, options) {
         var wrapper = document.createElement('span');
         var parentNode = target.parentNode;
 
+        if (options && options.wrapperClassName) {
+            wrapper.className = options.wrapperClassName;
+        }
         wrapper.innerHTML = placeholder;
         wrapper.style.cssText = WRAPPER_STYLE;
 
         parentNode.insertBefore(wrapper, target);
 
         wrapper.appendChild(target);
+    },
+
+    /**
+     * Detach generated placeholder and restore the target to original state.
+     * @param {HTMLElement} target - The 'input' or 'textarea' element
+     */
+    _detachPlaceholder: function(target) {
+        var wrapper = target.parentNode;
+        var parentNode = wrapper.parentNode;
+        var placeholder = target.previousSibling;
+
+        wrapper.removeChild(placeholder);
+        parentNode.insertBefore(target, wrapper);
+        parentNode.removeChild(wrapper);
     },
 
     /**
@@ -121,9 +166,24 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             }
         }
 
+        /**
+         * Event handler
+         */
+        function onChange() {
+            if (target.value) {
+                placeholderStyle.display = 'none';
+            }
+        }
+
         util.bindEvent(placeholder, 'click', function() {
             target.focus();
         });
+
+        if (isSupportPropertychange) {
+            util.bindEvent(target, 'propertychange', onChange);
+        } else {
+            util.bindEvent(target, 'change', onChange);
+        }
 
         util.bindEvent(target, 'keydown', function(e) {
             var keyCode = e.which || e.keyCode;
@@ -136,6 +196,25 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
 
         util.bindEvent(target, 'keyup', onKeyup);
         util.bindEvent(target, 'blur', onKeyup);
+    },
+
+    /**
+     * Unbind events from the element
+     * @param {HTMLElement} target - The 'input' or 'textarea' element
+     * @param {HTMLElement} placeholder - The virtual placeholder element
+     * @private
+     */
+    _unbindEvent: function(target, placeholder) {
+        util.unbindEvent(target, 'keydown');
+        util.unbindEvent(target, 'keyup');
+        util.unbindEvent(target, 'blur');
+        util.unbindEvent(placeholder, 'click');
+
+        if (isSupportPropertychange) {
+            util.unbindEvent(target, 'propertychange');
+        } else {
+            util.unbindEvent(target, 'change');
+        }
     },
 
     /**
@@ -156,7 +235,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             'left': parseInt(initStyle.paddingLeft, 10) +
                     parseInt(initStyle.borderLeftWidth, 10) + 'px',
             'font-size': initStyle.fontSize,
-            'font-family': initStyle.fontFamily
+            'font-family': initStyle.fontFamily.replace(/\"/g, '\'')
         };
         var addStyle = !isInput ? {'width': '90%'} : {'white-space': 'nowrap'};
 
@@ -191,16 +270,21 @@ sharedInstance = new Placeholder();
 
 module.exports = {
     /**
-     * Generate virtual placeholders
-     * @param {HTMLElements} [selectedTargets] - created elements
+     * Generate virtual placeholders.
+     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     * @param {object} [options] - options
+     *   @param {string} [options.wrapperClassName] - wrapper class name
      * @memberof tui.component.placeholder
      * @function
      * @api
      * @example
      * tui.component.placeholder.generate();
      * tui.component.placeholder.generate(document.getElementsByTagName('input'));
+     * tui.component.placeholder.generate(document.getElementsByTagName('input'), {
+     *     wrapperClassName: 'my-class-name'
+     * });
      */
-    generate: function(selectedTargets) {
+    generate: function(selectedTargets, options) {
         var targets;
 
         if (isSupportPlaceholder) {
@@ -221,7 +305,22 @@ module.exports = {
             }
 
             return hasProp && enableElem && !disableState;
-        }));
+        }), options);
+    },
+
+    /**
+     * Clear generated placeholders.
+     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     */
+    remove: function(selectedTargets) {
+        var targets;
+
+        if (isSupportPlaceholder) {
+            return;
+        }
+
+        targets = (selectedTargets) ? tui.util.toArray(selectedTargets) : null;
+        sharedInstance.remove(targets);
     },
 
     /**
@@ -246,7 +345,12 @@ module.exports = {
 },{"./util.js":3}],3:[function(require,module,exports){
 'use strict';
 
+var callbackPropName = function(eventType) {
+    return '__cb_tui_placeholder_' + eventType + '__';
+};
+
 var hasComputedStyle = (window.getComputedStyle);
+var exceptEvents = ['propertychange'];
 
 var util = {
     /**
@@ -276,18 +380,60 @@ var util = {
 
     /**
      * Bind event to element
-     * @param {HTMLElement} target - Tag for binding event
+     * @param {HTMLElement} target - DOM element to attach the event handler on
      * @param {string} eventType - Event type
      * @param {requestCallback} callback - Event handler function
      */
     bindEvent: function(target, eventType, callback) {
-        if (target.addEventListener) {
+        var success = true;
+
+        if (target.addEventListener &&
+            tui.util.inArray(eventType, exceptEvents) === -1) {
             target.addEventListener(eventType, callback, false);
         } else if (target.attachEvent) {
             target.attachEvent('on' + eventType, callback);
         } else {
-            target['on' + eventType] = callback;
+            success = false;
         }
+
+        if (success) {
+            target[callbackPropName(eventType)] = callback;
+        }
+    },
+
+    /**
+     * Unbind event from element
+     * @param {HTMLElement} target - DOM element to detach the event handler from
+     * @param {[type]} eventType - Event type
+     */
+    unbindEvent: function(target, eventType) {
+        var callback = target[callbackPropName(eventType)];
+        var success = true;
+
+        if (target.removeEventListener &&
+            tui.util.inArray(eventType, exceptEvents) === -1) {
+            target.removeEventListener(eventType, callback);
+        } else if (target.detachEvent) {
+            target.detachEvent('on' + eventType, callback);
+        } else {
+            success = false;
+        }
+
+        if (success) {
+            delete target[callbackPropName(eventType)];
+        }
+    },
+
+    /**
+     * Remove target items from source array and returns a new removed array.
+     * @param {array} sourceItems - source array
+     * @param {array} targetItems - target items
+     * @returns {array} new removed array
+     */
+    removeArrayItems: function(sourceItems, targetItems) {
+        return tui.util.filter(sourceItems, function(item) {
+            return tui.util.inArray(item, targetItems) === -1;
+        });
     },
 
     /**
@@ -334,7 +480,10 @@ var util = {
         }
 
         return computedObj;
-    }
+    },
+
+    // export to be used by unit-test
+    _callbackPropName: callbackPropName
 };
 
 module.exports = util;

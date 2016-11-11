@@ -10,6 +10,7 @@ var Placeholder, sharedInstance;
 var browser = tui.util.browser;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
                         !(browser.msie && browser.version <= 11);
+var isSupportPropertychange = (browser.msie && browser.version < 11);
 
 var KEYCODE_BACK = 8;
 var KEYCODE_TAB = 9;
@@ -158,9 +159,24 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             }
         }
 
+        /**
+         * Event handler
+         */
+        function onChange() {
+            if (target.value) {
+                placeholderStyle.display = 'none';
+            }
+        }
+
         util.bindEvent(placeholder, 'click', function() {
             target.focus();
         });
+
+        if (isSupportPropertychange) {
+            util.bindEvent(target, 'propertychange', onChange);
+        } else {
+            util.bindEvent(target, 'change', onChange);
+        }
 
         util.bindEvent(target, 'keydown', function(e) {
             var keyCode = e.which || e.keyCode;
@@ -186,6 +202,12 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
         util.unbindEvent(target, 'keyup');
         util.unbindEvent(target, 'blur');
         util.unbindEvent(placeholder, 'click');
+
+        if (isSupportPropertychange) {
+            util.unbindEvent(target, 'propertychange');
+        } else {
+            util.unbindEvent(target, 'change');
+        }
     },
 
     /**
