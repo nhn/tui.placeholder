@@ -5,7 +5,6 @@ var callbackPropName = function(eventType) {
 };
 
 var hasComputedStyle = (window.getComputedStyle);
-var exceptEvents = ['propertychange'];
 
 var util = {
     /**

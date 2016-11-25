@@ -9,7 +9,8 @@ var util = require('./util.js');
 var Placeholder, sharedInstance;
 var browser = tui.util.browser;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
-                        !(browser.msie && browser.version <= 11);
+                            'placeholder' in document.createElement('textarea');
+var isIE = !(browser.msie && browser.version <= 11);
 var isSupportPropertychange = (browser.msie && browser.version < 11);
 
 var KEYCODE_BACK = 8;
@@ -43,6 +44,7 @@ var TEMPLATE = '<span style="{{style}}" UNSELECTABLE="on">{{placeholderText}}</s
 /**
  * Placeholder Object
  * @constructor
+ * @ignore
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     init: function() {
@@ -59,6 +61,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @param {object} [options] - options
      *   @param {string} [options.wrapperClassName] - wrapper class name
+     * @ignore
      */
     generateOnTargets: function(selectedTargets, options) {
         this.targets = this.targets.concat(selectedTargets);
@@ -74,6 +77,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     /**
      * Remove placeholders
      * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     * @ignore
      */
     remove: function(selectedTargets) {
         var removeTargets;
@@ -97,6 +101,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     /**
      * Hide placeholders on 'input' or 'textarea' element that already has value
      * @param {HTMLElements} selectedTargets - Selected elements to hide placeholder
+     * @ignore
      */
     hideOnTargets: function(selectedTargets) {
         tui.util.forEach(selectedTargets, function(target) {
@@ -130,6 +135,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     /**
      * Detach generated placeholder and restore the target to original state.
      * @param {HTMLElement} target - The 'input' or 'textarea' element
+     * @private
      */
     _detachPlaceholder: function(target) {
         var wrapper = target.parentNode;
@@ -216,6 +222,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @returns {string} String of virtual placeholder tag
      * @private
      */
+    /* eslint-disable no-useless-escape */
     _getPlaceholderHtml: function(target) {
         var initStyle = util.getStyle(target);
         var placeholderText = target.getAttribute('placeholder');
@@ -239,11 +246,13 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             placeholderText: placeholderText
         });
     }
+    /* eslint-enable no-useless-escape */
 });
 
 /**
  * Get all 'input' and 'textarea' elements on page
  * @returns {Array.<HTMLElement>} All elements
+ * @ignore
  */
 function getAllTargets() {
     var inputs = tui.util.toArray(document.getElementsByTagName('input'));
@@ -280,7 +289,7 @@ module.exports = {
     generate: function(selectedTargets, options) {
         var targets;
 
-        if (isSupportPlaceholder) {
+        if (isSupportPlaceholder && isIE) {
             return;
         }
 
@@ -303,12 +312,14 @@ module.exports = {
 
     /**
      * Clear generated placeholders.
+     * @memberof tui.component.placeholder
+     * @function
      * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      */
     remove: function(selectedTargets) {
         var targets;
 
-        if (isSupportPlaceholder) {
+        if (isSupportPlaceholder && isIE) {
             return;
         }
 
@@ -320,12 +331,11 @@ module.exports = {
      * When 'input' or 'textarea' element already has value, hiding the virtual placeholder
      * @memberof tui.component.placeholder
      * @function
-     * @api
      * @example
      * tui.component.placeholder.hideOnInputHavingValue();
      */
     hideOnInputHavingValue: function() {
-        if (isSupportPlaceholder) {
+        if (isSupportPlaceholder && isIE) {
             return;
         }
 

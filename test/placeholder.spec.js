@@ -10,11 +10,12 @@ var util = require('../src/util');
 
 var browser = tui.util.browser;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
+                            'placeholder' in document.createElement('textarea') &&
                             !(browser.msie && browser.version <= 11);
 var isSupportPropertychange = (browser.msie && browser.version < 11);
 /* eslint-enable vars-on-top */
 
-jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
+jasmine.getFixtures().fixturesPath = 'base/test/fixture';
 
 
 describe('placeholder.js', function() {
