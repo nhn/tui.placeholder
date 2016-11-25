@@ -42,8 +42,7 @@ var util = {
     bindEvent: function(target, eventType, callback) {
         var success = true;
 
-        if (target.addEventListener &&
-            tui.util.inArray(eventType, exceptEvents) === -1) {
+        if (target.addEventListener && eventType !== 'propertychange') {
             target.addEventListener(eventType, callback, false);
         } else if (target.attachEvent) {
             target.attachEvent('on' + eventType, callback);
@@ -65,8 +64,7 @@ var util = {
         var callback = target[callbackPropName(eventType)];
         var success = true;
 
-        if (target.removeEventListener &&
-            tui.util.inArray(eventType, exceptEvents) === -1) {
+        if (target.removeEventListener && eventType !== 'propertychange') {
             target.removeEventListener(eventType, callback);
         } else if (target.detachEvent) {
             target.detachEvent('on' + eventType, callback);

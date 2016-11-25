@@ -81,7 +81,9 @@
         <script type="text/javascript" src="js/placeholder.js"></script>
         <script type="text/javascript" class="serviceCode">
 
-            tui.component.placeholder.generate();
+            tui.component.placeholder.generate(null, {
+                wrapperClassName: 'my-class-name'
+            });
 
             $(document).ready(function() {
                 tui.component.placeholder.hideOnInputHavingValue();
