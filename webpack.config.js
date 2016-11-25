@@ -21,7 +21,6 @@ module.exports = {
     eslint: {
         failOnError: true
     },
-    devtool: 'inline-source-map',
     entry: './src/index.js',
     output: {
         path: 'dist',

@@ -32,7 +32,7 @@
     "test:bs": "KARMA_SERVER=bs karma start",
     "test:ne": "KARMA_SERVER=ne karma start",
     "bundle": "webpack && webpack -p",
-    "serve": "webpack-dev-server --hot",
+    "serve": "webpack-dev-server --hot -d",
     "cpy-dist2doc": "mkdir -p doc/dist && cp -f dist/tui-component-placeholder.js doc/dist",
     "doc": "./node_modules/.bin/jsdoc -c jsdoc-conf.json && npm run cpy-dist2doc"
   }
