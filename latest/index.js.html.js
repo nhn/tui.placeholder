@@ -1,2 +1,0 @@
-tui.util.defineNamespace("fedoc.content", {});
-fedoc.content["index.js.html"] = "      <div id=\"main\" class=\"main\">\n\n\n\n    \n    <section>\n        <article>\n            <pre class=\"prettyprint source linenums\"><code>'use strict';\n\n/** @namespace tui.component.placeholder */\ntui.util.defineNamespace('tui.component.placeholder', require('./src/placeholder.js'));\n</code></pre>\n        </article>\n    </section>\n\n\n\n</div>\n\n"
