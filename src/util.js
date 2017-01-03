@@ -72,7 +72,11 @@ var util = {
         }
 
         if (success) {
-            delete target[callbackPropName(eventType)];
+            try {
+                delete target[callbackPropName(eventType)];
+            } catch (e) {
+                target[callbackPropName(eventType)] = null;
+            }
         }
     },
 
