@@ -48,7 +48,7 @@
     <header>
         
 
-        <h2>sample2</h2>
+        <h2>sample1</h2>
     </header>
 
     <ul id="example-nav" class="nav nav-tabs">
@@ -65,49 +65,69 @@
 
     <article>
         
-        <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/sample2.html></iframe>
+        <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/sample1.html></iframe>
         <div id="example-js" class="hidden"><pre class="prettyprint source">
 
-            $('#btn-add').on('click', function() {
-                var $parent = $('#add-area');
-                var $addElemenst;
-
-                $addElements = $(
-                    '&lt;div class="placeholder">' +
-                        '&lt;input type="text" placeholder="입력" />' +
-                    '&lt;/div>' +
-                    '&lt;div class="placeholder">' +
-                        '&lt;input type="text" placeholder="입력" />' +
-                    '&lt;/div>' +
-                    '&lt;div class="placeholder">' +
-                        '&lt;input type="text" placeholder="입력" />' +
-                    '&lt;/div>'
-                );
-
-                $parent.empty();
-                $parent.append($addElements);
-
-                tui.component.placeholder.generate($addElements.find('input')); // add placeholder on input element
+            tui.component.placeholder.generate(null, {
+                wrapperClassName: 'my-class-name'
             });
 
-            $('#btn-remove').on('click', function() {
-                var $parent = $('#add-area');
-                var $removeElems = $parent.find('input');
-
-                tui.component.placeholder.remove($removeElems); // remove placeholder on input element
-
-                $parent.empty();
+            $(document).ready(function() {
+                tui.component.placeholder.hideOnInputHavingValue();
             });
-
-            tui.component.placeholder.generate();
 
         </pre></div>
         <div id="example-html" class="hidden"><pre class="prettyprint source">
-            &lt;button id="btn-add">add&lt;/button>
-            &lt;button id="btn-remove">remove&lt;/button>
-            &lt;!-- Specific area added 'input' tags -->
-            &lt;div id="add-area">&lt;/div>
-            &lt;!-- //Specific area added 'input' tags -->
+            &lt;div>
+                &lt;!-- Default input -->
+                &lt;input type="text" placeholder="id">
+                &lt;input type="password" placeholder="password">
+                &lt;!-- //Default input -->
+            &lt;/div>
+
+            &lt;div>
+                &lt;!-- //Default textarea -->
+                &lt;textarea placeholder="input text">&lt;/textarea>
+                &lt;textarea placeholder="input text">already has value&lt;/textarea>
+                &lt;!-- //Default textarea -->
+            &lt;/div>
+
+            &lt;!-- Test history back -->
+            &lt;form action="sample2.html" method="get">
+                &lt;input type="text" placeholder="test history back">
+                &lt;input type="text" placeholder="test history back" value="already has value">
+                &lt;button type="submit">submit&lt;/button>
+            &lt;/form>
+            &lt;!-- //Test history back -->
+
+            &lt;!-- Apply user style -->
+            &lt;div class="placeholder">
+                &lt;input type="text" name="id" placeholder="id">
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="password" name="password" placeholder="password" value="already has value">
+                &lt;input type="hidden">
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="eamil" name="email" placeholder="email" autocomplete="off">
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="tel" id="unique-placeholder" name="phone" placeholder="phone">
+            &lt;/div>
+            &lt;!-- //Apply user style -->
+
+            &lt;!-- Disable option -->
+            &lt;div class="placeholder">
+                &lt;input type="text" value="disabled" placeholder="disabled option" disabled>
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="text" value="readonly" placeholder="readonly option" readonly>
+            &lt;/div>
+            &lt;!-- //Disable option -->
+
+            &lt;div class="placeholder">
+                &lt;textarea placeholder="input text">&lt;/textarea>
+            &lt;/div>
         </pre></div>
     </article>
 </section>

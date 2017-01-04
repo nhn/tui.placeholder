@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,60 +49,14 @@
 
 
     
-
-
-
-
-
-
-
-
-
-    
-
-
     <section>
-        <article class="readme"><h1>Placeholder</h1><p>Placeholder Component<br></p>
-<p>Generate virtual placeholders on the browser don't support native 'placeholder' property.</p>
-<h2>Feature</h2><ul>
-<li>All 'input' and 'textarea' tags have 'placeholder' property display placeholder's value.</li>
-<li>When select the 'input' or 'textarea' tag, placeholder's value don't disappear.</li>
-<li>When insert content in the 'input' or 'textarea' tag, placeholder's value disappear.</li>
-<li>When remove content in the 'input' or 'textarea' tag, placeholder's value appear.</li>
-</ul>
-<h2>Documentation</h2><ul>
-<li><strong>API</strong> : https://nhnent.github.io/tui.component.placeholder/latest</li>
-<li><strong>Tutorial</strong> : https://github.com/nhnent/tui.component.placeholder/wiki/Placeholder-Tutorial</li>
-<li><strong>Examples</strong> : https://nhnent.github.io/tui.component.placeholder/latest/tutorial-sample1.html</li>
-</ul>
-<h2>Dependency</h2><ul>
-<li>tui-code-snippet : ~1.2.0</li>
-</ul>
-<h2>Test environment</h2><ul>
-<li>Browser<ul>
-<li>IE8+</li>
-<li>Edge</li>
-<li>Chrome</li>
-<li>Firefox</li>
-</ul>
-</li>
-</ul>
-<h2>Download/Install</h2><ul>
-<li>Bower :<ul>
-<li>Latest : <code>bower install tui-component-placeholder</code></li>
-<li>Each Version : <code>bower install tui-component-placeholder[#tag]</code></li>
-</ul>
-</li>
-<li>Download : https://github.com/nhnent/tui.component.placeholder</li>
-</ul>
-<h2>LICENSE</h2><p><a href="LICENSE">MIT LICENSE</a></p>
-<h2>Sponsor</h2><ul>
-<li><img src="https://cloud.githubusercontent.com/assets/12269563/12287774/8cf4d2c0-ba12-11e5-9fa8-0a9c452cca05.png" height="30"><br>
-<a href="https://www.browserstack.com/">BrowserStack</a> is a cloud based cross browser testing tool</li>
-</ul></article>
+        <article>
+            <pre class="prettyprint source linenums"><code>'use strict';
+/** @namespace tui.component.placeholder */
+tui.util.defineNamespace('tui.component.placeholder', require('./placeholder.js'));
+</code></pre>
+        </article>
     </section>
-
-
 
 
 
@@ -117,7 +73,7 @@
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'package:undefined_sub'.replace(/"/g, '_');
+        var id = '_sub'.replace(/"/g, '_');
         var element = document.getElementById(id); // do not use jquery selector
 
         $(element).removeClass('hidden');
