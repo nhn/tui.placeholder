@@ -40,7 +40,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "dist";
+/******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -473,7 +473,8 @@
 	     * @param {string} eventType - Event type
 	     */
 	    unbindEvent: function(target, eventType) {
-	        var callback = target[callbackPropName(eventType)];
+	        var propName = callbackPropName(eventType);
+	        var callback = target[propName];
 	        var success = true;
 
 	        if (target.removeEventListener && eventType !== 'propertychange') {
@@ -485,7 +486,11 @@
 	        }
 
 	        if (success) {
-	            delete target[callbackPropName(eventType)];
+	            try { // IE7 : 'delete' operator don't use on element
+	                delete target[propName];
+	            } catch (e) {
+	                target[propName] = null;
+	            }
 	        }
 	    },
 

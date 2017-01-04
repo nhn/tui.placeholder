@@ -20,6 +20,7 @@
             <!-- //Default -->
 
             <button id="btn-add">add</button>
+            <button id="btn-remove">remove</button>
 
             <!-- Specific area added 'input' tags -->
             <div id="add-area"></div>
@@ -53,6 +54,12 @@
 
             $('#btn-add').on('click', function() {
                 append();
+            });
+
+            $('#btn-remove').on('click', function() {
+                var removeElems = $('input');
+
+                tui.component.placeholder.remove(removeElems);
             })
 
             tui.component.placeholder.generate();

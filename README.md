@@ -20,7 +20,7 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 
 ## Test environment
 * browser
-    * IE7+
+    * IE8+
     * Edge
     * Chrome
     * Firefox
