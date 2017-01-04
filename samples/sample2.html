@@ -10,18 +10,8 @@
 
     <body>
         <div class="code-html">
-            <!-- Default -->
-            <div class="placeholder">
-                <input type="text" placeholder="id" />
-            </div>
-            <div class="placeholder">
-                <input type="password" placeholder="password" />
-            </div>
-            <!-- //Default -->
-
             <button id="btn-add">add</button>
             <button id="btn-remove">remove</button>
-
             <!-- Specific area added 'input' tags -->
             <div id="add-area"></div>
             <!-- //Specific area added 'input' tags -->
@@ -32,35 +22,36 @@
         <script type="text/javascript" src="../dist/tui-component-placeholder.js"></script>
         <script type="text/javascript" class="code-js">
 
-            function append() {
-                var parent = document.getElementById('add-area');
-                var i = 1;
-                var len = 3;
-                var html = '';
-                var addElems;
-
-                for (; i <= len; i += 1) {
-                    html += '<div class="placeholder">';
-                    html += '<input type="text" placeholder="입력' + i + '" />';
-                    html += '</div>';
-                }
-
-                parent.innerHTML = html;
-
-                addElems = parent.getElementsByTagName('input');
-
-                tui.component.placeholder.generate(addElems);
-            }
-
             $('#btn-add').on('click', function() {
-                append();
+                var $parent = $('#add-area');
+                var $addElemenst;
+
+                $addElements = $(
+                    '<div class="placeholder">' +
+                        '<input type="text" placeholder="입력" />' +
+                    '</div>' +
+                    '<div class="placeholder">' +
+                        '<input type="text" placeholder="입력" />' +
+                    '</div>' +
+                    '<div class="placeholder">' +
+                        '<input type="text" placeholder="입력" />' +
+                    '</div>'
+                );
+
+                $parent.empty();
+                $parent.append($addElements);
+
+                tui.component.placeholder.generate($addElements.find('input')); // add placeholder on input element
             });
 
             $('#btn-remove').on('click', function() {
-                var removeElems = $('input');
+                var $parent = $('#add-area');
+                var $removeElems = $parent.find('input');
 
-                tui.component.placeholder.remove(removeElems);
-            })
+                tui.component.placeholder.remove($removeElems); // remove placeholder on input element
+
+                $parent.empty();
+            });
 
             tui.component.placeholder.generate();
 
