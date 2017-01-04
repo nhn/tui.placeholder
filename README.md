@@ -13,13 +13,13 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 ## Documentation
 * **API** : https://nhnent.github.io/tui.component.placeholder/latest
 * **Tutorial** : https://github.com/nhnent/tui.component.placeholder/wiki/Placeholder-Tutorial
-* **Sample** : https://nhnent.github.io/tui.component.placeholder/latest/tutorial-sample1.html
+* **Examples** : https://nhnent.github.io/tui.component.placeholder/latest/tutorial-sample1.html
 
 ## Dependency
 * tui-code-snippet : ~1.2.0
 
 ## Test environment
-* browser
+* Browser
     * IE8+
     * Edge
     * Chrome
