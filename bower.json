@@ -19,9 +19,10 @@
     "conf.json",
     "package.json",
     ".gitignore",
-    "samples",
+    "examples",
     "index.js",
-    "jsdoc-conf.json"
+    "jsdoc-conf.json",
+    "webpack.config.js"
   ],
   "dependencies": {
 	"tui-code-snippet" : "~1.2.0"
