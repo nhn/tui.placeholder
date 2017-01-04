@@ -60,7 +60,8 @@ var util = {
      * @param {string} eventType - Event type
      */
     unbindEvent: function(target, eventType) {
-        var callback = target[callbackPropName(eventType)];
+        var propName = callbackPropName(eventType);
+        var callback = target[propName];
         var success = true;
 
         if (target.removeEventListener && eventType !== 'propertychange') {
@@ -72,10 +73,10 @@ var util = {
         }
 
         if (success) {
-            try {
-                delete target[callbackPropName(eventType)];
+            try { // IE7 : 'delete' operator don't use on element
+                delete target[propName];
             } catch (e) {
-                target[callbackPropName(eventType)] = null;
+                target[propName] = null;
             }
         }
     },
