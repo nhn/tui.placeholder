@@ -9,9 +9,10 @@ var placeholder = require('../src/placeholder');
 var util = require('../src/util');
 
 var browser = tui.util.browser;
+var supportBrowser = (browser.msie && browser.version <= 11) || browser.others;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
                             'placeholder' in document.createElement('textarea') &&
-                            !(browser.msie && browser.version <= 11);
+                            !supportBrowser;
 var isSupportPropertychange = (browser.msie && browser.version < 11);
 /* eslint-enable vars-on-top */
 

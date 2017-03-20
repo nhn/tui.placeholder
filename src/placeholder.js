@@ -8,10 +8,10 @@ var util = require('./util.js');
 
 var Placeholder, sharedInstance;
 var browser = tui.util.browser;
+var supportBrowser = (browser.msie && browser.version <= 11) || browser.others;
 var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
                             'placeholder' in document.createElement('textarea');
-var isIE = !(browser.msie && browser.version <= 11);
-var isSupportPropertychange = (browser.msie && browser.version < 11);
+var isSupportPropertychange = browser.msie && browser.version < 11;
 
 var KEYCODE_BACK = 8;
 var KEYCODE_TAB = 9;
@@ -289,7 +289,7 @@ module.exports = {
     generate: function(selectedTargets, options) {
         var targets;
 
-        if (isSupportPlaceholder && isIE) {
+        if (isSupportPlaceholder && !supportBrowser) {
             return;
         }
 
@@ -319,7 +319,7 @@ module.exports = {
     remove: function(selectedTargets) {
         var targets;
 
-        if (isSupportPlaceholder && isIE) {
+        if (isSupportPlaceholder && !supportBrowser) {
             return;
         }
 
@@ -335,7 +335,7 @@ module.exports = {
      * tui.component.placeholder.hideOnInputHavingValue();
      */
     hideOnInputHavingValue: function() {
-        if (isSupportPlaceholder && isIE) {
+        if (isSupportPlaceholder && !supportBrowser) {
             return;
         }
 
