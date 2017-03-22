@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Placeholder Component</title>
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Expires" content="-1">
+        <link rel="stylesheet" type="text/css" href="css/example.css">
+    </head>
+
+    <body>
+        <div class="code-html">
+            <div>
+                <!-- Default input -->
+                <input type="text" placeholder="id" />
+                <input type="password" placeholder="password" />
+                <!-- //Default input -->
+            </div>
+
+            <div>
+                <!-- //Default textarea -->
+                <textarea placeholder="input text"></textarea>
+                <textarea placeholder="input text">already has value</textarea>
+                <!-- //Default textarea -->
+            </div>
+
+            <!-- Test history back -->
+            <form action="sample2.html" method="get">
+                <input type="text" placeholder="test history back" />
+                <input type="text" placeholder="test history back" value="already has value" />
+                <button type="submit">submit</button>
+            </form>
+            <!-- //Test history back -->
+
+            <!-- Apply user style -->
+            <div class="placeholder">
+                <input type="text" name="id" placeholder="id" />
+            </div>
+            <div class="placeholder">
+                <input type="password" name="password" placeholder="password" value="already has value" />
+                <input type="hidden" />
+            </div>
+            <div class="placeholder">
+                <input type="eamil" name="email" placeholder="email" autocomplete="off" />
+            </div>
+            <div class="placeholder">
+                <input type="tel" id="unique-placeholder" name="phone" placeholder="phone" />
+            </div>
+            <!-- //Apply user style -->
+
+            <!-- Disable option -->
+            <div class="placeholder">
+                <input type="text" value="disabled" placeholder="disabled option" disabled />
+            </div>
+            <div class="placeholder">
+                <input type="text" value="readonly" placeholder="readonly option" readonly />
+            </div>
+            <!-- //Disable option -->
+
+            <div class="placeholder">
+                <textarea placeholder="input text"></textarea>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/nhnent/tui.code-snippet/1.2.3/dist/code-snippet.js"></script>
+        <script type="text/javascript" src="../dist/tui-component-placeholder.js"></script>
+        <script type="text/javascript" class="code-js">
+
+            tui.component.placeholder.generate(null, {
+                wrapperClassName: 'my-class-name'
+            });
+
+            $(document).ready(function() {
+                tui.component.placeholder.hideOnInputHavingValue();
+            });
+
+        </script>
+    </body>
+</html>

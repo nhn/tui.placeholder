@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Tutorial: sample1 | Placeholder</title>
+    <title>Tutorial: 2. Dynamically create placeholder | Placeholder</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -39,7 +39,7 @@
             </li>
         </ol>
     
-    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-sample1.html">sample1</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="sample1_sub"></div></li><li><a href="tutorial-sample2.html">sample2</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="sample2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="tui.component.placeholder.html">tui.component.placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.placeholder.html#.generate">generate</a></li><li><a href="tui.component.placeholder.html#.hideOnInputHavingValue">hideOnInputHavingValue</a></li><li><a href="tui.component.placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example1.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example1_sub"></div></li><li><a href="tutorial-example2.html">2. Dynamically create placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="tui.component.placeholder.html">tui.component.placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.placeholder.html#.generate">generate</a></li><li><a href="tui.component.placeholder.html#.hideOnInputHavingValue">hideOnInputHavingValue</a></li><li><a href="tui.component.placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -50,7 +50,7 @@
     <header>
         
 
-        <h2>sample1</h2>
+        <h2>2. Dynamically create placeholder</h2>
     </header>
 
     
@@ -69,69 +69,49 @@
         </ul>
         <article>
             
-            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/sample1.html></iframe>
+            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/example2.html></iframe>
             <div id="example-js" class="hidden"><pre class="prettyprint source">
 
-            tui.component.placeholder.generate(null, {
-                wrapperClassName: 'my-class-name'
+            $('#btn-add').on('click', function() {
+                var $parent = $('#add-area');
+                var $addElemenst;
+
+                $addElements = $(
+                    '&lt;div class="placeholder">' +
+                        '&lt;input type="text" placeholder="입력" />' +
+                    '&lt;/div>' +
+                    '&lt;div class="placeholder">' +
+                        '&lt;input type="text" placeholder="입력" />' +
+                    '&lt;/div>' +
+                    '&lt;div class="placeholder">' +
+                        '&lt;input type="text" placeholder="입력" />' +
+                    '&lt;/div>'
+                );
+
+                $parent.empty();
+                $parent.append($addElements);
+
+                tui.component.placeholder.generate($addElements.find('input')); // add placeholder on input element
             });
 
-            $(document).ready(function() {
-                tui.component.placeholder.hideOnInputHavingValue();
+            $('#btn-remove').on('click', function() {
+                var $parent = $('#add-area');
+                var $removeElems = $parent.find('input');
+
+                tui.component.placeholder.remove($removeElems); // remove placeholder on input element
+
+                $parent.empty();
             });
+
+            tui.component.placeholder.generate();
 
         </pre></div>
             <div id="example-html" class="hidden"><pre class="prettyprint source">
-            &lt;div>
-                &lt;!-- Default input -->
-                &lt;input type="text" placeholder="id">
-                &lt;input type="password" placeholder="password">
-                &lt;!-- //Default input -->
-            &lt;/div>
-
-            &lt;div>
-                &lt;!-- //Default textarea -->
-                &lt;textarea placeholder="input text">&lt;/textarea>
-                &lt;textarea placeholder="input text">already has value&lt;/textarea>
-                &lt;!-- //Default textarea -->
-            &lt;/div>
-
-            &lt;!-- Test history back -->
-            &lt;form action="sample2.html" method="get">
-                &lt;input type="text" placeholder="test history back">
-                &lt;input type="text" placeholder="test history back" value="already has value">
-                &lt;button type="submit">submit&lt;/button>
-            &lt;/form>
-            &lt;!-- //Test history back -->
-
-            &lt;!-- Apply user style -->
-            &lt;div class="placeholder">
-                &lt;input type="text" name="id" placeholder="id">
-            &lt;/div>
-            &lt;div class="placeholder">
-                &lt;input type="password" name="password" placeholder="password" value="already has value">
-                &lt;input type="hidden">
-            &lt;/div>
-            &lt;div class="placeholder">
-                &lt;input type="eamil" name="email" placeholder="email" autocomplete="off">
-            &lt;/div>
-            &lt;div class="placeholder">
-                &lt;input type="tel" id="unique-placeholder" name="phone" placeholder="phone">
-            &lt;/div>
-            &lt;!-- //Apply user style -->
-
-            &lt;!-- Disable option -->
-            &lt;div class="placeholder">
-                &lt;input type="text" value="disabled" placeholder="disabled option" disabled>
-            &lt;/div>
-            &lt;div class="placeholder">
-                &lt;input type="text" value="readonly" placeholder="readonly option" readonly>
-            &lt;/div>
-            &lt;!-- //Disable option -->
-
-            &lt;div class="placeholder">
-                &lt;textarea placeholder="input text">&lt;/textarea>
-            &lt;/div>
+            &lt;button id="btn-add">add&lt;/button>
+            &lt;button id="btn-remove">remove&lt;/button>
+            &lt;!-- Specific area added 'input' tags -->
+            &lt;div id="add-area">&lt;/div>
+            &lt;!-- //Specific area added 'input' tags -->
         </pre></div>
         </article>
     
