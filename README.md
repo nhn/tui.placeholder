@@ -11,9 +11,9 @@ Generate virtual placeholders on the browser don't support native 'placeholder' 
 * When remove content in the 'input' or 'textarea' tag, placeholder's value appear.
 
 ## Documentation
-* **API** : https://nhnent.github.io/tui.component.placeholder/latest
-* **Tutorial** : https://github.com/nhnent/tui.component.placeholder/wiki/Placeholder-Tutorial
-* **Examples** : https://nhnent.github.io/tui.component.placeholder/latest/tutorial-sample1.html
+* API : [https://nhnent.github.io/tui.component.placeholder/latest](https://nhnent.github.io/tui.component.placeholder/latest)
+* Tutorial : [https://nhnent.github.io/tui.component.placeholder/latest/tutorial-example1.html](https://nhnent.github.io/tui.component.placeholder/latest/tutorial-example1.html)
+* Examples : [https://nhnent.github.io/tui.component.placeholder/latest/tutorial-example1.html](https://nhnent.github.io/tui.component.placeholder/latest/tutorial-example1.html)
 
 ## Dependency
 * tui-code-snippet : ~1.2.0
