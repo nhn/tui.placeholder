@@ -25,7 +25,7 @@
     "webpack.config.js"
   ],
   "dependencies": {
-	"tui-code-snippet" : "~1.2.3"
+	"tui-code-snippet" : "~1.2.4"
   },
   "devDependencies": {
     "jquery": "~1.8.3"

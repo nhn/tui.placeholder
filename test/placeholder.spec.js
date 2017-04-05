@@ -9,11 +9,13 @@ var placeholder = require('../src/placeholder');
 var util = require('../src/util');
 
 var browser = tui.util.browser;
-var supportBrowser = (browser.msie && browser.version <= 11) || browser.others;
-var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
-                            'placeholder' in document.createElement('textarea') &&
-                            !supportBrowser;
-var isSupportPropertychange = (browser.msie && browser.version < 11);
+var supportIE = browser.msie && browser.version <= 11;
+var otherBrowser = browser.others;
+var supportPlaceholder = 'placeholder' in document.createElement('input') &&
+                            'placeholder' in document.createElement('textarea');
+var supportPropertychange = browser.msie && browser.version < 11;
+var generatePlaceholder = supportIE || (!supportIE && !supportPlaceholder) ||
+                        (otherBrowser && !supportPlaceholder);
 /* eslint-enable vars-on-top */
 
 jasmine.getFixtures().fixturesPath = 'base/test/fixture';
@@ -36,26 +38,26 @@ describe('placeholder.js', function() {
     it('When placeholder property is not supported on the browser, generating the virtual placeholder.', function() {
         var $placeholder = $('span > span');
 
-        expect($placeholder.length).toEqual(!isSupportPlaceholder ? 5 : 0);
+        expect($placeholder.length).toEqual(generatePlaceholder ? 5 : 0);
     });
 
     describe('When the virtual placeholder is generated,', function() {
         it('elements have an inline style.', function() {
             var $placeholder = $('span > span[style]');
 
-            expect($placeholder.length).toEqual(!isSupportPlaceholder ? 5 : 0);
+            expect($placeholder.length).toEqual(generatePlaceholder ? 5 : 0);
         });
 
         it('elements that have already value are hidden.', function() {
             var $placeholder = $('span > span:hidden');
 
-            expect($placeholder.length).toEqual(!isSupportPlaceholder ? 2 : 0);
+            expect($placeholder.length).toEqual(generatePlaceholder ? 2 : 0);
         });
 
         it('elements set the special attribute that don\'t copy and drag.', function() {
             var $placeholder = $('span > span[unselectable="on"]');
 
-            expect($placeholder.length).toEqual(!isSupportPlaceholder ? 5 : 0);
+            expect($placeholder.length).toEqual(generatePlaceholder ? 5 : 0);
         });
     });
 
@@ -63,7 +65,7 @@ describe('placeholder.js', function() {
         var $parent = $('#jasmine-fixtures');
         var i = 0;
         var len = 3;
-        var expected = !isSupportPlaceholder ? len : 0;
+        var expected = generatePlaceholder ? len : 0;
 
         for (; i < len; i += 1) {
             $parent.append('<input type="text" class="addon" placeholder="test" />');
@@ -84,12 +86,12 @@ describe('placeholder.js', function() {
             var $targets = $('input').slice(0, 2); // first two input elements
 
             placeholder.remove($targets.toArray());
-            expect($('span > span').length).toEqual(!isSupportPlaceholder ? 3 : 0);
+            expect($('span > span').length).toEqual(generatePlaceholder ? 3 : 0);
         });
     });
 });
 
-if (!isSupportPlaceholder) {
+if (generatePlaceholder) {
     /* eslint-disable max-nested-callbacks */
     describe('placeholder.js', function() {
         describe('generate(): ', function() {
@@ -200,7 +202,7 @@ if (!isSupportPlaceholder) {
             // confirming util.bindEvent and util.unbindEvent is called with specific events
             it('should unbind events', function() {
                 var $input = $('<input placeholder="Holding Value" />');
-                var events = (isSupportPropertychange) ?
+                var events = (supportPropertychange) ?
                             ['keydown', 'keyup', 'blur', 'propertychange'] : ['keydown', 'keyup', 'blur', 'change'];
                 var callArgs;
 

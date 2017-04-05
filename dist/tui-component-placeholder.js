@@ -1,6 +1,6 @@
 /*!
  * tui-component-placeholder.js
- * @version 1.2.3
+ * @version 1.2.4
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -69,10 +69,13 @@
 
 	var Placeholder, sharedInstance;
 	var browser = tui.util.browser;
-	var supportBrowser = (browser.msie && browser.version <= 11) || browser.others;
-	var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
+	var supportIE = browser.msie && browser.version <= 11;
+	var otherBrowser = browser.others;
+	var supportPlaceholder = 'placeholder' in document.createElement('input') &&
 	                            'placeholder' in document.createElement('textarea');
-	var isSupportPropertychange = browser.msie && browser.version < 11;
+	var supportPropertychange = browser.msie && browser.version < 11;
+	var generatePlaceholder = supportIE || (!supportIE && !supportPlaceholder) ||
+	                        (otherBrowser && !supportPlaceholder);
 
 	var KEYCODE_BACK = 8;
 	var KEYCODE_TAB = 9;
@@ -239,7 +242,7 @@
 	            target.focus();
 	        });
 
-	        if (isSupportPropertychange) {
+	        if (supportPropertychange) {
 	            util.bindEvent(target, 'propertychange', onChange);
 	        } else {
 	            util.bindEvent(target, 'change', onChange);
@@ -270,7 +273,7 @@
 	        util.unbindEvent(target, 'blur');
 	        util.unbindEvent(placeholder, 'click');
 
-	        if (isSupportPropertychange) {
+	        if (supportPropertychange) {
 	            util.unbindEvent(target, 'propertychange');
 	        } else {
 	            util.unbindEvent(target, 'change');
@@ -350,25 +353,23 @@
 	    generate: function(selectedTargets, options) {
 	        var targets;
 
-	        if (isSupportPlaceholder && !supportBrowser) {
-	            return;
+	        if (generatePlaceholder) {
+	            targets = selectedTargets ? tui.util.toArray(selectedTargets) : getAllTargets();
+
+	            sharedInstance.generateOnTargets(tui.util.filter(targets, function(target) {
+	                var tagName = target.nodeName.toLowerCase();
+	                var inputType = target.type.toLowerCase();
+	                var disableState = target.disabled || target.readOnly;
+	                var hasProp = !tui.util.isNull(target.getAttribute('placeholder'));
+	                var enableElem = tui.util.inArray(tagName, TARGET_TAGS) > -1;
+
+	                if (tagName === 'input') {
+	                    enableElem = tui.util.inArray(inputType, INPUT_TYPES) > -1;
+	                }
+
+	                return hasProp && enableElem && !disableState;
+	            }), options);
 	        }
-
-	        targets = (selectedTargets) ? tui.util.toArray(selectedTargets) : getAllTargets();
-
-	        sharedInstance.generateOnTargets(tui.util.filter(targets, function(target) {
-	            var tagName = target.nodeName.toLowerCase();
-	            var inputType = target.type.toLowerCase();
-	            var disableState = target.disabled || target.readOnly;
-	            var hasProp = !tui.util.isNull(target.getAttribute('placeholder'));
-	            var enableElem = tui.util.inArray(tagName, TARGET_TAGS) > -1;
-
-	            if (tagName === 'input') {
-	                enableElem = tui.util.inArray(inputType, INPUT_TYPES) > -1;
-	            }
-
-	            return hasProp && enableElem && !disableState;
-	        }), options);
 	    },
 
 	    /**
@@ -380,12 +381,10 @@
 	    remove: function(selectedTargets) {
 	        var targets;
 
-	        if (isSupportPlaceholder && !supportBrowser) {
-	            return;
+	        if (generatePlaceholder) {
+	            targets = selectedTargets ? tui.util.toArray(selectedTargets) : null;
+	            sharedInstance.remove(targets);
 	        }
-
-	        targets = (selectedTargets) ? tui.util.toArray(selectedTargets) : null;
-	        sharedInstance.remove(targets);
 	    },
 
 	    /**
@@ -396,13 +395,11 @@
 	     * tui.component.placeholder.hideOnInputHavingValue();
 	     */
 	    hideOnInputHavingValue: function() {
-	        if (isSupportPlaceholder && !supportBrowser) {
-	            return;
+	        if (generatePlaceholder) {
+	            sharedInstance.hideOnTargets(tui.util.filter(sharedInstance.targets, function(target) {
+	                return (target.value !== '' && target.type !== INPUT_TYPES[1]);
+	            }));
 	        }
-
-	        sharedInstance.hideOnTargets(tui.util.filter(sharedInstance.targets, function(target) {
-	            return (target.value !== '' && target.type !== INPUT_TYPES[1]);
-	        }));
 	    }
 	};
 
