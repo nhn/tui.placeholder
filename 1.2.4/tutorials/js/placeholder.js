@@ -1,61 +1,13 @@
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
 
+/** @namespace tui.component.placeholder */
+tui.util.defineNamespace('tui.component.placeholder', require('./src/placeholder.js'));
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Source: placeholder.js | Placeholder</title>
-
-    <script src="scripts/prettify/prettify.js"> </script>
-    <script src="scripts/prettify/lang-css.js"> </script>
-    <!--[if lt IE 9]>
-      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
-    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
-    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
-
-    
-</head>
-<body>
-<nav class="lnb" id="lnb">
-    <div class="logo" style="width: 150px">
-        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
-    </div>
-    <div class="title">
-        <h1><a href="index.html" class="link">Placeholder</a></h1>
-        
-    </div>
-    <div class="search-container" id="search-container">
-        <input type="text" placeholder="Search">
-        <ul></ul>
-    </div>
-    
-        <ol class="lnb-tab">
-            <li id="api-tab">
-                <a href="#"><h4>API</h4></a>
-            </li>
-            <li id="examples-tab">
-                <a href="#"><h4>Examples</h4></a>
-            </li>
-        </ol>
-    
-    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example1.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example1_sub"></div></li><li><a href="tutorial-example2.html">2. Dynamically create placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="tui.component.placeholder.html">tui.component.placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.placeholder.html#.generate">generate</a></li><li><a href="tui.component.placeholder.html#.hideOnInputHavingValue">hideOnInputHavingValue</a></li><li><a href="tui.component.placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
-</nav>
-<div id="resizer"></div>
-
-<div class="main" id="main">
-    
-
-
-
-    
-    <section>
-        <article>
-            <pre class="prettyprint source linenums"><code>/**
+},{"./src/placeholder.js":2}],2:[function(require,module,exports){
+/**
  * @fileoverview Generate the virtual placeholder on browsers isn't supported placeholder feature
- * @author NHN Ent. FE dev team.&lt;dl_javascript@nhnent.com>
+ * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
  */
 'use strict';
 
@@ -63,13 +15,9 @@ var util = require('./util.js');
 
 var Placeholder, sharedInstance;
 var browser = tui.util.browser;
-var supportIE = browser.msie &amp;&amp; browser.version &lt;= 11;
-var otherBrowser = browser.others;
-var supportPlaceholder = 'placeholder' in document.createElement('input') &amp;&amp;
-                            'placeholder' in document.createElement('textarea');
-var supportPropertychange = browser.msie &amp;&amp; browser.version &lt; 11;
-var generatePlaceholder = supportIE || (!supportIE &amp;&amp; !supportPlaceholder) ||
-                        (otherBrowser &amp;&amp; !supportPlaceholder);
+var isSupportPlaceholder = 'placeholder' in document.createElement('input') &&
+                        !(browser.msie && browser.version <= 11);
+var isSupportPropertychange = (browser.msie && browser.version < 11);
 
 var KEYCODE_BACK = 8;
 var KEYCODE_TAB = 9;
@@ -97,12 +45,11 @@ var DEFAULT_STYLE = util.makeStyleText({
     'color': '#999',
     'z-index': '0'
 });
-var TEMPLATE = '&lt;span style="{{style}}" UNSELECTABLE="on">{{placeholderText}}&lt;/span>';
+var TEMPLATE = '<span style="{{style}}" UNSELECTABLE="on">{{placeholderText}}</span>';
 
 /**
  * Placeholder Object
  * @constructor
- * @ignore
  */
 Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     init: function() {
@@ -119,7 +66,6 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @param {object} [options] - options
      *   @param {string} [options.wrapperClassName] - wrapper class name
-     * @ignore
      */
     generateOnTargets: function(selectedTargets, options) {
         this.targets = this.targets.concat(selectedTargets);
@@ -135,7 +81,6 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     /**
      * Remove placeholders
      * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
-     * @ignore
      */
     remove: function(selectedTargets) {
         var removeTargets;
@@ -159,7 +104,6 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     /**
      * Hide placeholders on 'input' or 'textarea' element that already has value
      * @param {HTMLElements} selectedTargets - Selected elements to hide placeholder
-     * @ignore
      */
     hideOnTargets: function(selectedTargets) {
         tui.util.forEach(selectedTargets, function(target) {
@@ -179,7 +123,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
         var wrapper = document.createElement('span');
         var parentNode = target.parentNode;
 
-        if (options &amp;&amp; options.wrapperClassName) {
+        if (options && options.wrapperClassName) {
             wrapper.className = options.wrapperClassName;
         }
         wrapper.innerHTML = placeholder;
@@ -193,7 +137,6 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
     /**
      * Detach generated placeholder and restore the target to original state.
      * @param {HTMLElement} target - The 'input' or 'textarea' element
-     * @private
      */
     _detachPlaceholder: function(target) {
         var wrapper = target.parentNode;
@@ -236,7 +179,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             target.focus();
         });
 
-        if (supportPropertychange) {
+        if (isSupportPropertychange) {
             util.bindEvent(target, 'propertychange', onChange);
         } else {
             util.bindEvent(target, 'change', onChange);
@@ -246,7 +189,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             var keyCode = e.which || e.keyCode;
 
             if (!(keyCode === KEYCODE_BACK || keyCode === KEYCODE_TAB ||
-                (e.shiftKey &amp;&amp; keyCode === KEYCODE_TAB))) {
+                (e.shiftKey && keyCode === KEYCODE_TAB))) {
                 placeholderStyle.display = 'none';
             }
         });
@@ -267,7 +210,7 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
         util.unbindEvent(target, 'blur');
         util.unbindEvent(placeholder, 'click');
 
-        if (supportPropertychange) {
+        if (isSupportPropertychange) {
             util.unbindEvent(target, 'propertychange');
         } else {
             util.unbindEvent(target, 'change');
@@ -280,7 +223,6 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
      * @returns {string} String of virtual placeholder tag
      * @private
      */
-    /* eslint-disable no-useless-escape */
     _getPlaceholderHtml: function(target) {
         var initStyle = util.getStyle(target);
         var placeholderText = target.getAttribute('placeholder');
@@ -304,13 +246,11 @@ Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
             placeholderText: placeholderText
         });
     }
-    /* eslint-enable no-useless-escape */
 });
 
 /**
  * Get all 'input' and 'textarea' elements on page
- * @returns {Array.&lt;HTMLElement>} All elements
- * @ignore
+ * @returns {Array.<HTMLElement>} All elements
  */
 function getAllTargets() {
     var inputs = tui.util.toArray(document.getElementsByTagName('input'));
@@ -319,7 +259,7 @@ function getAllTargets() {
     return inputs.concat(textareas);
 }
 
-if (browser.msie &amp;&amp; (browser.version > 9 &amp;&amp; browser.version &lt;= 11)) {
+if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
     util.addCssRule({
         selector: ':-ms-input-placeholder',
         css: 'color:#fff !important;text-indent:-9999px;'
@@ -347,82 +287,203 @@ module.exports = {
     generate: function(selectedTargets, options) {
         var targets;
 
-        if (generatePlaceholder) {
-            targets = selectedTargets ? tui.util.toArray(selectedTargets) : getAllTargets();
-
-            sharedInstance.generateOnTargets(tui.util.filter(targets, function(target) {
-                var tagName = target.nodeName.toLowerCase();
-                var inputType = target.type.toLowerCase();
-                var disableState = target.disabled || target.readOnly;
-                var hasProp = !tui.util.isNull(target.getAttribute('placeholder'));
-                var enableElem = tui.util.inArray(tagName, TARGET_TAGS) > -1;
-
-                if (tagName === 'input') {
-                    enableElem = tui.util.inArray(inputType, INPUT_TYPES) > -1;
-                }
-
-                return hasProp &amp;&amp; enableElem &amp;&amp; !disableState;
-            }), options);
+        if (isSupportPlaceholder) {
+            return;
         }
+
+        targets = (selectedTargets) ? tui.util.toArray(selectedTargets) : getAllTargets();
+
+        sharedInstance.generateOnTargets(tui.util.filter(targets, function(target) {
+            var tagName = target.nodeName.toLowerCase();
+            var inputType = target.type.toLowerCase();
+            var disableState = target.disabled || target.readOnly;
+            var hasProp = !tui.util.isNull(target.getAttribute('placeholder'));
+            var enableElem = tui.util.inArray(tagName, TARGET_TAGS) > -1;
+
+            if (tagName === 'input') {
+                enableElem = tui.util.inArray(inputType, INPUT_TYPES) > -1;
+            }
+
+            return hasProp && enableElem && !disableState;
+        }), options);
     },
 
     /**
      * Clear generated placeholders.
-     * @memberof tui.component.placeholder
-     * @function
      * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      */
     remove: function(selectedTargets) {
         var targets;
 
-        if (generatePlaceholder) {
-            targets = selectedTargets ? tui.util.toArray(selectedTargets) : null;
-            sharedInstance.remove(targets);
+        if (isSupportPlaceholder) {
+            return;
         }
+
+        targets = (selectedTargets) ? tui.util.toArray(selectedTargets) : null;
+        sharedInstance.remove(targets);
     },
 
     /**
      * When 'input' or 'textarea' element already has value, hiding the virtual placeholder
      * @memberof tui.component.placeholder
      * @function
+     * @api
      * @example
      * tui.component.placeholder.hideOnInputHavingValue();
      */
     hideOnInputHavingValue: function() {
-        if (generatePlaceholder) {
-            sharedInstance.hideOnTargets(tui.util.filter(sharedInstance.targets, function(target) {
-                return (target.value !== '' &amp;&amp; target.type !== INPUT_TYPES[1]);
-            }));
+        if (isSupportPlaceholder) {
+            return;
         }
+
+        sharedInstance.hideOnTargets(tui.util.filter(sharedInstance.targets, function(target) {
+            return (target.value !== '' && target.type !== INPUT_TYPES[1]);
+        }));
     }
 };
-</code></pre>
-        </article>
-    </section>
 
+},{"./util.js":3}],3:[function(require,module,exports){
+'use strict';
 
+var callbackPropName = function(eventType) {
+    return '__cb_tui_placeholder_' + eventType + '__';
+};
 
+var hasComputedStyle = (window.getComputedStyle);
+var exceptEvents = ['propertychange'];
 
-</div>
+var util = {
+    /**
+     * Generate 'style' element and add css rule
+     * @param {Object} ruleInfo - Value of selector and css property
+     */
+    addCssRule: function(ruleInfo) {
+        var styleTag = document.createElement('style');
+        var selector = ruleInfo.selector;
+        var css = ruleInfo.css;
+        var styleSheet;
 
-<footer>
-    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
-    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
-</footer>
-<script>prettyPrint();</script>
-<script src="scripts/jquery.min.js"></script>
-<script src="scripts/tui-doc.js"></script>
-<script src="scripts/linenumber.js"></script>
+        if (document.head) {
+            document.head.appendChild(styleTag);
+        } else {
+            document.getElementsByTagName('head')[0].appendChild(styleTag);
+        }
 
-    <script>
-        var id = '_sub'.replace(/"/g, '_');
-        var selectedApi = document.getElementById(id); // do not use jquery selector
-        var $selectedApi = $(selectedApi);
+        styleSheet = styleTag.sheet || styleTag.styleSheet;
 
-        $selectedApi.removeClass('hidden');
-        $selectedApi.parent().find('.glyphicon').removeClass('glyphicon-plus').addClass('glyphicon-minus');
-        showLnbApi();
-    </script>
+        if (styleSheet.insertRule) {
+            styleSheet.insertRule(selector + '{' + css + '}', 0);
+        } else {
+            styleSheet.addRule(selector, css, 0);
+        }
+    },
 
-</body>
-</html>
+    /**
+     * Bind event to element
+     * @param {HTMLElement} target - DOM element to attach the event handler on
+     * @param {string} eventType - Event type
+     * @param {requestCallback} callback - Event handler function
+     */
+    bindEvent: function(target, eventType, callback) {
+        var success = true;
+
+        if (target.addEventListener && eventType !== 'propertychange') {
+            target.addEventListener(eventType, callback, false);
+        } else if (target.attachEvent) {
+            target.attachEvent('on' + eventType, callback);
+        } else {
+            success = false;
+        }
+
+        if (success) {
+            target[callbackPropName(eventType)] = callback;
+        }
+    },
+
+    /**
+     * Unbind event from element
+     * @param {HTMLElement} target - DOM element to detach the event handler from
+     * @param {string} eventType - Event type
+     */
+    unbindEvent: function(target, eventType) {
+        var callback = target[callbackPropName(eventType)];
+        var success = true;
+
+        if (target.removeEventListener && eventType !== 'propertychange') {
+            target.removeEventListener(eventType, callback);
+        } else if (target.detachEvent) {
+            target.detachEvent('on' + eventType, callback);
+        } else {
+            success = false;
+        }
+
+        if (success) {
+            delete target[callbackPropName(eventType)];
+        }
+    },
+
+    /**
+     * Remove target items from source array and returns a new removed array.
+     * @param {array} sourceItems - source array
+     * @param {array} targetItems - target items
+     * @returns {array} new removed array
+     */
+    removeArrayItems: function(sourceItems, targetItems) {
+        return tui.util.filter(sourceItems, function(item) {
+            return tui.util.inArray(item, targetItems) === -1;
+        });
+    },
+
+    /**
+     * Make CSSText
+     * @param {Object} styleObj - Style info object
+     * @returns {string} Connected string of style
+     */
+    makeStyleText: function(styleObj) {
+        var styleStr = '';
+
+        tui.util.forEach(styleObj, function(value, prop) {
+            styleStr += prop + ':' + value + ';';
+        });
+
+        return styleStr;
+    },
+
+    /**
+     * Replace matched property with template
+     * @param {string} template - String of template
+     * @param {Object} propObj - Properties
+     * @returns {string} Replaced template string
+     */
+    applyTemplate: function(template, propObj) {
+        var newTemplate = template.replace(/\{\{(\w*)\}\}/g, function(value, prop) {
+            return propObj.hasOwnProperty(prop) ? propObj[prop] : '';
+        });
+
+        return newTemplate;
+    },
+
+    /**
+     * Returns element's style value defined at css file
+     * @param {HTMLElement} target - Current element
+     * @returns {Object} Style object of element
+     */
+    getStyle: function(target) {
+        var computedObj;
+
+        if (hasComputedStyle) {
+            computedObj = window.getComputedStyle(target, '');
+        } else {
+            computedObj = target.currentStyle;
+        }
+
+        return computedObj;
+    },
+
+    // export to be used by unit-test
+    _callbackPropName: callbackPropName
+};
+
+module.exports = util;
+
+},{}]},{},[1]);

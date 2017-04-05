@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Tutorial: 1. Basic | Placeholder</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-jsdoc.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/tui-doc.css">
+
+    
+</head>
+<body>
+<nav class="lnb" id="lnb">
+    <div class="logo" style="width: 150px">
+        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    </div>
+    <div class="title">
+        <h1><a href="index.html" class="link">Placeholder</a></h1>
+        
+    </div>
+    <div class="search-container" id="search-container">
+        <input type="text" placeholder="Search">
+        <ul></ul>
+    </div>
+    
+        <ol class="lnb-tab">
+            <li id="api-tab">
+                <a href="#"><h4>API</h4></a>
+            </li>
+            <li id="examples-tab">
+                <a href="#"><h4>Examples</h4></a>
+            </li>
+        </ol>
+    
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example1.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example1_sub"></div></li><li><a href="tutorial-example2.html">2. Dynamically create placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="tui.component.placeholder.html">tui.component.placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.placeholder.html#.generate">generate</a></li><li><a href="tui.component.placeholder.html#.hideOnInputHavingValue">hideOnInputHavingValue</a></li><li><a href="tui.component.placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
+</nav>
+<div id="resizer"></div>
+
+<div class="main" id="main">
+    
+
+<section>
+    <header>
+        
+
+        <h2>1. Basic</h2>
+    </header>
+
+    
+        
+
+        <ul id="example-nav" class="nav nav-tabs">
+            <li role="presentation" id="example-result-btn" class="active" onclick="showResult()">
+                <a href="#">Result</a>
+            </li>
+            <li role="presentation" id="example-js-btn" class="" onclick="showJs()">
+                <a href="#">JS</a>
+            </li>
+            <li role="presentation" id="example-html-btn" class="" onclick="showHtml()">
+                <a href="#">HTML</a>
+            </li>
+        </ul>
+        <article>
+            
+            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/example1.html></iframe>
+            <div id="example-js" class="hidden"><pre class="prettyprint source">
+
+            tui.component.placeholder.generate(null, {
+                wrapperClassName: 'my-class-name'
+            });
+
+            $(document).ready(function() {
+                tui.component.placeholder.hideOnInputHavingValue();
+            });
+
+        </pre></div>
+            <div id="example-html" class="hidden"><pre class="prettyprint source">
+            &lt;div>
+                &lt;!-- Default input -->
+                &lt;input type="text" placeholder="id">
+                &lt;input type="password" placeholder="password">
+                &lt;!-- //Default input -->
+            &lt;/div>
+
+            &lt;div>
+                &lt;!-- //Default textarea -->
+                &lt;textarea placeholder="input text">&lt;/textarea>
+                &lt;textarea placeholder="input text">already has value&lt;/textarea>
+                &lt;!-- //Default textarea -->
+            &lt;/div>
+
+            &lt;!-- Test history back -->
+            &lt;form action="sample2.html" method="get">
+                &lt;input type="text" placeholder="test history back">
+                &lt;input type="text" placeholder="test history back" value="already has value">
+                &lt;button type="submit">submit&lt;/button>
+            &lt;/form>
+            &lt;!-- //Test history back -->
+
+            &lt;!-- Apply user style -->
+            &lt;div class="placeholder">
+                &lt;input type="text" name="id" placeholder="id">
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="password" name="password" placeholder="password" value="already has value">
+                &lt;input type="hidden">
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="eamil" name="email" placeholder="email" autocomplete="off">
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="tel" id="unique-placeholder" name="phone" placeholder="phone">
+            &lt;/div>
+            &lt;!-- //Apply user style -->
+
+            &lt;!-- Disable option -->
+            &lt;div class="placeholder">
+                &lt;input type="text" value="disabled" placeholder="disabled option" disabled>
+            &lt;/div>
+            &lt;div class="placeholder">
+                &lt;input type="text" value="readonly" placeholder="readonly option" readonly>
+            &lt;/div>
+            &lt;!-- //Disable option -->
+
+            &lt;div class="placeholder">
+                &lt;textarea placeholder="input text">&lt;/textarea>
+            &lt;/div>
+        </pre></div>
+        </article>
+    
+</section>
+
+
+    <script>
+        var exampleResult = document.getElementById('example-result');
+        var exampleJs = document.getElementById('example-js');
+        var exampleHtml = document.getElementById('example-html');
+        var exampleResultBtn = document.getElementById('example-result-btn');
+        var exampleJsBtn = document.getElementById('example-js-btn');
+        var exampleHtmlBtn = document.getElementById('example-html-btn');
+
+        function setActive(el) {
+            el.className += ' active';
+        }
+
+        function setInactive(el) {
+            el.className = el.className.replace(/\s*active\s*/g, '');
+        }
+
+        function show(el) {
+            el.className = el.className.replace(/\s*hidden\s*/g, '');
+        }
+
+        function hide(el) {
+            el.className += ' hidden';
+        }
+
+        function showJs() {
+            hide(exampleHtml);
+            hide(exampleResult);
+            setInactive(exampleHtmlBtn);
+            setInactive(exampleResultBtn);
+
+            show(exampleJs);
+            setActive(exampleJsBtn);
+        }
+
+        function showHtml() {
+            hide(exampleJs);
+            hide(exampleResult);
+            setInactive(exampleJsBtn);
+            setInactive(exampleResultBtn);
+
+            show(exampleHtml);
+            setActive(exampleHtmlBtn);
+        }
+
+        function showResult() {
+            hide(exampleJs);
+            hide(exampleHtml);
+            setInactive(exampleJsBtn);
+            setInactive(exampleHtmlBtn);
+
+            show(exampleResult);
+            setActive(exampleResultBtn);
+        }
+    </script>
+
+
+</div>
+
+<footer>
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
+</footer>
+<script>prettyPrint();</script>
+<script src="scripts/jquery.min.js"></script>
+<script src="scripts/tui-doc.js"></script>
+<script src="scripts/linenumber.js"></script>
+
+    <script>
+        showLnbExamples();
+    </script>
+
+</body>
+</html>
