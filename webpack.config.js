@@ -1,11 +1,12 @@
 /**
- * webpack.config.js.js created on 2016. 11. 17.
+ * webpack.config.js.js created on 2017. 08
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
 'use strict';
-
 var pkg = require('./package.json');
 var webpack = require('webpack');
+
+var SafeUmdPlugin = require('safe-umd-webpack-plugin');
 
 var isProduction = process.argv.indexOf('-p') > -1;
 
@@ -19,12 +20,23 @@ var BANNER = [
 
 module.exports = {
     eslint: {
-        failOnError: true
+        failOnError: isProduction
     },
-    entry: './src/index.js',
+    entry: './src/js/placeholder.js',
     output: {
+        library: ['tui', 'placeholder'],
+        libraryTarget: 'umd',
         path: 'dist',
+        publicPath: 'dist',
         filename: FILENAME
+    },
+    externals: {
+        'tui-code-snippet': {
+            'commonjs': 'tui-code-snippet',
+            'commonjs2': 'tui-code-snippet',
+            'amd': 'tui-code-snippet',
+            'root': ['tui', 'util']
+        }
     },
     module: {
         preLoaders: [
@@ -36,12 +48,13 @@ module.exports = {
         ]
     },
     plugins: [
+        new SafeUmdPlugin(),
         new webpack.BannerPlugin(BANNER)
     ],
     devServer: {
         historyApiFallback: false,
         progress: true,
-        inline: true,
-        host: '0.0.0.0'
+        host: '0.0.0.0',
+        disableHostCheck: true
     }
 };

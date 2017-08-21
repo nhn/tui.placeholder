@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>3. Dynamic creation</title>
+        <link href="css/example.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="code-html">
+            <button id="btn-add">add</button>
+            <button id="btn-remove">remove</button>
+            <!-- Specific area added 'input' tags -->
+            <div id="add-area"></div>
+            <!-- //Specific area added 'input' tags -->
+        </div>
+
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="https://rawgit.com/nhnent/tui.code-snippet/1.2.5/dist/tui-code-snippet.js"></script>
+        <script type="text/javascript" src="../dist/tui-placeholder.js"></script>
+        <script type="text/javascript" class="code-js">
+
+        $('#btn-add').on('click', function() {
+            var $parent = $('#add-area');
+            var $addElemenst;
+
+            $addElements = $(
+                '<div class="placeholder">' +
+                    '<input type="text" placeholder="input" />' +
+                '</div>' +
+                '<div class="placeholder">' +
+                    '<input type="text" placeholder="input" />' +
+                '</div>' +
+                '<div class="placeholder">' +
+                    '<input type="text" placeholder="input" />' +
+                '</div>'
+            );
+
+            $parent.empty();
+            $parent.append($addElements);
+
+            tui.placeholder.generate($addElements.find('input')); // add placeholder on input element
+        });
+
+        $('#btn-remove').on('click', function() {
+            var $parent = $('#add-area');
+            var $removeElems = $parent.find('input');
+
+            tui.placeholder.remove($removeElems); // remove placeholder on input element
+
+            $parent.empty();
+        });
+
+        tui.placeholder.generate();
+
+        </script>
+    </body>
+</html>

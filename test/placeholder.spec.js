@@ -5,10 +5,12 @@ require('./util/polyfill');
 
 /* eslint-disable vars-on-top */
 var simulant = require('simulant');
-var placeholder = require('../src/placeholder');
-var util = require('../src/util');
+var snippet = require('tui-code-snippet');
 
-var browser = tui.util.browser;
+var placeholder = require('../src/js/placeholder');
+var util = require('../src/js/util');
+
+var browser = snippet.browser;
 var supportIE = browser.msie && browser.version <= 11;
 var otherBrowser = browser.others;
 var supportPlaceholder = 'placeholder' in document.createElement('input') &&
@@ -77,12 +79,12 @@ describe('placeholder.js', function() {
     });
 
     describe('remove(): ', function() {
-        xit('If called without arguments, removes all generated virtual elements', function() {
+        it('If called without arguments, removes all generated virtual elements', function() {
             placeholder.remove();
             expect($('span > span').length).toEqual(0);
         });
 
-        xit('If called with arguments, removes virtual elements related to given elements', function() {
+        it('If called with arguments, removes virtual elements related to given elements', function() {
             var $targets = $('input').slice(0, 2); // first two input elements
 
             placeholder.remove($targets.toArray());
@@ -214,10 +216,10 @@ if (generatePlaceholder) {
 
                 // test if bindEvent is called with [keydown, keyup, blur] event
                 callArgs = util.bindEvent.calls.allArgs();
-                callArgs = tui.util.filter(callArgs, function(args) {
+                callArgs = snippet.filter(callArgs, function(args) {
                     return args[0] === $input[0];
                 });
-                tui.util.forEach(callArgs, function(args) {
+                snippet.forEach(callArgs, function(args) {
                     expect(events).toContain(args[1]);
                 });
 
@@ -225,10 +227,10 @@ if (generatePlaceholder) {
 
                 // test if unbindEvent is called with [keydown, keyup, blur] event
                 callArgs = util.unbindEvent.calls.allArgs();
-                callArgs = tui.util.filter(callArgs, function(args) {
+                callArgs = snippet.filter(callArgs, function(args) {
                     return args[0] === $input[0];
                 });
-                tui.util.forEach(callArgs, function(args) {
+                snippet.forEach(callArgs, function(args) {
                     expect(events).toContain(args[1]);
                 });
             });
