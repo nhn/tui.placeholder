@@ -1,8 +1,11 @@
 {
-    "example1": {
+    "example01-basic": {
         "title": "1. Basic"
     },
-    "example2": {
-        "title": "2. Dynamically create placeholder"
+    "example02-using-classname": {
+        "title": "2. Using Class Name"
+    },
+    "example03-dynamic-creation": {
+        "title": "3. Dynamic creation"
     }
 }

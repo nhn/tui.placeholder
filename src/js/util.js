@@ -1,4 +1,11 @@
+/**
+ * @fileoverview Util for placeholder
+ * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+ */
+
 'use strict';
+
+var snippet = require('tui-code-snippet');
 
 var callbackPropName = function(eventType) {
     return '__cb_tui_placeholder_' + eventType + '__';
@@ -88,8 +95,8 @@ var util = {
      * @returns {array} new removed array
      */
     removeArrayItems: function(sourceItems, targetItems) {
-        return tui.util.filter(sourceItems, function(item) {
-            return tui.util.inArray(item, targetItems) === -1;
+        return snippet.filter(sourceItems, function(item) {
+            return snippet.inArray(item, targetItems) === -1;
         });
     },
 
@@ -101,7 +108,7 @@ var util = {
     makeStyleText: function(styleObj) {
         var styleStr = '';
 
-        tui.util.forEach(styleObj, function(value, prop) {
+        snippet.forEach(styleObj, function(value, prop) {
             styleStr += prop + ':' + value + ';';
         });
 

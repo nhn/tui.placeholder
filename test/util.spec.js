@@ -5,7 +5,7 @@ require('./util/polyfill');
 
 /* eslint-disable vars-on-top */
 var simulant = require('simulant');
-var util = require('../src/util');
+var util = require('../src/js/util');
 /* eslint-enable vars-on-top */
 
 describe('util.js', function() {
