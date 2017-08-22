@@ -82,7 +82,6 @@ function setConfig(defaultConfig, server) {
         };
     } else {
         defaultConfig.browsers = [
-            'PhantomJS',
             'Chrome'
         ];
     }
@@ -92,7 +91,7 @@ module.exports = function(config) {
     var defaultConfig = {
         basePath: './',
         frameworks: [
-            'jquery-1.8.3',
+            'jquery-1.11.0',
             'jasmine',
             'es5-shim'
         ],

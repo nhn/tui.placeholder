@@ -2,10 +2,10 @@
 Generate virtual placeholders on the browser not supporting native 'placeholder' property
 
 ## Feature
-* All 'input' and 'textarea' tags have 'placeholder' property display placeholder's value.
-* When select the 'input' or 'textarea' tag, placeholder's value don't disappear.
-* When insert content in the 'input' or 'textarea' tag, placeholder's value disappear.
-* When remove content in the 'input' or 'textarea' tag, placeholder's value appear.
+* All 'input' and 'textarea' tags have 'placeholder' property display placeholder's value
+* When select the 'input' or 'textarea' tag, placeholder's value don't disappear
+* When insert content in the 'input' or 'textarea' tag, placeholder's value disappear
+* When remove content in the 'input' or 'textarea' tag, placeholder's value appear
 
 ## Documentation
 * **API** : [https://nhnent.github.io/tui.placeholder/latest](https://nhnent.github.io/tui.placeholder/latest)
