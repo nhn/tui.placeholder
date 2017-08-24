@@ -84,7 +84,7 @@ Placeholder = snippet.defineClass(/** @lends Placeholder.prototype */{
      * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @ignore
      */
-    removeOnTargets: function(selectedTargets) {
+    remove: function(selectedTargets) {
         var removeTargets;
 
         if (selectedTargets) {
@@ -104,12 +104,12 @@ Placeholder = snippet.defineClass(/** @lends Placeholder.prototype */{
     },
 
     /**
-     * Hide placeholders
+     * Hide placeholders on 'input' or 'textarea' element that already has value
      * @param {HTMLElements} selectedTargets - Selected elements to hide placeholder
      * @ignore
      */
     hideOnTargets: function(selectedTargets) {
-        snippet.forEach(selectedTargets || this.targets, function(target) {
+        snippet.forEach(selectedTargets, function(target) {
             target.previousSibling.style.display = 'none';
         });
     },
@@ -276,11 +276,10 @@ if (browser.msie && (browser.version > 9 && browser.version <= 11)) {
 sharedInstance = new Placeholder();
 
 /** @module placeholder */
-
 module.exports = {
     /**
      * Generate virtual placeholders.
-     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements generating placeholder
+     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @param {object} [options] - options
      *   @param {string} [options.wrapperClassName] - wrapper class name
      * @function
@@ -317,29 +316,27 @@ module.exports = {
 
     /**
      * Clear generated placeholders.
-     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements generating placeholder
      * @function
+     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      */
     remove: function(selectedTargets) {
         var targets;
 
         if (generatePlaceholder) {
             targets = selectedTargets ? snippet.toArray(selectedTargets) : null;
-            sharedInstance.removeOnTargets(targets);
+            sharedInstance.remove(targets);
         }
     },
 
     /**
-     * Hide placeholders when each target element already has value.
-     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements generating placeholder
+     * When 'input' or 'textarea' element already has value, hiding the virtual placeholder
      * @function
      */
-    hide: function(selectedTargets) {
-        var targets;
-
+    hideOnInputHavingValue: function() {
         if (generatePlaceholder) {
-            targets = selectedTargets ? snippet.toArray(selectedTargets) : null;
-            sharedInstance.hideOnTargets(targets);
+            sharedInstance.hideOnTargets(snippet.filter(sharedInstance.targets, function(target) {
+                return (target.value !== '' && target.type !== INPUT_TYPES[1]);
+            }));
         }
     }
 };
