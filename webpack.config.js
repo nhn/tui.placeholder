@@ -1,8 +1,10 @@
 /**
- * webpack.config.js.js created on 2017. 08
+ * Configs file for bundling
  * @author NHN Ent. FE Development Lab <dl_javascript@nhnent.com>
  */
+
 'use strict';
+
 var pkg = require('./package.json');
 var webpack = require('webpack');
 
@@ -49,7 +51,7 @@ module.exports = {
     },
     plugins: [
         new SafeUmdPlugin(),
-        new webpack.BannerPlugin(BANNER)
+        new webpack.BannerPlugin(BANNER),
     ],
     devServer: {
         historyApiFallback: false,

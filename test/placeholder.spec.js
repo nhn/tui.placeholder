@@ -20,8 +20,7 @@ var generatePlaceholder = supportIE || (!supportIE && !supportPlaceholder) ||
                         (otherBrowser && !supportPlaceholder);
 /* eslint-enable vars-on-top */
 
-jasmine.getFixtures().fixturesPath = 'base/test/fixture';
-
+jasmine.getFixtures().fixturesPath = 'base/test/fixtures';
 
 describe('placeholder.js', function() {
     beforeEach(function() {
@@ -204,8 +203,7 @@ if (generatePlaceholder) {
             // confirming util.bindEvent and util.unbindEvent is called with specific events
             it('should unbind events', function() {
                 var $input = $('<input placeholder="Holding Value" />');
-                var events = (supportPropertychange) ?
-                            ['keydown', 'keyup', 'blur', 'propertychange'] : ['keydown', 'keyup', 'blur', 'change'];
+                var events = (supportPropertychange) ? ['keydown', 'keyup', 'blur', 'propertychange'] : ['keydown', 'keyup', 'blur', 'change'];
                 var callArgs;
 
                 spyOn(util, 'bindEvent');
