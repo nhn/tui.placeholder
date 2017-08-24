@@ -65,13 +65,13 @@ function setConfig(defaultConfig, server) {
             }
         };
         defaultConfig.browsers = [
-            // 'IE8',
-            // 'IE9',
-            // 'IE10',
-            // 'IE11',
-            // 'Edge',
-            // 'Chrome-WebDriver',
-            // 'Firefox-WebDriver',
+            'IE8',
+            'IE9',
+            'IE10',
+            'IE11',
+            'Edge',
+            'Chrome-WebDriver',
+            'Firefox-WebDriver',
             'Safari-WebDriver'
         ];
         defaultConfig.reporters.push('coverage');

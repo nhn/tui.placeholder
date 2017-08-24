@@ -51,7 +51,7 @@ module.exports = {
     },
     plugins: [
         new SafeUmdPlugin(),
-        new webpack.BannerPlugin(BANNER),
+        new webpack.BannerPlugin(BANNER)
     ],
     devServer: {
         historyApiFallback: false,

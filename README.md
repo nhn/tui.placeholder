@@ -14,7 +14,7 @@ Generate virtual placeholders on the browser not supporting native 'placeholder'
 [https://nhnent.github.io/tui.placeholder/latest/tutorial-example01-basic.html](https://nhnent.github.io/tui.placeholder/latest/tutorial-example01-basic.html)
 
 ## Dependency
-* tui-code-snippet ~1.2.5
+* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.2.5
 
 ## Test Environment
 ### PC
@@ -22,6 +22,7 @@ Generate virtual placeholders on the browser not supporting native 'placeholder'
 * Edge
 * Chrome
 * Firefox
+* Safari
 
 ## Usage
 ### Use `npm`

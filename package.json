@@ -1,7 +1,7 @@
 {
-  "name": "tui-project-name",
-  "version": "1.0.3",
-  "main": "dist/tui-project-name",
+  "name": "tui-placeholder",
+  "version": "2.0.0",
+  "main": "dist/tui-placeholder",
   "scripts": {
     "test": "karma start --no-single-run",
     "test:ne": "KARMA_SERVER=ne karma start",
@@ -11,16 +11,16 @@
     "cpy-dist2doc": "mkdir -p doc/dist && cp -f -r dist doc",
     "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc"
   },
-  "description": "TOAST UI ProductType: ProjectName",
+  "description": "TOAST UI Component: Placeholder",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nhnent/tui.project-name"
+    "url": "https://github.com/nhnent/tui.placeholder"
   },
   "keywords": [
     "nhnent",
     "tui",
-    "product-type",
-    "project-name"
+    "component",
+    "placeholder"
   ],
   "author": "NHNEnt FE Development Lab <dl_javascript@nhnent.com>",
   "license": "MIT",
