@@ -1,6 +1,7 @@
 {
   "name": "tui-placeholder",
   "version": "2.0.0",
+  "description": "TOAST UI Compoent: Placeholder",
   "main": "dist/tui-placeholder",
   "scripts": {
     "test": "karma start --no-single-run",
@@ -11,10 +12,9 @@
     "cpy-dist2doc": "mkdir -p doc/dist && cp -f -r dist doc",
     "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc"
   },
-  "description": "TOAST UI Component: Placeholder",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/nhnent/tui.placeholder"
+      "type": "git",
+      "url": "https://github.com/nhnent/tui.placeholder"
   },
   "keywords": [
     "nhnent",
