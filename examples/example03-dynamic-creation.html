@@ -12,6 +12,7 @@
         <div class="code-html">
             <button id="btn-add">add</button>
             <button id="btn-remove">remove</button>
+            <button id="btn-hide">hide</button>
             <!-- Specific area added 'input' tags -->
             <div id="add-area"></div>
             <!-- //Specific area added 'input' tags -->
@@ -22,9 +23,11 @@
         <script type="text/javascript" src="../dist/tui-placeholder.js"></script>
         <script type="text/javascript" class="code-js">
 
+        var placeholder = tui.placeholder;
+
         $('#btn-add').on('click', function() {
             var $parent = $('#add-area');
-            var $addElemenst;
+            var $addElements;
 
             $addElements = $(
                 '<div class="placeholder">' +
@@ -41,19 +44,23 @@
             $parent.empty();
             $parent.append($addElements);
 
-            tui.placeholder.generate($addElements.find('input')); // add placeholder on input element
+            placeholder.generate($addElements.find('input'));
         });
 
         $('#btn-remove').on('click', function() {
             var $parent = $('#add-area');
-            var $removeElems = $parent.find('input');
+            var $removeElements = $('#add-area').find('input');
 
-            tui.placeholder.remove($removeElems); // remove placeholder on input element
+            placeholder.remove($removeElements);
 
             $parent.empty();
         });
 
-        tui.placeholder.generate();
+        $('#btn-hide').on('click', function() {
+            var $target = $('#add-area').find('input').eq(1);
+
+            tui.placeholder.hide($target);
+        });
 
         </script>
     </body>

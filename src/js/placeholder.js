@@ -84,7 +84,7 @@ Placeholder = snippet.defineClass(/** @lends Placeholder.prototype */{
      * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @ignore
      */
-    remove: function(selectedTargets) {
+    removeOnTargets: function(selectedTargets) {
         var removeTargets;
 
         if (selectedTargets) {
@@ -104,12 +104,12 @@ Placeholder = snippet.defineClass(/** @lends Placeholder.prototype */{
     },
 
     /**
-     * Hide placeholders on 'input' or 'textarea' element that already has value
+     * Hide placeholders
      * @param {HTMLElements} selectedTargets - Selected elements to hide placeholder
      * @ignore
      */
     hideOnTargets: function(selectedTargets) {
-        snippet.forEach(selectedTargets, function(target) {
+        snippet.forEach(selectedTargets || this.targets, function(target) {
             target.previousSibling.style.display = 'none';
         });
     },
@@ -316,27 +316,29 @@ module.exports = {
 
     /**
      * Clear generated placeholders.
-     * @function
      * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+     * @function
      */
     remove: function(selectedTargets) {
         var targets;
 
         if (generatePlaceholder) {
             targets = selectedTargets ? snippet.toArray(selectedTargets) : null;
-            sharedInstance.remove(targets);
+            sharedInstance.removeOnTargets(targets);
         }
     },
 
     /**
      * When 'input' or 'textarea' element already has value, hiding the virtual placeholder
+     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @function
      */
-    hideOnInputHavingValue: function() {
+    hide: function(selectedTargets) {
+        var targets;
+
         if (generatePlaceholder) {
-            sharedInstance.hideOnTargets(snippet.filter(sharedInstance.targets, function(target) {
-                return (target.value !== '' && target.type !== INPUT_TYPES[1]);
-            }));
+            targets = selectedTargets ? snippet.toArray(selectedTargets) : null;
+            sharedInstance.hideOnTargets(targets);
         }
     }
 };
