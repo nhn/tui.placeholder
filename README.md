@@ -22,7 +22,6 @@ Generate virtual placeholders on the browser not supporting native 'placeholder'
 * Edge
 * Chrome
 * Firefox
-* Safari
 
 ## Usage
 ### Use `npm`

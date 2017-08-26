@@ -48,11 +48,6 @@ function setConfig(defaultConfig, server) {
                 config: webdriverConfig,
                 browserName: 'MicrosoftEdge'
             },
-            'Edge': {
-                base: 'WebDriver',
-                config: webdriverConfig,
-                browserName: 'MicrosoftEdge'
-            },
             'Chrome-WebDriver': {
                 base: 'WebDriver',
                 config: webdriverConfig,
@@ -76,14 +71,14 @@ function setConfig(defaultConfig, server) {
             'IE11',
             'Edge',
             'Chrome-WebDriver',
-            'Firefox-WebDriver',
-            'Safari-WebDriver'
+            'Firefox-WebDriver'
         ];
         defaultConfig.reporters.push('coverage');
         defaultConfig.reporters.push('junit');
         defaultConfig.coverageReporter = {
             dir: 'report/coverage/',
-            reporters: [{
+            reporters: [
+                {
                     type: 'html',
                     subdir: function(browser) {
                         return 'report-html/' + browser;
@@ -138,7 +133,8 @@ module.exports = function(config) {
         webpack: {
             devtool: 'inline-source-map',
             module: {
-                preLoaders: [{
+                preLoaders: [
+                    {
                         test: /\.js$/,
                         exclude: /(test|bower_components|node_modules)/,
                         loader: 'istanbul-instrumenter'
