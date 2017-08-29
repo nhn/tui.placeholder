@@ -1,10 +1,20 @@
 /*!
- * tui-component-placeholder.js
- * @version 1.2.4
+ * tui-placeholder.js
+ * @version 2.0.0
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
-/******/ (function(modules) { // webpackBootstrap
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("tui-code-snippet"));
+	else if(typeof define === 'function' && define.amd)
+		define(["tui-code-snippet"], factory);
+	else if(typeof exports === 'object')
+		exports["placeholder"] = factory(require("tui-code-snippet"));
+	else
+		root["tui"] = root["tui"] || {}, root["tui"]["placeholder"] = factory((root["tui"] && root["tui"]["util"]));
+})(this, function(__WEBPACK_EXTERNAL_MODULE_1__) {
+return /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
 
@@ -40,7 +50,7 @@
 /******/ 	__webpack_require__.c = installedModules;
 
 /******/ 	// __webpack_public_path__
-/******/ 	__webpack_require__.p = "";
+/******/ 	__webpack_require__.p = "dist";
 
 /******/ 	// Load entry module and return exports
 /******/ 	return __webpack_require__(0);
@@ -48,27 +58,20 @@
 /************************************************************************/
 /******/ ([
 /* 0 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	/** @namespace tui.component.placeholder */
-	tui.util.defineNamespace('tui.component.placeholder', __webpack_require__(1));
-
-
-/***/ },
-/* 1 */
-/***/ function(module, exports, __webpack_require__) {
+/***/ (function(module, exports, __webpack_require__) {
 
 	/**
 	 * @fileoverview Generate the virtual placeholder on browsers isn't supported placeholder feature
 	 * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
 	 */
+
 	'use strict';
 
+	var snippet = __webpack_require__(1);
 	var util = __webpack_require__(2);
 
 	var Placeholder, sharedInstance;
-	var browser = tui.util.browser;
+	var browser = snippet.browser;
 	var supportIE = browser.msie && browser.version <= 11;
 	var otherBrowser = browser.others;
 	var supportPlaceholder = 'placeholder' in document.createElement('input') &&
@@ -110,7 +113,7 @@
 	 * @constructor
 	 * @ignore
 	 */
-	Placeholder = tui.util.defineClass(/** @lends Placeholder.prototype */{
+	Placeholder = snippet.defineClass(/** @lends Placeholder.prototype */{
 	    init: function() {
 	        /**
 	         * Array pushed 'input' and 'textarea' elements on page
@@ -130,7 +133,7 @@
 	    generateOnTargets: function(selectedTargets, options) {
 	        this.targets = this.targets.concat(selectedTargets);
 
-	        tui.util.forEach(this.targets, function(target) {
+	        snippet.forEach(this.targets, function(target) {
 	            var placeholder = this._getPlaceholderHtml(target);
 
 	            this._attachPlaceholder(target, placeholder, options);
@@ -143,12 +146,12 @@
 	     * @param {HTMLElement[]} selectedTargets - Selected elements for generating placeholder
 	     * @ignore
 	     */
-	    remove: function(selectedTargets) {
+	    removeOnTargets: function(selectedTargets) {
 	        var removeTargets;
 
 	        if (selectedTargets) {
-	            removeTargets = tui.util.filter(selectedTargets, function(target) {
-	                return tui.util.inArray(target, this.targets) >= 0;
+	            removeTargets = snippet.filter(selectedTargets, function(target) {
+	                return snippet.inArray(target, this.targets) >= 0;
 	            }, this);
 	            this.targets = util.removeArrayItems(this.targets, removeTargets);
 	        } else {
@@ -156,19 +159,19 @@
 	            this.targets = [];
 	        }
 
-	        tui.util.forEach(removeTargets, function(target) {
+	        snippet.forEach(removeTargets, function(target) {
 	            this._unbindEvent(target, target.previousSibling);
 	            this._detachPlaceholder(target);
 	        }, this);
 	    },
 
 	    /**
-	     * Hide placeholders on 'input' or 'textarea' element that already has value
+	     * Hide placeholders
 	     * @param {HTMLElements} selectedTargets - Selected elements to hide placeholder
 	     * @ignore
 	     */
 	    hideOnTargets: function(selectedTargets) {
-	        tui.util.forEach(selectedTargets, function(target) {
+	        snippet.forEach(selectedTargets || this.targets, function(target) {
 	            target.previousSibling.style.display = 'none';
 	        });
 	    },
@@ -303,7 +306,7 @@
 	        };
 	        var addStyle = !isInput ? {'width': '90%'} : {'white-space': 'nowrap'};
 
-	        tui.util.extend(styleObj, addStyle);
+	        snippet.extend(styleObj, addStyle);
 
 	        return util.applyTemplate(TEMPLATE, {
 	            style: DEFAULT_STYLE + util.makeStyleText(styleObj),
@@ -319,8 +322,8 @@
 	 * @ignore
 	 */
 	function getAllTargets() {
-	    var inputs = tui.util.toArray(document.getElementsByTagName('input'));
-	    var textareas = tui.util.toArray(document.getElementsByTagName('textarea'));
+	    var inputs = snippet.toArray(document.getElementsByTagName('input'));
+	    var textareas = snippet.toArray(document.getElementsByTagName('textarea'));
 
 	    return inputs.concat(textareas);
 	}
@@ -334,19 +337,20 @@
 
 	sharedInstance = new Placeholder();
 
+	/** @module placeholder */
 	module.exports = {
 	    /**
 	     * Generate virtual placeholders.
 	     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
 	     * @param {object} [options] - options
 	     *   @param {string} [options.wrapperClassName] - wrapper class name
-	     * @memberof tui.component.placeholder
 	     * @function
-	     * @api
 	     * @example
-	     * tui.component.placeholder.generate();
-	     * tui.component.placeholder.generate(document.getElementsByTagName('input'));
-	     * tui.component.placeholder.generate(document.getElementsByTagName('input'), {
+	     * var placeholder = tui.placeholder; // require('tui-placeholder');
+	     *
+	     * placeholder.generate();
+	     * placeholder.generate(document.getElementsByTagName('input'));
+	     * placeholder.generate(document.getElementsByTagName('input'), {
 	     *     wrapperClassName: 'my-class-name'
 	     * });
 	     */
@@ -354,17 +358,17 @@
 	        var targets;
 
 	        if (generatePlaceholder) {
-	            targets = selectedTargets ? tui.util.toArray(selectedTargets) : getAllTargets();
+	            targets = selectedTargets ? snippet.toArray(selectedTargets) : getAllTargets();
 
-	            sharedInstance.generateOnTargets(tui.util.filter(targets, function(target) {
+	            sharedInstance.generateOnTargets(snippet.filter(targets, function(target) {
 	                var tagName = target.nodeName.toLowerCase();
 	                var inputType = target.type.toLowerCase();
 	                var disableState = target.disabled || target.readOnly;
-	                var hasProp = !tui.util.isNull(target.getAttribute('placeholder'));
-	                var enableElem = tui.util.inArray(tagName, TARGET_TAGS) > -1;
+	                var hasProp = !snippet.isNull(target.getAttribute('placeholder'));
+	                var enableElem = snippet.inArray(tagName, TARGET_TAGS) > -1;
 
 	                if (tagName === 'input') {
-	                    enableElem = tui.util.inArray(inputType, INPUT_TYPES) > -1;
+	                    enableElem = snippet.inArray(inputType, INPUT_TYPES) > -1;
 	                }
 
 	                return hasProp && enableElem && !disableState;
@@ -374,41 +378,52 @@
 
 	    /**
 	     * Clear generated placeholders.
-	     * @memberof tui.component.placeholder
-	     * @function
 	     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
+	     * @function
 	     */
 	    remove: function(selectedTargets) {
 	        var targets;
 
 	        if (generatePlaceholder) {
-	            targets = selectedTargets ? tui.util.toArray(selectedTargets) : null;
-	            sharedInstance.remove(targets);
+	            targets = selectedTargets ? snippet.toArray(selectedTargets) : null;
+	            sharedInstance.removeOnTargets(targets);
 	        }
 	    },
 
 	    /**
 	     * When 'input' or 'textarea' element already has value, hiding the virtual placeholder
-	     * @memberof tui.component.placeholder
+	     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
 	     * @function
-	     * @example
-	     * tui.component.placeholder.hideOnInputHavingValue();
 	     */
-	    hideOnInputHavingValue: function() {
+	    hide: function(selectedTargets) {
+	        var targets;
+
 	        if (generatePlaceholder) {
-	            sharedInstance.hideOnTargets(tui.util.filter(sharedInstance.targets, function(target) {
-	                return (target.value !== '' && target.type !== INPUT_TYPES[1]);
-	            }));
+	            targets = selectedTargets ? snippet.toArray(selectedTargets) : null;
+	            sharedInstance.hideOnTargets(targets);
 	        }
 	    }
 	};
 
 
-/***/ },
+/***/ }),
+/* 1 */
+/***/ (function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_1__;
+
+/***/ }),
 /* 2 */
-/***/ function(module, exports) {
+/***/ (function(module, exports, __webpack_require__) {
+
+	/**
+	 * @fileoverview Util for placeholder
+	 * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+	 */
 
 	'use strict';
+
+	var snippet = __webpack_require__(1);
 
 	var callbackPropName = function(eventType) {
 	    return '__cb_tui_placeholder_' + eventType + '__';
@@ -498,8 +513,8 @@
 	     * @returns {array} new removed array
 	     */
 	    removeArrayItems: function(sourceItems, targetItems) {
-	        return tui.util.filter(sourceItems, function(item) {
-	            return tui.util.inArray(item, targetItems) === -1;
+	        return snippet.filter(sourceItems, function(item) {
+	            return snippet.inArray(item, targetItems) === -1;
 	        });
 	    },
 
@@ -511,7 +526,7 @@
 	    makeStyleText: function(styleObj) {
 	        var styleStr = '';
 
-	        tui.util.forEach(styleObj, function(value, prop) {
+	        snippet.forEach(styleObj, function(value, prop) {
 	            styleStr += prop + ':' + value + ';';
 	        });
 
@@ -556,5 +571,7 @@
 	module.exports = util;
 
 
-/***/ }
-/******/ ]);
+/***/ })
+/******/ ])
+});
+;

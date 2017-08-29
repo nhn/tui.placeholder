@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Namespace: placeholder | Placeholder</title>
+    <title>Module: placeholder | Placeholder</title>
 
     <script src="scripts/prettify/prettify.js"> </script>
     <script src="scripts/prettify/lang-css.js"> </script>
@@ -18,11 +18,17 @@
 </head>
 <body>
 <nav class="lnb" id="lnb">
-    <div class="logo" style="width: 150px">
-        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    <div class="logo" style="width: 150px; height: 13px">
+        
+            <a href="https://github.com/nhnent/tui.jsdoc-template" rel="noopener noreferrer" target="_blank">
+                <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+            </a>
+        
     </div>
     <div class="title">
         <h1><a href="index.html" class="link">Placeholder</a></h1>
+        
+            <span class="version">v2.0.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -39,7 +45,7 @@
             </li>
         </ol>
     
-    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example1.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example1_sub"></div></li><li><a href="tutorial-example2.html">2. Dynamically create placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="tui.component.placeholder.html">tui.component.placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.placeholder.html#.generate">generate</a></li><li><a href="tui.component.placeholder.html#.hideOnInputHavingValue">hideOnInputHavingValue</a></li><li><a href="tui.component.placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example01-basic.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example01-basic_sub"></div></li><li><a href="tutorial-example02-using-classname.html">2. Using Class Name</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example02-using-classname_sub"></div></li><li><a href="tutorial-example03-dynamic-creation.html">3. Dynamic creation</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example03-dynamic-creation_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-placeholder.html">placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-placeholder.html#.generate">generate</a></li><li><a href="module-placeholder.html#.hide">hide</a></li><li><a href="module-placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -59,15 +65,14 @@
 </header>
 
 <article>
-    <div class="container-overview">
     
+        <div class="container-overview">
         
+            
 
+            
         
-
-
-<dl class="details">
-
+        </div>
     
 
     
@@ -79,38 +84,6 @@
     
 
     
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dl>
-
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
 
     
 
@@ -123,23 +96,21 @@
                 
 
 <dt>
-
     
-        
-
         <h4 class="name" id=".generate">
-            <span class="type-signature"><span class="icon green">static</span> </span>generate<span class="signature">(selectedTargets, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>generate<span class="signature">(selectedTargets, options<span class="signature-attributes">opt</span>)</span><span class="type-signature"></span>
+                
             
             <div class="container-source members">
                 <code><a href="placeholder.js.html">placeholder.js</a></code>,
-                <code><a href="placeholder.js.html#line292">line 292</a></code>
+                <code><a href="placeholder.js.html#line295">line 295</a></code>
             </div>
             
         </h4>
 
         
     
-
 </dt>
 <dd>
 
@@ -365,9 +336,11 @@
     
         <h5>Example</h5>
         
-    <pre class="prettyprint"><code>tui.component.placeholder.generate();
-tui.component.placeholder.generate(document.getElementsByTagName('input'));
-tui.component.placeholder.generate(document.getElementsByTagName('input'), {
+    <pre class="prettyprint"><code>var placeholder = tui.placeholder; // require('tui-placeholder');
+
+placeholder.generate();
+placeholder.generate(document.getElementsByTagName('input'));
+placeholder.generate(document.getElementsByTagName('input'), {
     wrapperClassName: 'my-class-name'
 });</code></pre>
 
@@ -379,12 +352,11 @@ tui.component.placeholder.generate(document.getElementsByTagName('input'), {
                 
 
 <dt>
-
     
-        
-
-        <h4 class="name" id=".hideOnInputHavingValue">
-            <span class="type-signature"><span class="icon green">static</span> </span>hideOnInputHavingValue<span class="signature">()</span><span class="type-signature"></span>
+        <h4 class="name" id=".hide">
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>hide<span class="signature">(selectedTargets)</span><span class="type-signature"></span>
+                
             
             <div class="container-source members">
                 <code><a href="placeholder.js.html">placeholder.js</a></code>,
@@ -395,7 +367,6 @@ tui.component.placeholder.generate(document.getElementsByTagName('input'), {
 
         
     
-
 </dt>
 <dd>
 
@@ -411,6 +382,59 @@ tui.component.placeholder.generate(document.getElementsByTagName('input'), {
 
     
 
+    
+    <div class="container-params">
+        <h5>Parameters:</h5>
+        
+<table class="params">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>selectedTargets</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">HTMLCollection</span>
+|
+
+<span class="param-type">Array.&lt;HTMLElement></span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"><p>Selected elements for generating placeholder</p></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    </div>
     
 
     
@@ -463,11 +487,6 @@ tui.component.placeholder.generate(document.getElementsByTagName('input'), {
 
 
     
-        <h5>Example</h5>
-        
-    <pre class="prettyprint"><code>tui.component.placeholder.hideOnInputHavingValue();</code></pre>
-
-    
 
 </dd>
 
@@ -475,23 +494,21 @@ tui.component.placeholder.generate(document.getElementsByTagName('input'), {
                 
 
 <dt>
-
     
-        
-
         <h4 class="name" id=".remove">
-            <span class="type-signature"><span class="icon green">static</span> </span>remove<span class="signature">(selectedTargets)</span><span class="type-signature"></span>
+            
+                <span class="type-signature"><span class="icon green">static</span> </span>remove<span class="signature">(selectedTargets)</span><span class="type-signature"></span>
+                
             
             <div class="container-source members">
                 <code><a href="placeholder.js.html">placeholder.js</a></code>,
-                <code><a href="placeholder.js.html#line320">line 320</a></code>
+                <code><a href="placeholder.js.html#line322">line 322</a></code>
             </div>
             
         </h4>
 
         
     
-
 </dt>
 <dd>
 
@@ -631,7 +648,7 @@ tui.component.placeholder.generate(document.getElementsByTagName('input'), {
 </div>
 
 <footer>
-    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px; height: 13px">
     <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
 </footer>
 <script>prettyPrint();</script>
@@ -640,7 +657,7 @@ tui.component.placeholder.generate(document.getElementsByTagName('input'), {
 <script src="scripts/linenumber.js"></script>
 
     <script>
-        var id = 'tui.component.placeholder_sub'.replace(/"/g, '_');
+        var id = 'module:placeholder_sub'.replace(/"/g, '_');
         var selectedApi = document.getElementById(id); // do not use jquery selector
         var $selectedApi = $(selectedApi);
 

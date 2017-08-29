@@ -18,11 +18,17 @@
 </head>
 <body>
 <nav class="lnb" id="lnb">
-    <div class="logo" style="width: 150px">
-        <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+    <div class="logo" style="width: 150px; height: 13px">
+        
+            <a href="https://github.com/nhnent/tui.jsdoc-template" rel="noopener noreferrer" target="_blank">
+                <img src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" width="100%" height="100%">
+            </a>
+        
     </div>
     <div class="title">
         <h1><a href="index.html" class="link">Placeholder</a></h1>
+        
+            <span class="version">v2.0.0</span>
         
     </div>
     <div class="search-container" id="search-container">
@@ -39,7 +45,7 @@
             </li>
         </ol>
     
-    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example1.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example1_sub"></div></li><li><a href="tutorial-example2.html">2. Dynamically create placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example2_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Namespaces</h3><ul><li><a href="tui.component.placeholder.html">tui.component.placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="tui.component.placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="tui.component.placeholder.html#.generate">generate</a></li><li><a href="tui.component.placeholder.html#.hideOnInputHavingValue">hideOnInputHavingValue</a></li><li><a href="tui.component.placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
+    <div class="lnb-examples hidden"><h3>Examples</h3><ul><li><a href="tutorial-example01-basic.html">1. Basic</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example01-basic_sub"></div></li><li><a href="tutorial-example02-using-classname.html">2. Using Class Name</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example02-using-classname_sub"></div></li><li><a href="tutorial-example03-dynamic-creation.html">3. Dynamic creation</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="example03-dynamic-creation_sub"></div></li></ul></div><div class="lnb-api hidden"><h3>Modules</h3><ul><li><a href="module-placeholder.html">placeholder</a><button type="button" class="hidden toggle-subnav btn btn-link">  <span class="glyphicon glyphicon-plus"></span></button><div class="hidden" id="module:placeholder_sub"><div class="member-type">Methods</div><ul class="inner"><li><a href="module-placeholder.html#.generate">generate</a></li><li><a href="module-placeholder.html#.hide">hide</a></li><li><a href="module-placeholder.html#.remove">remove</a></li></ul></div></li></ul></div>
 </nav>
 <div id="resizer"></div>
 
@@ -69,16 +75,10 @@
         </ul>
         <article>
             
-            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/example1.html></iframe>
+            <iframe id="example-result" width="100%" height="800" frameborder="0" src=tutorials/example01-basic.html></iframe>
             <div id="example-js" class="hidden"><pre class="prettyprint source">
 
-            tui.component.placeholder.generate(null, {
-                wrapperClassName: 'my-class-name'
-            });
-
-            $(document).ready(function() {
-                tui.component.placeholder.hideOnInputHavingValue();
-            });
+        tui.placeholder.generate();
 
         </pre></div>
             <div id="example-html" class="hidden"><pre class="prettyprint source">
@@ -197,7 +197,7 @@
 </div>
 
 <footer>
-    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px">
+    <img class="logo" src="https://cloud.githubusercontent.com/assets/12269563/20029815/01133928-a39a-11e6-80f3-12500a91c755.png" style="width: 150px; height: 13px">
     <div class="footer-text">NHN Entertainment. Frontend Development Lab</div>
 </footer>
 <script>prettyPrint();</script>
