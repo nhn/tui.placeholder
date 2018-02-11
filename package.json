@@ -13,8 +13,8 @@
     "doc": "jsdoc -c jsdoc.conf.json && npm run cpy-dist2doc"
   },
   "repository": {
-      "type": "git",
-      "url": "https://github.com/nhnent/tui.placeholder"
+    "type": "git",
+    "url": "https://github.com/nhnent/tui.placeholder"
   },
   "keywords": [
     "nhnent",
