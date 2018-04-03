@@ -29,6 +29,26 @@ describe('placeholder.js', function() {
         placeholder.generate();
     });
 
+    describe('Using "usageStatistics" option', function() {
+        beforeEach(function() {
+            spyOn(snippet, 'imagePing');
+        });
+
+        it('when the value set to true by default, the host name is send to server.', function() {
+            placeholder.generate();
+
+            expect(snippet.imagePing).toHaveBeenCalled();
+        });
+
+        it('when the value set to false, the host name is not send to server.', function() {
+            placeholder.generate(null, {
+                usageStatistics: false
+            });
+
+            expect(snippet.imagePing).not.toHaveBeenCalled();
+        });
+    });
+
     it('Create and append the <style> element for adding css rule on IE9 to IE11.', function() {
         var styleTagLen = $('style').length;
         var expected = (browser.msie && (browser.version > 9 && browser.version <= 11)) ? 1 : 0;
