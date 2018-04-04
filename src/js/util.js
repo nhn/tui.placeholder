@@ -146,9 +146,6 @@ var util = {
         return computedObj;
     },
 
-    // export to be used by unit-test
-    _callbackPropName: callbackPropName,
-
     /**
      * Send information to google analytics
      */
@@ -163,7 +160,10 @@ var util = {
             dp: hostname,
             dh: 'placeholder'
         });
-    }
+    },
+
+    // export to be used by unit-test
+    _callbackPropName: callbackPropName
 };
 
 module.exports = util;
