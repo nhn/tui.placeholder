@@ -1,6 +1,6 @@
 /*!
  * tui-placeholder.js
- * @version 2.0.0
+ * @version 2.1.0
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
@@ -343,7 +343,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	     * Generate virtual placeholders.
 	     * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
 	     * @param {object} [options] - options
-	     *   @param {string} [options.wrapperClassName] - wrapper class name
+	     *     @param {string} [options.wrapperClassName] - wrapper class name
+	     *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+	     *         If you do not want to send the hostname, this option set to false.
 	     * @function
 	     * @example
 	     * var placeholder = tui.placeholder; // require('tui-placeholder');
@@ -356,6 +358,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	     */
 	    generate: function(selectedTargets, options) {
 	        var targets;
+
+	        options = snippet.extend({
+	            usageStatistics: true
+	        }, options);
 
 	        if (generatePlaceholder) {
 	            targets = selectedTargets ? snippet.toArray(selectedTargets) : getAllTargets();
@@ -373,6 +379,10 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	                return hasProp && enableElem && !disableState;
 	            }), options);
+	        }
+
+	        if (options.usageStatistics) {
+	            util.sendHostNameToGA();
 	        }
 	    },
 
@@ -562,6 +572,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	        }
 
 	        return computedObj;
+	    },
+
+	    /**
+	     * Send information to google analytics
+	     */
+	    sendHostNameToGA: function() {
+	        var hostname = location.hostname;
+
+	        snippet.imagePing('https://www.google-analytics.com/collect', {
+	            v: 1,
+	            t: 'event',
+	            tid: 'UA-115377265-9',
+	            cid: hostname,
+	            dp: hostname,
+	            dh: 'placeholder'
+	        });
 	    },
 
 	    // export to be used by unit-test
