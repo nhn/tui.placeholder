@@ -282,8 +282,8 @@ module.exports = {
      * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @param {object} [options] - options
      *     @param {string} [options.wrapperClassName] - wrapper class name
-     *     @param {boolean} [options.usageStatistics=true] Send the host name to google analytics.
-     *         If you do not want to send the host name, this option set to false.
+     *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+     *         If you do not want to send the hostname, this option set to false.
      * @function
      * @example
      * var placeholder = tui.placeholder; // require('tui-placeholder');
