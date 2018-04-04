@@ -281,7 +281,9 @@ module.exports = {
      * Generate virtual placeholders.
      * @param {HTMLCollection|HTMLElement[]} selectedTargets - Selected elements for generating placeholder
      * @param {object} [options] - options
-     *   @param {string} [options.wrapperClassName] - wrapper class name
+     *     @param {string} [options.wrapperClassName] - wrapper class name
+     *     @param {boolean} [options.usageStatistics=true] Send the hostname to google analytics.
+     *         If you do not want to send the hostname, this option set to false.
      * @function
      * @example
      * var placeholder = tui.placeholder; // require('tui-placeholder');
@@ -294,6 +296,10 @@ module.exports = {
      */
     generate: function(selectedTargets, options) {
         var targets;
+
+        options = snippet.extend({
+            usageStatistics: true
+        }, options);
 
         if (generatePlaceholder) {
             targets = selectedTargets ? snippet.toArray(selectedTargets) : getAllTargets();
@@ -311,6 +317,10 @@ module.exports = {
 
                 return hasProp && enableElem && !disableState;
             }), options);
+        }
+
+        if (options.usageStatistics) {
+            util.sendHostNameToGA();
         }
     },
 
