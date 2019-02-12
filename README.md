@@ -60,8 +60,8 @@ tui.usageStatistics = false;
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.placeholder/latest/tutorial-example01-basic.html): Example of using default options.
-* [Dynamic creation](https://nhnent.github.io/tui.placeholder/latest/tutorial-example03-dynamic-creation.html) : Example of handling placeholders for dynamically added or deleted elements.
+* [Basic](https://nhnent.github.io/tui.placeholder/latest/tutorial-example01-basic): Example of using default options.
+* [Dynamic creation](https://nhnent.github.io/tui.placeholder/latest/tutorial-example03-dynamic-creation) : Example of handling placeholders for dynamically added or deleted elements.
 
 More examples can be found on the left sidebar of each example page, and have fun with it.
 
@@ -145,10 +145,10 @@ var placeholder = require('tui-placeholder'); /* CommonJS */
 ```
 
 ``` javascript
-import {placeholder} from 'tui-placeholder'; /* ES6 */
+import placeholder from 'tui-placeholder'; /* ES6 */
 ```
 
-Then you should call the `generate` method with [options](https://nhnent.github.io/tui.placeholder/latest/module-placeholder.html#.generate) to create virtual placeholders.
+Then you should call the `generate` method with [options](https://nhnent.github.io/tui.placeholder/latest/module-placeholder#generate) to create virtual placeholders.
 
 ``` javascript
 var targets = document.getElementByTags('input');
@@ -156,7 +156,7 @@ var targets = document.getElementByTags('input');
 placeholder.generate(targets, { ... });
 ```
 
-For more information about the API, please see [here](https://nhnent.github.io/tui.placeholder/latest/module-placeholder.html).
+For more information about the API, please see [here](https://nhnent.github.io/tui.placeholder/latest/module-placeholder).
 
 
 ## 🔧 Pull Request Steps
