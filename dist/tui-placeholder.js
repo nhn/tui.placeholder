@@ -1,6 +1,6 @@
 /*!
  * tui-placeholder.js
- * @version 2.2.0
+ * @version 2.2.1
  * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
  * @license MIT
  */
