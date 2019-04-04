@@ -1,6 +1,6 @@
 /**
  * @fileoverview Util for placeholder
- * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+ * @author NHN. FE dev Lab.<dl_javascript@nhn.com>
  */
 
 'use strict';
