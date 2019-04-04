@@ -1,7 +1,7 @@
 /*!
  * tui-placeholder.js
- * @version 2.2.1
- * @author NHNEnt FE Development Lab <dl_javascript@nhnent.com>
+ * @version 2.2.2
+ * @author NHN FE Development Lab <dl_javascript@nhn.com>
  * @license MIT
  */
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -62,7 +62,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Generate the virtual placeholder on browsers isn't supported placeholder feature
-	 * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+	 * @author NHN. FE dev Lab.<dl_javascript@nhn.com>
 	 */
 
 	'use strict';
@@ -428,7 +428,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	/**
 	 * @fileoverview Util for placeholder
-	 * @author NHN Ent. FE dev team.<dl_javascript@nhnent.com>
+	 * @author NHN. FE dev Lab.<dl_javascript@nhn.com>
 	 */
 
 	'use strict';
