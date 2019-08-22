@@ -82,4 +82,4 @@ Call a function generating placeholder once pass the dynamically generated tag l
 
 Also, the placeholder must be removed by calling `tui.placeholder.remove()` API before deleting the tag that attached the placeholder.
 
-For more information, please refer to the following [examples](https://nhnent.github.io/tui.placeholder/latest/tutorial-example01-basic.html)!
+For more information, please refer to the following [examples](https://nhn.github.io/tui.placeholder/latest/tutorial-example01-basic)!

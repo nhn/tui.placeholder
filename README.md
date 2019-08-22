@@ -1,11 +1,11 @@
 # TOAST UI Component : Placeholder
 > Component that creates a virtual placeholder when the browser native placeholder is not provided.
 
-[![GitHub release](https://img.shields.io/github/release/nhnent/tui.placeholder.svg)](https://github.com/nhnent/tui.placeholder/releases/latest)
+[![GitHub release](https://img.shields.io/github/release/nhn/tui.placeholder.svg)](https://github.com/nhn/tui.placeholder/releases/latest)
 [![npm](https://img.shields.io/npm/v/tui-placeholder.svg)](https://www.npmjs.com/package/tui-placeholder)
-[![GitHub license](https://img.shields.io/github/license/nhnent/tui.placeholder.svg)](https://github.com/nhnent/tui.placeholder/blob/production/LICENSE)
-[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhnent/tui.project-name/labels/help%20wanted)
-[![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhnent)
+[![GitHub license](https://img.shields.io/github/license/nhn/tui.placeholder.svg)](https://github.com/nhn/tui.placeholder/blob/production/LICENSE)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-ff69b4.svg)](https://github.com/nhn/tui.project-name/labels/help%20wanted)
+[![code with hearth by NHN](https://img.shields.io/badge/%3C%2F%3E%20with%20%E2%99%A5%20by-NHN-ff1414.svg)](https://github.com/nhn)
 
 
 ## 🚩 Table of Contents
@@ -42,7 +42,7 @@ var options = {
 
 placeholder.generate(targets, options);
 ```
- Or, include [`tui-code-snippet`](https://github.com/nhnent/tui.code-snippet)(**v1.5.0** or **later**) and then immediately write the options as follows:
+ Or, include [`tui-code-snippet`](https://github.com/nhn/tui.code-snippet)(**v1.5.0** or **later**) and then immediately write the options as follows:
 ```js
 tui.usageStatistics = false;
 ```
@@ -60,8 +60,8 @@ tui.usageStatistics = false;
 
 
 ## 🐾 Examples
-* [Basic](https://nhnent.github.io/tui.placeholder/latest/tutorial-example01-basic): Example of using default options.
-* [Dynamic creation](https://nhnent.github.io/tui.placeholder/latest/tutorial-example03-dynamic-creation) : Example of handling placeholders for dynamically added or deleted elements.
+* [Basic](https://nhn.github.io/tui.placeholder/latest/tutorial-example01-basic): Example of using default options.
+* [Dynamic creation](https://nhn.github.io/tui.placeholder/latest/tutorial-example03-dynamic-creation) : Example of handling placeholders for dynamically added or deleted elements.
 
 More examples can be found on the left sidebar of each example page, and have fun with it.
 
@@ -114,8 +114,8 @@ tui.placeholder/
 ```
 
 ### Download Source Files
-* [Download bundle files](https://github.com/nhnent/tui.placeholder/tree/production/dist)
-* [Download all sources for each version](https://github.com/nhnent/tui.placeholder/releases)
+* [Download bundle files](https://github.com/nhn/tui.placeholder/tree/production/dist)
+* [Download all sources for each version](https://github.com/nhn/tui.placeholder/releases)
 
 
 ## 🔨 Usage
@@ -148,7 +148,7 @@ var placeholder = require('tui-placeholder'); /* CommonJS */
 import placeholder from 'tui-placeholder'; /* ES6 */
 ```
 
-Then you should call the `generate` method with [options](https://nhnent.github.io/tui.placeholder/latest/module-placeholder#generate) to create virtual placeholders.
+Then you should call the `generate` method with [options](https://nhn.github.io/tui.placeholder/latest/placeholder#generate) to create virtual placeholders.
 
 ``` javascript
 var targets = document.getElementByTags('input');
@@ -156,7 +156,7 @@ var targets = document.getElementByTags('input');
 placeholder.generate(targets, { ... });
 ```
 
-For more information about the API, please see [here](https://nhnent.github.io/tui.placeholder/latest/module-placeholder).
+For more information about the API, please see [here](https://nhn.github.io/tui.placeholder/latest/placeholder).
 
 
 ## 🔧 Pull Request Steps
@@ -205,24 +205,24 @@ For more information on PR's step, please see links of Contributing section.
 
 
 ## 📙 Documents
-* [Getting Started](https://github.com/nhnent/tui.placeholder/blob/production/docs/getting-started.md)
-* [Tutorials](https://github.com/nhnent/tui.placeholder/tree/production/docs)
-* [APIs](https://nhnent.github.io/tui.placeholder/latest)
+* [Getting Started](https://github.com/nhn/tui.placeholder/blob/production/docs/getting-started.md)
+* [Tutorials](https://github.com/nhn/tui.placeholder/tree/production/docs)
+* [APIs](https://nhn.github.io/tui.placeholder/latest)
 
-You can also see the older versions of API page on the [releases page](https://github.com/nhnent/tui.placeholder/releases).
+You can also see the older versions of API page on the [releases page](https://github.com/nhn/tui.placeholder/releases).
 
 
 ## 💬 Contributing
-* [Code of Conduct](https://github.com/nhnent/tui.placeholder/blob/production/CODE_OF_CONDUCT.md)
-* [Contributing guideline](https://github.com/nhnent/tui.placeholder/blob/production/CONTRIBUTING.md)
-* [Issue guideline](https://github.com/nhnent/tui.placeholder/blob/production/docs/ISSUE_TEMPLATE.md)
-* [Commit convention](https://github.com/nhnent/tui.placeholder/blob/production/docs/COMMIT_MESSAGE_CONVENTION.md)
+* [Code of Conduct](https://github.com/nhn/tui.placeholder/blob/production/CODE_OF_CONDUCT.md)
+* [Contributing guideline](https://github.com/nhn/tui.placeholder/blob/production/CONTRIBUTING.md)
+* [Issue guideline](https://github.com/nhn/tui.placeholder/blob/production/docs/ISSUE_TEMPLATE.md)
+* [Commit convention](https://github.com/nhn/tui.placeholder/blob/production/docs/COMMIT_MESSAGE_CONVENTION.md)
 
 
 ## 🔩 Dependency
-* [tui-code-snippet](https://github.com/nhnent/tui.code-snippet) >=1.5.0
+* [tui-code-snippet](https://github.com/nhn/tui.code-snippet) >=1.5.0
 
 
 ## 📜 License
 
-This software is licensed under the [MIT](https://github.com/nhnent/tui.placeholder/blob/production/LICENSE) © [NHN](https://github.com/nhnent).
+This software is licensed under the [MIT](https://github.com/nhn/tui.placeholder/blob/production/LICENSE) © [NHN](https://github.com/nhn).
