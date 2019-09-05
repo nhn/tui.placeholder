@@ -1,3 +1,5 @@
+#### ‼️ There are no major updates planned for `tui.placeholder` in the future. It will only get bug fixes.
+
 # TOAST UI Component : Placeholder
 > Component that creates a virtual placeholder when the browser native placeholder is not provided.
 
